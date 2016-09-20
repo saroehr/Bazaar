@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="org.apache.bazaar" transaction-type="JTA">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<!--<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
+		<jta-data-source>java:comp/env/jdbc/Bazaar</jta-data-source>
+		<class>org.apache.bazaar.AbstractPersistable</class>
+		<class>org.apache.bazaar.AddressImpl</class>
+		<class>org.apache.bazaar.BazaarImpl</class>
+		<class>org.apache.bazaar.BidderImpl</class>
+		<class>org.apache.bazaar.BidImpl</class>
+		<class>org.apache.bazaar.CategoryImpl</class>
+		<class>org.apache.bazaar.IdentifierImpl</class>
+		<class>org.apache.bazaar.ImageImpl</class>
+		<class>org.apache.bazaar.ItemImpl</class>
+		<class>org.apache.bazaar.NameImpl</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<property name="javax.persistence.sql-load-script-source"
+				value="META-INF/load.sql" />
+			<property name="shared-cache-mode" value="ENABLE_SELECTIVE"/>
+			<!--<property name="shared-cache-mode" value="NONE" />-->
+			<property name="eclipse.weaving" value="false" />
+			<property name="eclipselink.logging.level" value="INFO"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/BAZAAR?useSSL=false"/>
+			<property name="javax.persistence.jdbc.user" value="root"/>
+			<property name="javax.persistence.jdbc.password" value="s809926r"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+			<property name="javax.persistence.schema-generation.database.action" value="create"/> 
+		</properties>
+	</persistence-unit>
+</persistence>
