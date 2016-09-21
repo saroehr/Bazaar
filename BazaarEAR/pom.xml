@@ -23,25 +23,17 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.bazaar</groupId>
-			<artifactId>BazaarWARClient</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.bazaar</groupId>
 			<artifactId>BazaarEJB</artifactId>
 			<type>ejb</type>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.bazaar</groupId>
-			<artifactId>BazaarWAR</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<type>war</type>
-		</dependency>
+		<groupId>org.apache.bazaar</groupId>
+		<artifactId>BazaarWeb</artifactId>
+		<version>0.0.1-SNAPSHOT</version><type>war</type></dependency>
 	</dependencies>
 	<build>
-		<sourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\src</sourceDirectory>
-		<scriptSourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\scripts</scriptSourceDirectory>
+		<sourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\</sourceDirectory>
 		<outputDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\bin</outputDirectory>
 		<resources>
 			<resource>

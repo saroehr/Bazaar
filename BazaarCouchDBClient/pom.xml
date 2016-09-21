@@ -4,6 +4,18 @@
 	<groupId>org.apache.bazaar</groupId>
 	<artifactId>BazaarCouchDB</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.bazaar</groupId>
+			<artifactId>Bazaar</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.bazaar</groupId>
+			<artifactId>BazaarWebClient</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<sourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarCouchDBClient\src</sourceDirectory>
 		<scriptSourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarCouchDBClient\scripts</scriptSourceDirectory>

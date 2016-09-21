@@ -4,12 +4,11 @@
 	<comment></comment>
 	<projects>
 		<project>BazaarEJB</project>
-		<project>BazaarWARClient</project>
 		<project>BazaarJPA</project>
 		<project>BazaarCouchDBClient</project>
-		<project>BazaarEJBClient</project>
 		<project>Bazaar</project>
-		<project>BazaarWAR</project>
+		<project>BazaarWeb</project>
+		<project>BazaarWebClient</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

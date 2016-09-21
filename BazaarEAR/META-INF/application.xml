@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/application_7.xsd" version="7">
+	<display-name>BazaarEAR</display-name>
+	<module id="Module_1474477482043">
+		<ejb>BazaarEJB-0.0.1-SNAPSHOT.jar</ejb>
+	</module>
+	<module id="Module_1474477482044">
+		<web>
+			<web-uri>BazaarWeb-0.0.1-SNAPSHOT.war</web-uri>
+			<context-root>BazaarWeb</context-root>
+		</web>
+	</module>
+</application>

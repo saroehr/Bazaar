@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="BazaarEAR-0.0.1-SNAPSHOT">
-        <wb-resource deploy-path="/" source-path="/src"/>
+        <wb-resource deploy-path="/" source-path="/META-INF"/>
         <dependent-module archiveName="Bazaar-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/Bazaar/Bazaar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="hibernate-validator-5.2.4.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/hibernate-validator/5.2.4.Final/hibernate-validator-5.2.4.Final.jar">
+        <dependent-module archiveName="hibernate-validator-5.2.4.FINAL.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/hibernate-validator/5.2.4.FINAL/hibernate-validator-5.2.4.FINAL.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="validation-api-1.1.0.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar">
@@ -82,10 +82,10 @@
         <dependent-module archiveName="junit-dep-4.9.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/junit/junit-dep/4.9/junit-dep-4.9.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="BazaarEJBClient-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/BazaarEJBClient/BazaarEJBClient">
+        <dependent-module archiveName="BazaarEJBClient-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/bazaar/BazaarEJBClient/0.0.1-SNAPSHOT/BazaarEJBClient-0.0.1-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="BazaarWARClient-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/BazaarWARClient/BazaarWARClient">
+        <dependent-module archiveName="BazaarEJB-0.0.1-SNAPSHOT.jar" deploy-path="/" handle="module:/resource/BazaarEJB/BazaarEJB">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="javaee-api-7.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/javaee-api/7.0/javaee-api-7.0.jar">
@@ -97,58 +97,7 @@
         <dependent-module archiveName="activation-1.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/activation/activation/1.1/activation-1.1.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="javax.json-api-1.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/json/javax.json-api/1.0/javax.json-api-1.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="javax.json-1.0.4.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/javax.json/1.0.4/javax.json-1.0.4.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jersey-common-2.9.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/jersey/core/jersey-common/2.9.1/jersey-common-2.9.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="javax.ws.rs-api-2.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/ws/rs/javax.ws.rs-api/2.0/javax.ws.rs-api-2.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="javax.annotation-api-1.2.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/annotation/javax.annotation-api/1.2/javax.annotation-api-1.2.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jersey-guava-2.9.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/jersey/bundles/repackaged/jersey-guava/2.9.1/jersey-guava-2.9.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="hk2-api-2.3.0-b05.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/hk2/hk2-api/2.3.0-b05/hk2-api-2.3.0-b05.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="hk2-utils-2.3.0-b05.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/hk2/hk2-utils/2.3.0-b05/hk2-utils-2.3.0-b05.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="aopalliance-repackaged-2.3.0-b05.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/hk2/external/aopalliance-repackaged/2.3.0-b05/aopalliance-repackaged-2.3.0-b05.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="javax.inject-2.3.0-b05.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/hk2/external/javax.inject/2.3.0-b05/javax.inject-2.3.0-b05.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="hk2-locator-2.3.0-b05.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/hk2/hk2-locator/2.3.0-b05/hk2-locator-2.3.0-b05.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="osgi-resource-locator-1.0.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/hk2/osgi-resource-locator/1.0.1/osgi-resource-locator-1.0.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jersey-client-2.9.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/jersey/core/jersey-client/2.9.1/jersey-client-2.9.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jersey-server-2.9.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/jersey/core/jersey-server/2.9.1/jersey-server-2.9.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jersey-container-servlet-2.9.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/jersey/containers/jersey-container-servlet/2.9.1/jersey-container-servlet-2.9.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jersey-container-servlet-core-2.9.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/glassfish/jersey/containers/jersey-container-servlet-core/2.9.1/jersey-container-servlet-core-2.9.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="BazaarEJB-0.0.1-SNAPSHOT.jar" deploy-path="/" handle="module:/resource/BazaarEJB/BazaarEJB">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="BazaarWAR-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/BazaarWAR/BazaarWAR">
+        <dependent-module archiveName="BazaarWeb-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/BazaarWeb/BazaarWeb">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>
