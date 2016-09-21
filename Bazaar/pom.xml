@@ -27,17 +27,12 @@
 				<updatePolicy>never</updatePolicy>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>mvn-repository</id>
-			<name>Maven Repository</name>
-			<url>https://mvn.repository.com/artifact</url>
-		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.2.4.FINAL</version>
+			<version>5.3.0.CR1</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.cache</groupId>

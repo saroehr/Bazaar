@@ -25,7 +25,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.bazaar</groupId>
-			<artifactId>BazaarEJBClient</artifactId>
+			<artifactId>BazaarJPA</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

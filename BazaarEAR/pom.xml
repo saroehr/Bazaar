@@ -18,11 +18,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.bazaar</groupId>
-			<artifactId>BazaarEJBClient</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.bazaar</groupId>
 			<artifactId>BazaarEJB</artifactId>
 			<type>ejb</type>
 			<version>0.0.1-SNAPSHOT</version>
