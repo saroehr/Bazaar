@@ -9,8 +9,11 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
 
+import javax.naming.Binding;
 import javax.naming.InitialContext;
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
@@ -74,6 +77,34 @@ public abstract class AbstractRestWebService implements RestWebService {
 	}
 
 	// declare methods
+
+	/*
+	 * Utility method dumps the contents of the JNDI namespace
+	 * 
+	 * @param name The namespace name to list bindings for
+	 * 
+	 * @throws NamingException if the operation fails
+	 */
+	private static void dumpNamespace(@NotNull final String name) throws NamingException {
+		final InitialContext context = new InitialContext();
+		final NamingEnumeration<Binding> bindings = context.listBindings(name);
+		AbstractRestWebService.LOGGER.config(name + " -->");
+		while (bindings.hasMoreElements()) {
+			final Binding binding = bindings.nextElement();
+			if (binding.getObject() instanceof javax.naming.Context) {
+				final NamingEnumeration<Binding> bindings1 = ((javax.naming.Context)binding.getObject())
+						.listBindings("");
+				while (bindings1.hasMoreElements()) {
+					final Binding binding1 = bindings1.nextElement();
+					AbstractRestWebService.LOGGER.config(binding1.toString());
+				}
+			}
+			else {
+				AbstractRestWebService.LOGGER.config(binding.toString());
+			}
+		}
+		bindings.close();
+	}
 
 	/*
 	 * Utility method to process throwable
@@ -300,6 +331,9 @@ public abstract class AbstractRestWebService implements RestWebService {
 		try {
 			if (this.initialContext == null) {
 				this.initialContext = new InitialContext();
+			}
+			if (AbstractRestWebService.LOGGER.isLoggable(Level.CONFIG)) {
+				AbstractRestWebService.dumpNamespace("java:app");
 			}
 			result = this.initialContext.lookup(name);
 		}

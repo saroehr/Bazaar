@@ -22,7 +22,7 @@ public interface ItemSessionBean {
 	/**
 	 * The JNDI Lookup name for the bean
 	 */
-	public static final String BEAN_LOOKUP_NAME = "java:app/BazaarEJB/ItemSessionBean";
+	public static final String BEAN_LOOKUP_NAME = "java:app/BazaarEJB-0.0.1-SNAPSHOT/ItemSessionBean";
 
 	// declare methods
 

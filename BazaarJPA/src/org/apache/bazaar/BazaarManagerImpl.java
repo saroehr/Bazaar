@@ -289,7 +289,8 @@ final class BazaarManagerImpl implements BazaarManager {
 			bid = manager.find(BidImpl.class, identifier);
 			transaction.commit();
 			if (bid == null) {
-				throw new BidNotFoundException(); // TODO localize message
+				throw new BidNotFoundException(BazaarManagerImpl.MESSAGES
+						.findMessage(Messages.UNABLE_TO_FIND_BID_MESSAGE_KEY, new Object[] { identifier }));
 			}
 		}
 		finally {

@@ -49,6 +49,18 @@ public final class Logger {
 	}
 
 	/**
+	 * Returns true if underlying implementation is enabled
+	 * for logging level
+	 * 
+	 * @param level The {@link java.util.logging.Level} to be
+	 *        checked
+	 * @return true if logger is enabled for logging level
+	 */
+	public boolean isLoggable(@NotNull final Level level) {
+		return this.logger.isLoggable(level);
+	}
+
+	/**
 	 * Logs information message.
 	 * 
 	 * @param message The information message to be logged
@@ -177,11 +189,16 @@ public final class Logger {
 	}
 
 	/**
-	 * This method serves as a utility method to generate a basic {@link java.lang.String#toString()}
-	 * method given a set of objects. It will generate a string of the basic form "objectIdentifier: [object, object, ....]"
-	 * where objectIdentifier is provided by {@link System#identityHashCode(Object)}
+	 * This method serves as a utility method to generate a basic
+	 * {@link java.lang.String#toString()}
+	 * method given a set of objects. It will generate a string of the basic
+	 * form "objectIdentifier: [object, object, ....]"
+	 * where objectIdentifier is provided by
+	 * {@link System#identityHashCode(Object)}
+	 * 
 	 * @param object The object the toString is being generated for
-	 * @param objects The array of objects to be rendered in the to string output
+	 * @param objects The array of objects to be rendered in the to string
+	 *        output
 	 * @return The string output
 	 */
 	public static String toString(final Object object, final Object[] objects) {
@@ -192,7 +209,7 @@ public final class Logger {
 		builder.append("[");
 		for (int index = 0; index < objects.length; index++) {
 			builder.append(objects[index]);
-			if (index != (objects.length -1)) {
+			if (index != (objects.length - 1)) {
 				builder.append(", ");
 			}
 			else {
@@ -203,4 +220,3 @@ public final class Logger {
 	}
 
 }
-

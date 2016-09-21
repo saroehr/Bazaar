@@ -6,6 +6,7 @@
 package org.apache.bazaar.jpa;
 
 import java.sql.Blob;
+import java.util.Locale;
 
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.config.ConfigurationException;
+import org.apache.bazaar.i18n.Messages;
 import org.apache.bazaar.jpa.config.Configuration.TransactionType;
 import org.apache.bazaar.logging.Logger;
 
@@ -28,13 +30,15 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 
 	// declare members
 
+	protected static final Messages MESSAGES = Messages.newInstance(Locale.getDefault());
+
 	protected static final int DEFAULT_BUFFER_SIZE;
 
 	static {
 		try {
 			final Configuration configuration = Configuration.newInstance();
-			DEFAULT_BUFFER_SIZE = Integer
-					.valueOf(configuration.getProperty(org.apache.bazaar.config.Configuration.DEFAULT_BYTE_ARRAY_BUFFER_SIZE));
+			DEFAULT_BUFFER_SIZE = Integer.valueOf(
+					configuration.getProperty(org.apache.bazaar.config.Configuration.DEFAULT_BYTE_ARRAY_BUFFER_SIZE));
 		}
 		catch (final ConfigurationException exception) {
 			throw new ExceptionInInitializerError(exception);
@@ -50,7 +54,8 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 			final Configuration configuration = Configuration.newInstance();
 			TRANSACTION_TYPE = org.apache.bazaar.jpa.config.Configuration.TransactionType
 					.valueOf(configuration.getProperty(org.apache.bazaar.jpa.config.Configuration.TRANSACTION_TYPE));
-			MANAGED_TRANSACTION_NAME = configuration.getProperty(org.apache.bazaar.jpa.config.Configuration.MANAGED_TRANSACTION_NAME);
+			MANAGED_TRANSACTION_NAME = configuration
+					.getProperty(org.apache.bazaar.jpa.config.Configuration.MANAGED_TRANSACTION_NAME);
 		}
 		catch (final ConfigurationException exception) {
 			throw new ExceptionInInitializerError(exception);
@@ -325,7 +330,9 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 		AbstractEntityTransaction.LOGGER.exiting("setTransactionTimeout");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.bazaar.jpa.EntityTransaction#newBlob()
 	 */
 	@Override
@@ -340,21 +347,24 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 	 * @throws EntityTransactionException if the instance
 	 *         could not be created.
 	 */
-	public static EntityTransaction newInstance(
-			@NotNull final javax.persistence.EntityTransaction entityTransaction) throws EntityTransactionException {
+	public static EntityTransaction newInstance(@NotNull final javax.persistence.EntityTransaction entityTransaction)
+			throws EntityTransactionException {
 		final EntityTransaction entityTransaction1;
 		try {
 			final Configuration configuration = Configuration.newInstance();
 			final org.apache.bazaar.jpa.config.Configuration.PersistenceProvider persistenceProvider = org.apache.bazaar.jpa.config.Configuration.PersistenceProvider
-					.valueOf(configuration.getProperty(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_PROVIDER_NAME));
+					.valueOf(configuration
+							.getProperty(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_PROVIDER_NAME));
 			if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.HIBERNATE.equals(persistenceProvider)) {
 				entityTransaction1 = new HibernateEntityTransactionImpl(entityTransaction);
 			}
-			else if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.ECLIPSELINK.equals(persistenceProvider)) {
+			else if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.ECLIPSELINK
+					.equals(persistenceProvider)) {
 				entityTransaction1 = new EclipseLinkEntityTransactionImpl(entityTransaction);
 			}
 			else {
-				throw new EntityTransactionException(); // TODO localize message
+				throw new EntityTransactionException(
+						AbstractEntityTransaction.MESSAGES.findMessage(Messages.TRANSACTION_FAILURE_MESSAGE_KEY));
 			}
 		}
 		catch (final ConfigurationException exception) {
@@ -370,21 +380,23 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 	 *        instance to be decorated.
 	 * @return Instance of EntityTransaction
 	 */
-	public static EntityTransaction newInstance(
-			@NotNull final javax.transaction.UserTransaction userTransaction) {
+	public static EntityTransaction newInstance(@NotNull final javax.transaction.UserTransaction userTransaction) {
 		final EntityTransaction entityTransaction1;
 		try {
 			final Configuration configuration = Configuration.newInstance();
 			final org.apache.bazaar.jpa.config.Configuration.PersistenceProvider persistenceProvider = org.apache.bazaar.jpa.config.Configuration.PersistenceProvider
-					.valueOf(configuration.getProperty(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_PROVIDER_NAME));
+					.valueOf(configuration
+							.getProperty(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_PROVIDER_NAME));
 			if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.HIBERNATE.equals(persistenceProvider)) {
 				entityTransaction1 = new HibernateEntityTransactionImpl(userTransaction);
 			}
-			else if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.ECLIPSELINK.equals(persistenceProvider)) {
+			else if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.ECLIPSELINK
+					.equals(persistenceProvider)) {
 				entityTransaction1 = new EclipseLinkEntityTransactionImpl(userTransaction);
 			}
 			else {
-				throw new EntityTransactionException(); // TODO localize message
+				throw new EntityTransactionException(
+						AbstractEntityTransaction.MESSAGES.findMessage(Messages.TRANSACTION_FAILURE_MESSAGE_KEY));
 			}
 		}
 		catch (final ConfigurationException exception) {

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="BazaarWAR-0.0.1-SNAPSHOT">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="Bazaar-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Bazaar/Bazaar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="BazaarEJBClient-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BazaarEJBClient/BazaarEJBClient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="BazaarWARClient-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BazaarWARClient/BazaarWARClient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/BazaarWAR/WEB-INF/classes"/>
         <property name="context-root" value="BazaarWAR"/>
     </wb-module>

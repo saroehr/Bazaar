@@ -7,13 +7,16 @@ package org.apache.bazaar.i18n;
 
 import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.WeakHashMap;
-import java.util.concurrent.ConcurrentHashMap;
+
+import javax.cache.Cache;
+import javax.cache.configuration.MutableConfiguration;
+import javax.cache.expiry.AccessedExpiryPolicy;
+import javax.cache.expiry.Duration;
 
 import org.apache.bazaar.Bazaar;
+import org.apache.bazaar.Bid;
 import org.apache.bazaar.Bidder;
 import org.apache.bazaar.Category;
 import org.apache.bazaar.Item;
@@ -31,11 +34,14 @@ public final class Messages {
 	 */
 	public static final String RESOURCE_BUNDLE_BASE_NAME = "org.apache.bazaar.i18n.messages";
 
-	// we use a weak hash map to store a cache of instance
-	private static final Map<Locale, Messages> INSTANCE_CACHE = new ConcurrentHashMap<Locale, Messages>(
-			new WeakHashMap<Locale, Messages>(50));
+	private static final Cache<Locale, Messages> CACHE;
 	static {
-		Messages.INSTANCE_CACHE.put(Locale.getDefault(), new Messages(Locale.getDefault()));
+		final MutableConfiguration<Locale, Messages> configuration = new MutableConfiguration<Locale, Messages>();
+		configuration.setStoreByValue(false);
+		configuration.setTypes(Locale.class, Messages.class);
+		configuration.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_DAY));
+		CACHE = org.apache.bazaar.cache.Cache.newInstance(configuration, Messages.class.getName(), Locale.class,
+				Messages.class);
 	}
 
 	/**
@@ -47,10 +53,16 @@ public final class Messages {
 	 * Key for lookup of unable to find item message
 	 */
 	public static final String UNABLE_TO_FIND_ITEM_MESSAGE_KEY = Item.class.getName() + "." + "unabletofinditem";
+
 	/**
 	 * Key for lookup of unable to find bidder message
 	 */
 	public static final String UNABLE_TO_FIND_BIDDER_MESSAGE_KEY = Bidder.class.getName() + "." + "unabletofindbidder";
+
+	/**
+	 * Key for lookup of unable to find bid message
+	 */
+	public static final String UNABLE_TO_FIND_BID_MESSAGE_KEY = Bid.class.getName() + "." + "unabletofindbid";
 	/**
 	 * Key for lookup of unable to delete bidder due to auction found
 	 * message
@@ -72,6 +84,18 @@ public final class Messages {
 	 */
 	public static final String AUCTION_ENDDATE_INVALID_MESSAGE_KEY = Bazaar.class.getName() + "."
 			+ "invalidenddateexception";
+
+	/**
+	 * Key for lookup of invalid category message
+	 */
+	public static final String UNABLE_TO_CREATE_CATEGORY_MESSAGE_KEY = Category.class.getName() + "."
+			+ "unabletocreatecategory";
+
+	/**
+	 * Key for lookup of transaction failure message
+	 */
+	public static final String TRANSACTION_FAILURE_MESSAGE_KEY = "org.apache.bazaar.jpa.EntityManager" + "."
+			+ "failure";
 
 	/**
 	 * Key for lookup of unsupported method exception message
@@ -105,12 +129,12 @@ public final class Messages {
 	public static Messages newInstance(final Locale locale) {
 		final Messages messages;
 		// check cache
-		if (Messages.INSTANCE_CACHE.containsKey(locale)) {
-			messages = Messages.INSTANCE_CACHE.get(locale);
+		if (Messages.CACHE.containsKey(locale)) {
+			messages = Messages.CACHE.get(locale);
 		}
 		else {
 			messages = new Messages(locale);
-			Messages.INSTANCE_CACHE.put(locale, messages);
+			Messages.CACHE.put(locale, messages);
 		}
 		return messages;
 	}

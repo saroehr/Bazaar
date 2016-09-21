@@ -27,7 +27,7 @@ public interface BidSessionBean {
 	/**
 	 * The JNDI lookup name for bean
 	 */
-	public String BEAN_LOOKUP_NAME = "java:app/BazaarEJB/BidSessionBean";
+	public String BEAN_LOOKUP_NAME = "java:app/BazaarEJB-0.0.1-SNAPSHOT/BidSessionBean";
 
 	// declare methods
 

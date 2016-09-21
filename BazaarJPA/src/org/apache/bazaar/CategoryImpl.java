@@ -7,6 +7,7 @@ package org.apache.bazaar;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -24,6 +25,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.bazaar.config.Configuration;
+import org.apache.bazaar.i18n.Messages;
 import org.apache.bazaar.jpa.EntityManagerFactory;
 import org.apache.bazaar.logging.Logger;
 
@@ -39,6 +41,8 @@ public class CategoryImpl extends AbstractPersistable implements Category {
 	// declare members
 
 	private static final long serialVersionUID = 8868571475475761876L;
+
+	private static final Messages MESSAGES = Messages.newInstance(Locale.getDefault());
 
 	@ManyToOne(targetEntity = CategoryImpl.class, optional = false)
 	@JoinColumn(name = "PARENT", referencedColumnName = org.apache.bazaar.jpa.config.Configuration.IDENTIFIABLE_COLUMN_NAME, nullable = false)
@@ -199,7 +203,8 @@ public class CategoryImpl extends AbstractPersistable implements Category {
 		if (this.equals(this.parent) && !this.getIdentifier().getValue()
 				.equals(Configuration.newInstance().getProperty(Configuration.ROOT_CATEGORY_IDENTIFIER)) ? true
 						: false) {
-			throw new BazaarException(); // TODO localize message
+			throw new BazaarException(
+					CategoryImpl.MESSAGES.findMessage(Messages.UNABLE_TO_CREATE_CATEGORY_MESSAGE_KEY));
 		}
 		super.persist();
 	}

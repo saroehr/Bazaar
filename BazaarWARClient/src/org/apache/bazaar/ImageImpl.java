@@ -5,10 +5,8 @@
  */
 package org.apache.bazaar;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
-import org.apache.bazaar.BazaarException;
-import org.apache.bazaar.Image;
 
 /**
  * ImageImpl implements Image to
@@ -20,6 +18,7 @@ final class ImageImpl implements Image {
 
 	private final String name;
 	private final MimeType mimeType;
+	private byte[] image;
 
 	// declare constructors
 	/**
@@ -61,8 +60,14 @@ final class ImageImpl implements Image {
 	 */
 	@Override
 	public InputStream getImage() throws BazaarException {
-		// TODO Auto-generated method stub
-		return null;
+		final ByteArrayInputStream inputStream;
+		if (this.image != null) {
+			inputStream = new ByteArrayInputStream(this.image);
+		}
+		else {
+			inputStream = new ByteArrayInputStream(new byte[] {});
+		}
+		return inputStream;
 	}
 
 	/**
@@ -71,7 +76,10 @@ final class ImageImpl implements Image {
 	 * @param inputStream The inputStream to read from
 	 */
 	void setImage(final InputStream inputStream) throws BazaarException {
-
+		final ByteArrayInputStream inputStream1 = new ByteArrayInputStream(this.image);
+		while (inputStream1.available() != 0) {
+			inputStream1.read();
+		}
 	}
 
 }

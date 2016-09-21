@@ -58,8 +58,7 @@ public final class ThrowableMessageBodyReaderImpl<T extends Throwable> implement
 	public boolean isReadable(final Class<?> type, final Type genericType, final Annotation[] annotations,
 			final MediaType mediaType) {
 		boolean readable = true;
-		if (// MediaType.APPLICATION_JSON_TYPE.equals(mediaType) &&
-		Throwable.class.isAssignableFrom(type)) {
+		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Throwable.class.isAssignableFrom(type)) {
 			readable = true;
 		}
 		return readable;

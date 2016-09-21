@@ -8,9 +8,12 @@ package org.apache.bazaar.jpa;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Locale;
 
 import javax.persistence.EntityTransaction;
 import javax.transaction.UserTransaction;
+
+import org.apache.bazaar.i18n.Messages;
 
 /**
  * EclipseLinkEntityTransactionImpl extends AbstractEntityTransaction
@@ -19,6 +22,8 @@ import javax.transaction.UserTransaction;
 final class EclipseLinkEntityTransactionImpl extends AbstractEntityTransaction {
 
 	// declare members
+
+	private static final Messages MESSAGES = Messages.newInstance(Locale.getDefault());
 
 	// declare constructors
 
@@ -51,7 +56,8 @@ final class EclipseLinkEntityTransactionImpl extends AbstractEntityTransaction {
 		try {
 			final Connection connection = this.getEntityManager().unwrap(Connection.class);
 			if (connection == null) {
-				throw new EntityTransactionException(); // TODO localize message
+				throw new EntityTransactionException(EclipseLinkEntityTransactionImpl.MESSAGES
+						.findMessage(Messages.TRANSACTION_FAILURE_MESSAGE_KEY));
 			}
 			blob = connection.createBlob();
 		}

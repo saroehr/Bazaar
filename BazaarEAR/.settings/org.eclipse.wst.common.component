@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="BazaarEAR-0.0.1-SNAPSHOT">
-        <wb-resource deploy-path="/" source-path="/bin/m2e-wtp/ear-resources"/>
+        <wb-resource deploy-path="/" source-path="/src"/>
         <dependent-module archiveName="Bazaar-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/Bazaar/Bazaar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -148,7 +148,7 @@
         <dependent-module archiveName="BazaarEJB-0.0.1-SNAPSHOT.jar" deploy-path="/" handle="module:/resource/BazaarEJB/BazaarEJB">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="BazaarWAR-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/BazaarWAR/BazaarWAR">
+        <dependent-module archiveName="BazaarWAR-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/BazaarWAR/BazaarWAR">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>

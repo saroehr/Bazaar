@@ -60,6 +60,7 @@
 		<dependency>
 			<groupId>org.apache.bazaar</groupId>
 			<artifactId>BazaarWARClient</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -109,6 +110,7 @@
 							<webXml>WebContent/WEB-INF/web.xml</webXml>
 							<archive>
 								<addMavenDescriptor>false</addMavenDescriptor>
+								<manifest>WebContent/META-INF/MANIFEST.MF</manifest>
 							</archive>
 						</configuration>
 					</execution>
@@ -116,13 +118,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.apache.bazaar</groupId>
-				<artifactId>BazaarWARClient</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 </project>
