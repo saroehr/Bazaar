@@ -23,6 +23,7 @@
 			<property name="shared-cache-mode" value="ENABLE_SELECTIVE"/>
 			<!--<property name="shared-cache-mode" value="NONE" />-->
 			<property name="eclipse.weaving" value="false" />
+			<property name="eclipselink.target-database" value="MYSQL" />
 			<property name="eclipselink.logging.level" value="INFO"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/BAZAAR?useSSL=false"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
