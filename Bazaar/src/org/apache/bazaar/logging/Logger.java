@@ -10,7 +10,7 @@ import java.util.logging.LogRecord;
 
 import javax.validation.constraints.NotNull;
 
-import org.apache.bazaar.i18n.Messages;
+import org.apache.bazaar.nls.Messages;
 
 /**
  * Logger provides a simplified adapter to the java.util.logging framework

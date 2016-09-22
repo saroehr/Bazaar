@@ -27,8 +27,8 @@ import org.apache.bazaar.logging.Logger;
 /**
  * ItemImpl implements @Item to provide a concrete implementation
  */
-@Entity(name = org.apache.bazaar.jpa.config.Configuration.ITEM_ENTITY_NAME)
-@Table(name = org.apache.bazaar.jpa.config.Configuration.ITEM_TABLE_NAME, schema = org.apache.bazaar.jpa.config.Configuration.DATABASE_SCHEMA_NAME)
+@Entity(name = org.apache.bazaar.persistence.config.Configuration.ITEM_ENTITY_NAME)
+@Table(name = org.apache.bazaar.persistence.config.Configuration.ITEM_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
 @Cacheable
 public class ItemImpl extends AbstractPersistable implements Item {
@@ -41,11 +41,11 @@ public class ItemImpl extends AbstractPersistable implements Item {
 	private String description;
 	@ManyToOne(targetEntity = CategoryImpl.class, optional = false, fetch = FetchType.LAZY, cascade = {
 			CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-	@JoinColumn(name = "CATEGORY", referencedColumnName = org.apache.bazaar.jpa.config.Configuration.IDENTIFIABLE_COLUMN_NAME, unique = false, nullable = false, updatable = true)
+	@JoinColumn(name = "CATEGORY", referencedColumnName = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME, unique = false, nullable = false, updatable = true)
 	private Category category;
 	@ElementCollection(targetClass = ImageImpl.class, fetch = FetchType.LAZY)
-	@CollectionTable(name = org.apache.bazaar.jpa.config.Configuration.IMAGE_TABLE_NAME, joinColumns = {
-			@JoinColumn(name = "IDENTIFIER", referencedColumnName = org.apache.bazaar.jpa.config.Configuration.IDENTIFIABLE_COLUMN_NAME, insertable = true, nullable = false, updatable = false) })
+	@CollectionTable(name = org.apache.bazaar.persistence.config.Configuration.IMAGE_TABLE_NAME, joinColumns = {
+			@JoinColumn(name = "IDENTIFIER", referencedColumnName = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME, insertable = true, nullable = false, updatable = false) })
 	private Set<Image> images;
 
 	// declare constructors

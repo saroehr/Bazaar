@@ -6,8 +6,10 @@
 package org.apache.bazaar;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -29,19 +31,8 @@ import javax.ws.rs.core.Response;
 import org.apache.bazaar.Image.MimeType;
 import org.apache.bazaar.cache.Cache;
 import org.apache.bazaar.logging.Logger;
-import org.apache.bazaar.web.BazaarCollectionMessageBodyReaderImpl;
-import org.apache.bazaar.web.BazaarMessageBodyReaderImpl;
-import org.apache.bazaar.web.BidCollectionMessageBodyReaderImpl;
-import org.apache.bazaar.web.BidMessageBodyReaderImpl;
-import org.apache.bazaar.web.BidderCollectionMessageBodyReaderImpl;
-import org.apache.bazaar.web.BidderMessageBodyReaderImpl;
-import org.apache.bazaar.web.CategoryCollectionMessageBodyReaderImpl;
-import org.apache.bazaar.web.CategoryMessageBodyReaderImpl;
-import org.apache.bazaar.web.ItemCollectionMessageBodyReaderImpl;
-import org.apache.bazaar.web.ItemMessageBodyReaderImpl;
 import org.apache.bazaar.web.RequestParameters;
 import org.apache.bazaar.web.RestWebServiceException;
-import org.apache.bazaar.web.ThrowableMessageBodyReaderImpl;
 import org.apache.bazaar.web.config.Configuration;
 import org.glassfish.jersey.CommonProperties;
 
@@ -56,12 +47,10 @@ final class BazaarManagerImpl implements BazaarManager {
 	private static final ClientBuilder CLIENT_BUILDER;
 	static {
 		CLIENT_BUILDER = ClientBuilder.newBuilder();
-		BazaarManagerImpl.CLIENT_BUILDER.register(BazaarMessageBodyReaderImpl.class)
-				.register(BazaarCollectionMessageBodyReaderImpl.class).register(CategoryMessageBodyReaderImpl.class)
-				.register(CategoryCollectionMessageBodyReaderImpl.class).register(ItemMessageBodyReaderImpl.class)
-				.register(ItemCollectionMessageBodyReaderImpl.class).register(BidderMessageBodyReaderImpl.class)
-				.register(BidderCollectionMessageBodyReaderImpl.class).register(BidMessageBodyReaderImpl.class)
-				.register(BidCollectionMessageBodyReaderImpl.class).register(ThrowableMessageBodyReaderImpl.class);
+		final List<Class<?>> providers = Arrays.asList(Configuration.PROVIDER_CLASSES);
+		for (final Class<?> provider : providers) {
+			BazaarManagerImpl.CLIENT_BUILDER.register(provider);
+		}
 		BazaarManagerImpl.CLIENT_BUILDER.property(CommonProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true);
 
 	}

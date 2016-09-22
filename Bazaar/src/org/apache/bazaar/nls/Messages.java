@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Jul 12, 2016
  */
-package org.apache.bazaar.i18n;
+package org.apache.bazaar.nls;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -32,7 +32,7 @@ public final class Messages {
 	/**
 	 * The base resource bundle name used by this class
 	 */
-	public static final String RESOURCE_BUNDLE_BASE_NAME = "org.apache.bazaar.i18n.messages";
+	public static final String RESOURCE_BUNDLE_BASE_NAME = "org.apache.bazaar.nls.messages";
 
 	private static final Cache<Locale, Messages> CACHE;
 	static {

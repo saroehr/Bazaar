@@ -19,8 +19,8 @@ import javax.persistence.Query;
 
 import org.apache.bazaar.Image.MimeType;
 import org.apache.bazaar.config.Configuration;
-import org.apache.bazaar.i18n.Messages;
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.nls.Messages;
 
 /**
  * BazaarManagerImpl implements @Bazaar to provide a concrete implementation.
@@ -32,7 +32,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	// declare members
 
 	private static final Logger LOGGER = Logger.newInstance(BazaarManager.class);
-	private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = org.apache.bazaar.jpa.EntityManagerFactory
+	private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = org.apache.bazaar.persistence.EntityManagerFactory
 			.newInstance();
 	private static final Messages MESSAGES = Messages.newInstance(Locale.getDefault());
 	private static final String SELECT_CATEGORY_BY_NAME_QUERY_PARAMETER_NAME = "name";

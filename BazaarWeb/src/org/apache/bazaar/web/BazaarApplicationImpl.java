@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
+import org.apache.bazaar.web.config.Configuration;
 import org.glassfish.jersey.CommonProperties;
 
 /**
@@ -29,19 +30,12 @@ public final class BazaarApplicationImpl extends Application {
 	private static final Class<?>[] RESOURCE_CLASSES = new Class<?>[] { BazaarRestWebServiceImpl.class,
 			CategoryRestWebServiceImpl.class, ItemRestWebServiceImpl.class, BidderRestWebServiceImpl.class,
 			BidRestWebServiceImpl.class };
-	private static final Class<?>[] PROVIDER_CLASSES = new Class<?>[] { BazaarMessageBodyWriterImpl.class,
-			BazaarCollectionMessageBodyWriterImpl.class, CategoryMessageBodyReaderImpl.class,
-			CategoryMessageBodyWriterImpl.class, CategoryCollectionMessageBodyWriterImpl.class,
-			ItemMessageBodyWriterImpl.class, ItemCollectionMessageBodyWriterImpl.class,
-			BidderMessageBodyWriterImpl.class, BidderCollectionMessageBodyWriterImpl.class,
-			BidMessageBodyWriterImpl.class, BidCollectionMessageBodyReaderImpl.class,
-			ThrowableMessageBodyWriterImpl.class };
-
 	private static final Set<Class<?>> CLASSES;
 
 	static {
-		final Set<Class<?>> classes = new HashSet<Class<?>>(25);
-		classes.addAll(Arrays.asList(BazaarApplicationImpl.PROVIDER_CLASSES));
+		final Set<Class<?>> classes = new HashSet<Class<?>>(
+				Configuration.PROVIDER_CLASSES.length + BazaarApplicationImpl.RESOURCE_CLASSES.length);
+		classes.addAll(Arrays.asList(Configuration.PROVIDER_CLASSES));
 		classes.addAll(Arrays.asList(BazaarApplicationImpl.RESOURCE_CLASSES));
 		CLASSES = Collections.unmodifiableSet(classes);
 	}

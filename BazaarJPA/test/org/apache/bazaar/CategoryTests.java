@@ -125,9 +125,9 @@ public final class CategoryTests {
 				failed = true;
 				Assert.assertEquals(CategoryNotFoundException.class, exception.getClass());
 			}
-			if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.HIBERNATE.equals(
-					org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.valueOf(Configuration.newInstance()
-							.getProperty(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_PROVIDER_NAME)))) {
+			if (org.apache.bazaar.persistence.config.Configuration.PersistenceProvider.HIBERNATE.equals(
+					org.apache.bazaar.persistence.config.Configuration.PersistenceProvider.valueOf(Configuration.newInstance()
+							.getProperty(org.apache.bazaar.persistence.config.Configuration.PERSISTENCE_PROVIDER_NAME)))) {
 				Assert.assertTrue(failed);
 			}
 			// persist parent

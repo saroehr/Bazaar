@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Jul 28, 2016 at 8:35:38 PM
  */
-package org.apache.bazaar.jpa;
+package org.apache.bazaar.persistence;
 
 import java.util.Map;
 
@@ -27,7 +27,7 @@ public final class EntityManagerFactoryImpl implements EntityManagerFactory {
 	// declare members
 
 	private static final EntityManagerFactoryImpl INSTANCE = new EntityManagerFactoryImpl(
-			Persistence.createEntityManagerFactory(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_UNIT_NAME));
+			Persistence.createEntityManagerFactory(org.apache.bazaar.persistence.config.Configuration.PERSISTENCE_UNIT_NAME));
 
 	private final javax.persistence.EntityManagerFactory entityManagerFactory;
 

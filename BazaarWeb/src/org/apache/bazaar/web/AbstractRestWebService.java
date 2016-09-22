@@ -31,8 +31,8 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Persistable;
 import org.apache.bazaar.PersistableNotFoundException;
-import org.apache.bazaar.i18n.Messages;
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.nls.Messages;
 
 /**
  * AbstractRestWebService extends implements RestWebService to provide a base

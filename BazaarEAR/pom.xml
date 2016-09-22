@@ -23,9 +23,11 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-		<groupId>org.apache.bazaar</groupId>
-		<artifactId>BazaarWeb</artifactId>
-		<version>0.0.1-SNAPSHOT</version><type>war</type></dependency>
+			<groupId>org.apache.bazaar</groupId>
+			<artifactId>BazaarWeb</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\</sourceDirectory>

@@ -82,9 +82,6 @@
         <dependent-module archiveName="junit-dep-4.9.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/junit/junit-dep/4.9/junit-dep-4.9.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="BazaarEJBClient-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/bazaar/BazaarEJBClient/0.0.1-SNAPSHOT/BazaarEJBClient-0.0.1-SNAPSHOT.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="BazaarEJB-0.0.1-SNAPSHOT.jar" deploy-path="/" handle="module:/resource/BazaarEJB/BazaarEJB">
             <dependency-type>uses</dependency-type>
         </dependent-module>

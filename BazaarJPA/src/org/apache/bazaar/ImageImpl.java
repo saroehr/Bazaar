@@ -139,12 +139,12 @@ public class ImageImpl implements Image {
 	 *         is encountered reading data from the stream
 	 */
 	void setImage(final InputStream inputStream) throws BazaarException {
-		final javax.persistence.EntityManager manager = org.apache.bazaar.jpa.EntityManagerFactory.newInstance()
+		final javax.persistence.EntityManager manager = org.apache.bazaar.persistence.EntityManagerFactory.newInstance()
 				.createEntityManager();
 		final javax.persistence.EntityTransaction transaction = manager.getTransaction();
 		try {
 			transaction.begin();
-			this.image = ((org.apache.bazaar.jpa.EntityTransaction)transaction).newBlob();
+			this.image = ((org.apache.bazaar.persistence.EntityTransaction)transaction).newBlob();
 			final OutputStream outputStream = this.image.setBinaryStream(1);
 			while (inputStream.available() > 0) {
 				final byte[] bytes = new byte[ImageImpl.DEFAULT_BUFFER_SIZE];

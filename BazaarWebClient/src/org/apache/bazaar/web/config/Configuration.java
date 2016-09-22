@@ -10,6 +10,28 @@ import org.apache.bazaar.Bid;
 import org.apache.bazaar.Bidder;
 import org.apache.bazaar.Category;
 import org.apache.bazaar.Item;
+import org.apache.bazaar.web.BazaarCollectionMessageBodyReaderImpl;
+import org.apache.bazaar.web.BazaarCollectionMessageBodyWriterImpl;
+import org.apache.bazaar.web.BazaarMessageBodyReaderImpl;
+import org.apache.bazaar.web.BazaarMessageBodyWriterImpl;
+import org.apache.bazaar.web.BidCollectionMessageBodyReaderImpl;
+import org.apache.bazaar.web.BidCollectionMessageBodyWriterImpl;
+import org.apache.bazaar.web.BidMessageBodyReaderImpl;
+import org.apache.bazaar.web.BidMessageBodyWriterImpl;
+import org.apache.bazaar.web.BidderCollectionMessageBodyReaderImpl;
+import org.apache.bazaar.web.BidderCollectionMessageBodyWriterImpl;
+import org.apache.bazaar.web.BidderMessageBodyReaderImpl;
+import org.apache.bazaar.web.BidderMessageBodyWriterImpl;
+import org.apache.bazaar.web.CategoryCollectionMessageBodyReaderImpl;
+import org.apache.bazaar.web.CategoryCollectionMessageBodyWriterImpl;
+import org.apache.bazaar.web.CategoryMessageBodyReaderImpl;
+import org.apache.bazaar.web.CategoryMessageBodyWriterImpl;
+import org.apache.bazaar.web.ItemCollectionMessageBodyReaderImpl;
+import org.apache.bazaar.web.ItemCollectionMessageBodyWriterImpl;
+import org.apache.bazaar.web.ItemMessageBodyReaderImpl;
+import org.apache.bazaar.web.ItemMessageBodyWriterImpl;
+import org.apache.bazaar.web.ThrowableMessageBodyReaderImpl;
+import org.apache.bazaar.web.ThrowableMessageBodyWriterImpl;
 
 /**
  * Configuration extends Configuration and declares the methods
@@ -71,6 +93,21 @@ public final class Configuration extends org.apache.bazaar.config.Configuration 
 	 * url value
 	 */
 	public static final String BID_REST_WEB_SERVICE_URL = Bid.class.getName() + "." + "restwebservice.url";
+
+	/**
+	 * List of public provider classes
+	 */
+	public static final Class<?>[] PROVIDER_CLASSES = new Class<?>[] { BazaarMessageBodyReaderImpl.class,
+			BazaarMessageBodyWriterImpl.class, BazaarCollectionMessageBodyReaderImpl.class,
+			BazaarCollectionMessageBodyWriterImpl.class, CategoryMessageBodyReaderImpl.class,
+			CategoryMessageBodyWriterImpl.class, CategoryCollectionMessageBodyReaderImpl.class,
+			CategoryCollectionMessageBodyWriterImpl.class, ItemMessageBodyReaderImpl.class,
+			ItemMessageBodyWriterImpl.class, ItemCollectionMessageBodyReaderImpl.class,
+			ItemCollectionMessageBodyWriterImpl.class, BidderMessageBodyReaderImpl.class,
+			BidderMessageBodyWriterImpl.class, BidderCollectionMessageBodyReaderImpl.class,
+			BidderCollectionMessageBodyWriterImpl.class, BidMessageBodyReaderImpl.class, BidMessageBodyWriterImpl.class,
+			BidCollectionMessageBodyReaderImpl.class, BidCollectionMessageBodyWriterImpl.class,
+			ThrowableMessageBodyReaderImpl.class, ThrowableMessageBodyWriterImpl.class };
 
 	// declare constructors
 

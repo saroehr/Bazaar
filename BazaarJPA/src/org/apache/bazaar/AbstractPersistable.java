@@ -15,9 +15,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.RollbackException;
 import javax.validation.constraints.NotNull;
 
-import org.apache.bazaar.jpa.EntityManagerFactory;
-import org.apache.bazaar.jpa.EntityTransactionException;
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.persistence.EntityManagerFactory;
+import org.apache.bazaar.persistence.EntityTransactionException;
 
 /**
  * AbstractPersistable provides an abstract class. All objects
@@ -37,7 +37,7 @@ public abstract class AbstractPersistable implements Persistable {
 
 	@EmbeddedId
 	@Access(AccessType.FIELD)
-	@Column(name = org.apache.bazaar.jpa.config.Configuration.IDENTIFIABLE_COLUMN_NAME)
+	@Column(name = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME)
 	private IdentifierImpl identifier;
 
 	/**

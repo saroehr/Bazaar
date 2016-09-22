@@ -100,7 +100,7 @@
 							<webXml>WebContent/WEB-INF/web.xml</webXml>
 							<archive>
 								<addMavenDescriptor>false</addMavenDescriptor>
-								<!--<manifest>WebContent/META-INF/MANIFEST.MF</manifest>-->
+								<manifestFile>src/META-INF/MANIFEST.MF</manifestFile>
 							</archive>
 						</configuration>
 					</execution>
@@ -108,4 +108,6 @@
 			</plugin>
 		</plugins>
 	</build>
+	<name>BazaarWeb</name>
+	<packaging>war</packaging>
 </project>

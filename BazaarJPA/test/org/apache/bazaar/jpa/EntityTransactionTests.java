@@ -12,6 +12,7 @@ import org.apache.bazaar.BazaarException;
 import org.apache.bazaar.BazaarManager;
 import org.apache.bazaar.Item;
 import org.apache.bazaar.ItemNotFoundException;
+import org.apache.bazaar.persistence.EntityManager;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,7 +42,7 @@ public final class EntityTransactionTests {
 		try {
 			final BazaarManager manager = BazaarManager.newInstance();
 			final Item item = manager.newItem("testBegin", "testBegin", manager.findRootCategory());
-			final EntityTransaction transaction = org.apache.bazaar.jpa.EntityManagerFactory.newInstance()
+			final EntityTransaction transaction = org.apache.bazaar.persistence.EntityManagerFactory.newInstance()
 					.createEntityManager().getTransaction();
 			transaction.begin();
 			item.persist();
@@ -64,16 +65,16 @@ public final class EntityTransactionTests {
 	public void testIsActive() {
 		try {
 			final BazaarManager manager = BazaarManager.newInstance();
-			final javax.persistence.EntityManager entityManager = Persistence.createEntityManagerFactory(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_UNIT_NAME).createEntityManager();
+			final javax.persistence.EntityManager entityManager = Persistence.createEntityManagerFactory(org.apache.bazaar.persistence.config.Configuration.PERSISTENCE_UNIT_NAME).createEntityManager();
 			final Item item = manager.newItem("testIsActive", "testIsActive", manager.findRootCategory());
 			final javax.persistence.EntityTransaction transaction = entityManager.getTransaction();
-			final EntityManager entityManager1 = (EntityManager)org.apache.bazaar.jpa.EntityManagerFactory.newInstance().createEntityManager();
-			final org.apache.bazaar.jpa.EntityTransaction transaction1 = (org.apache.bazaar.jpa.EntityTransaction)entityManager1
+			final EntityManager entityManager1 = (EntityManager)org.apache.bazaar.persistence.EntityManagerFactory.newInstance().createEntityManager();
+			final org.apache.bazaar.persistence.EntityTransaction transaction1 = (org.apache.bazaar.persistence.EntityTransaction)entityManager1
 					.getTransaction();
 			transaction.begin();
 			Assert.assertTrue(transaction.isActive());
 			final javax.persistence.EntityTransaction transaction2 = Persistence
-					.createEntityManagerFactory(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_UNIT_NAME).createEntityManager()
+					.createEntityManagerFactory(org.apache.bazaar.persistence.config.Configuration.PERSISTENCE_UNIT_NAME).createEntityManager()
 					.getTransaction();
 			Assert.assertFalse(transaction2.isActive());
 			Assert.assertTrue(transaction1.isActive());

@@ -19,8 +19,8 @@ import org.apache.bazaar.logging.Logger;
  * BidderImpl implements {@link Bidder} to provide
  * a concrete implementation.
  */
-@Entity(name = org.apache.bazaar.jpa.config.Configuration.BIDDER_ENTITY_NAME)
-@Table(name = org.apache.bazaar.jpa.config.Configuration.BIDDER_TABLE_NAME, schema = org.apache.bazaar.jpa.config.Configuration.DATABASE_SCHEMA_NAME)
+@Entity(name = org.apache.bazaar.persistence.config.Configuration.BIDDER_ENTITY_NAME)
+@Table(name = org.apache.bazaar.persistence.config.Configuration.BIDDER_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
 public class BidderImpl extends AbstractPersistable implements Bidder {
 

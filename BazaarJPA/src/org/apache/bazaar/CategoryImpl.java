@@ -25,16 +25,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.bazaar.config.Configuration;
-import org.apache.bazaar.i18n.Messages;
-import org.apache.bazaar.jpa.EntityManagerFactory;
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.nls.Messages;
+import org.apache.bazaar.persistence.EntityManagerFactory;
 
 /**
  * CategoryImpl implements {@link Category} to provide a concrete
  * implementation.
  */
-@Entity(name = org.apache.bazaar.jpa.config.Configuration.CATEGORY_ENTITY_NAME)
-@Table(name = org.apache.bazaar.jpa.config.Configuration.CATEGORY_TABLE_NAME, schema = org.apache.bazaar.jpa.config.Configuration.DATABASE_SCHEMA_NAME)
+@Entity(name = org.apache.bazaar.persistence.config.Configuration.CATEGORY_ENTITY_NAME)
+@Table(name = org.apache.bazaar.persistence.config.Configuration.CATEGORY_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
 public class CategoryImpl extends AbstractPersistable implements Category {
 
@@ -45,7 +45,7 @@ public class CategoryImpl extends AbstractPersistable implements Category {
 	private static final Messages MESSAGES = Messages.newInstance(Locale.getDefault());
 
 	@ManyToOne(targetEntity = CategoryImpl.class, optional = false)
-	@JoinColumn(name = "PARENT", referencedColumnName = org.apache.bazaar.jpa.config.Configuration.IDENTIFIABLE_COLUMN_NAME, nullable = false)
+	@JoinColumn(name = "PARENT", referencedColumnName = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME, nullable = false)
 	private Category parent;
 	@Column(name = "NAME", nullable = false, updatable = true, length = 255)
 	private String name;

@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Aug 17, 2016 at 8:54:21 PM
  */
-package org.apache.bazaar.jpa.config;
+package org.apache.bazaar.persistence.config;
 
 import org.apache.bazaar.Bazaar;
 import org.apache.bazaar.Bid;
@@ -67,7 +67,7 @@ public final class Configuration extends org.apache.bazaar.config.Configuration 
 	 * The key for retrieval of the Managed Transaction
 	 * JNDI name
 	 */
-	public static final String MANAGED_TRANSACTION_NAME = "org.apache.bazaar.jpa.EntityTransaction.managedtransactionjndiname";
+	public static final String MANAGED_TRANSACTION_NAME = "org.apache.bazaar.persistence.EntityTransaction.managedtransactionjndiname";
 
 	/**
 	 * The JPA persistence unit name
@@ -163,7 +163,7 @@ public final class Configuration extends org.apache.bazaar.config.Configuration 
 	/**
 	 * The key for retrieval of the TRANSACTION_TYPE
 	 */
-	public static final String TRANSACTION_TYPE = "org.apache.bazaar.jpa.EntityTransaction.transactiontype";
+	public static final String TRANSACTION_TYPE = "org.apache.bazaar.persistence.EntityTransaction.transactiontype";
 
 	// declare constructors
 

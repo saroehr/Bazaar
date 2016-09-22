@@ -22,11 +22,11 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.bazaar.AbstractPersistable;
 import org.apache.bazaar.BazaarException;
 import org.apache.bazaar.BazaarManager;
 import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Item;
-import org.apache.bazaar.ItemImpl;
 
 /**
  * ItemMessageBodyReaderImpl extends AbstractMessageBodyReader to provide
@@ -66,7 +66,7 @@ public final class ItemMessageBodyReaderImpl<T extends Item> implements MessageB
 		try {
 			final BazaarManager bazaarManager = BazaarManager.newInstance();
 			item = bazaarManager.newItem();
-			((ItemImpl)item).setIdentifier(Identifier.fromValue(jsonObject.getString(JsonKeys.IDENTIFIER)));
+			((AbstractPersistable)item).setIdentifier(Identifier.fromValue(jsonObject.getString(JsonKeys.IDENTIFIER)));
 			item.setName(jsonObject.getString(JsonKeys.NAME));
 			item.setDescription(jsonObject.getString(JsonKeys.DESCRIPTION));
 			item.setCategory(bazaarManager.findCategory(Identifier.fromValue(jsonObject.getString(JsonKeys.CATEGORY))));

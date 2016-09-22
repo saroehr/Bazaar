@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Jul 31, 2016 at 10:04:51 AM
  */
-package org.apache.bazaar.jpa;
+package org.apache.bazaar.persistence;
 
 /**
  * EntityManagerFactory extends {@link javax.persistence.EntityManagerFactory}

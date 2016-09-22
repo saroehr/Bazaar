@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Jul 28, 2016 at 8:36:01 PM
  */
-package org.apache.bazaar.jpa;
+package org.apache.bazaar.persistence;
 
 import java.util.List;
 import java.util.Map;
@@ -30,14 +30,14 @@ import javax.validation.constraints.NotNull;
 /**
  * EntityManagerImpl decorates {@link javax.persistence.EntityManager}
  */
-final class EntityManagerImpl implements org.apache.bazaar.jpa.EntityManager {
+final class EntityManagerImpl implements org.apache.bazaar.persistence.EntityManager {
 
 	// declare members
 
 	private final EntityManagerFactory entityManagerFactory;
 	private final EntityManager entityManager;
-	// private final ThreadLocal<org.apache.bazaar.jpa.EntityTransaction>
-	// transaction = new ThreadLocal<org.apache.bazaar.jpa.EntityTransaction>();
+	// private final ThreadLocal<org.apache.bazaar.persistence.EntityTransaction>
+	// transaction = new ThreadLocal<org.apache.bazaar.persistence.EntityTransaction>();
 
 	// declare constructors
 
@@ -443,24 +443,24 @@ final class EntityManagerImpl implements org.apache.bazaar.jpa.EntityManager {
 	 */
 	@Override
 	public EntityTransaction getTransaction() {
-		final org.apache.bazaar.jpa.EntityTransaction entityTransaction;
+		final org.apache.bazaar.persistence.EntityTransaction entityTransaction;
 		// check thread local
 		// if (this.transaction.get() != null) {
 		// entityTransaction = this.transaction.get();
 		// }
 		// else {
 		try {
-			if (org.apache.bazaar.jpa.config.Configuration.TransactionType.LOCAL
+			if (org.apache.bazaar.persistence.config.Configuration.TransactionType.LOCAL
 					.equals(AbstractEntityTransaction.TRANSACTION_TYPE)) {
-				entityTransaction = org.apache.bazaar.jpa.AbstractEntityTransaction
+				entityTransaction = org.apache.bazaar.persistence.AbstractEntityTransaction
 						.newInstance(this.entityManager.getTransaction());
 			}
-			else if (org.apache.bazaar.jpa.config.Configuration.TransactionType.MANAGED
+			else if (org.apache.bazaar.persistence.config.Configuration.TransactionType.MANAGED
 					.equals(AbstractEntityTransaction.TRANSACTION_TYPE)) {
 				final InitialContext initialContext = new InitialContext();
 				final UserTransaction userTransaction = (UserTransaction)initialContext
 						.lookup(AbstractEntityTransaction.MANAGED_TRANSACTION_NAME);
-				entityTransaction = org.apache.bazaar.jpa.AbstractEntityTransaction.newInstance(userTransaction);
+				entityTransaction = org.apache.bazaar.persistence.AbstractEntityTransaction.newInstance(userTransaction);
 			}
 			else {
 				throw new EntityTransactionException(new IllegalStateException());

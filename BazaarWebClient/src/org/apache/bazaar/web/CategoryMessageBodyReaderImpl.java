@@ -22,10 +22,10 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.bazaar.AbstractPersistable;
 import org.apache.bazaar.BazaarException;
 import org.apache.bazaar.BazaarManager;
 import org.apache.bazaar.Category;
-import org.apache.bazaar.CategoryImpl;
 import org.apache.bazaar.Identifier;
 
 /**
@@ -72,7 +72,8 @@ public final class CategoryMessageBodyReaderImpl<T extends Category> implements 
 			}
 			else {
 				category = bazaarManager.newCategory();
-				((CategoryImpl)category).setIdentifier(Identifier.fromValue(jsonObject.getString(JsonKeys.IDENTIFIER)));
+				((AbstractPersistable)category)
+						.setIdentifier(Identifier.fromValue(jsonObject.getString(JsonKeys.IDENTIFIER)));
 				category.setName(jsonObject.getString(JsonKeys.NAME));
 				category.setDescription(jsonObject.getString(JsonKeys.DESCRIPTION));
 				if (rootIdentifier.equals(Identifier.fromValue(jsonObject.getString(JsonKeys.PARENT)))) {

@@ -27,17 +27,17 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
-import org.apache.bazaar.i18n.Messages;
-import org.apache.bazaar.jpa.EntityManagerFactory;
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.nls.Messages;
+import org.apache.bazaar.persistence.EntityManagerFactory;
 
 /**
  * BazaarImpl implements @{link Bazaar} to provide
  * a concrete implementation.
  *
  */
-@Entity(name = org.apache.bazaar.jpa.config.Configuration.BAZAAR_ENTITY_NAME)
-@Table(name = org.apache.bazaar.jpa.config.Configuration.BAZAAR_TABLE_NAME, schema = org.apache.bazaar.jpa.config.Configuration.DATABASE_SCHEMA_NAME)
+@Entity(name = org.apache.bazaar.persistence.config.Configuration.BAZAAR_ENTITY_NAME)
+@Table(name = org.apache.bazaar.persistence.config.Configuration.BAZAAR_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
 public class BazaarImpl extends AbstractPersistable implements Bazaar {
 
@@ -60,7 +60,7 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 	@Column(name = "ENDDATE", nullable = false)
 	private Calendar endDate;
 	@OneToOne(targetEntity = ItemImpl.class, fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(name = org.apache.bazaar.jpa.config.Configuration.ITEM_TABLE_NAME, nullable = false, updatable = false, referencedColumnName = org.apache.bazaar.jpa.config.Configuration.IDENTIFIABLE_COLUMN_NAME)
+	@JoinColumn(name = org.apache.bazaar.persistence.config.Configuration.ITEM_TABLE_NAME, nullable = false, updatable = false, referencedColumnName = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME)
 	private Item item;
 	@Column(name = "RESERVEPRICE", nullable = true, updatable = false)
 	private Double reservePrice;

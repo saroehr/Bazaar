@@ -8,6 +8,9 @@
         <dependent-module archiveName="BazaarEJB-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BazaarEJB/BazaarEJB">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="BazaarJPA-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BazaarJPA/BazaarJPA">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="BazaarWebClient-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BazaarWebClient/BazaarWebClient">
             <dependency-type>uses</dependency-type>
         </dependent-module>

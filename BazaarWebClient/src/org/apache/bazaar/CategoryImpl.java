@@ -23,7 +23,7 @@ import org.apache.bazaar.web.RequestParameters;
  * CategoryImpl extends AbstractPersistable and implements {@link Category}
  * to provide a concrete implementation
  */
-public final class CategoryImpl extends AbstractPersistable implements org.apache.bazaar.Category {
+final class CategoryImpl extends AbstractPersistable implements org.apache.bazaar.Category {
 
 	// declare members
 

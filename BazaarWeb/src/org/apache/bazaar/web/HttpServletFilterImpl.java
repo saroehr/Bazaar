@@ -27,7 +27,7 @@ import org.apache.bazaar.BazaarManager;
  */
 @Resource(name = "java:comp/env/jdbc/Bazaar", lookup = "jdbc/Bazaar", type = javax.sql.XADataSource.class, shareable = true, authenticationType = AuthenticationType.CONTAINER)
 @WebFilter(filterName = "HttpServletFilterImpl", urlPatterns = { "/*" }, initParams = {
-		@WebInitParam(name = "javax.servlet.jsp.jstl.fmt.localizationContext", value = "org.apache.bazaar.i18n.messages") })
+		@WebInitParam(name = "javax.servlet.jsp.jstl.fmt.localizationContext", value = "org.apache.bazaar.nls.messages") })
 public final class HttpServletFilterImpl implements Filter {
 
 	// declare members

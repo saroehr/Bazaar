@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Jul 28, 2016 at 9:25:32 PM
  */
-package org.apache.bazaar.jpa;
+package org.apache.bazaar.persistence;
 
 /**
  * EntityTransactionException extends RuntimeException and

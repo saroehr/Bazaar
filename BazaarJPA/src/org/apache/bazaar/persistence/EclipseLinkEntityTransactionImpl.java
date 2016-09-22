@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Aug 5, 2016 at 12:37:44 PM
  */
-package org.apache.bazaar.jpa;
+package org.apache.bazaar.persistence;
 
 import java.sql.Blob;
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.util.Locale;
 import javax.persistence.EntityTransaction;
 import javax.transaction.UserTransaction;
 
-import org.apache.bazaar.i18n.Messages;
+import org.apache.bazaar.nls.Messages;
 
 /**
  * EclipseLinkEntityTransactionImpl extends AbstractEntityTransaction
@@ -48,7 +48,7 @@ final class EclipseLinkEntityTransactionImpl extends AbstractEntityTransaction {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.bazaar.jpa.AbstractEntityTransaction#newBlob()
+	 * @see org.apache.bazaar.persistence.AbstractEntityTransaction#newBlob()
 	 */
 	@Override
 	public Blob newBlob() throws EntityTransactionException {

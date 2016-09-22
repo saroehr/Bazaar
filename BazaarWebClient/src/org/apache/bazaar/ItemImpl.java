@@ -23,7 +23,7 @@ import org.apache.bazaar.web.RequestParameters;
  * ItemImpl extends AbstractPersistable and implements {@link Item} to provide
  * a concrete implementation
  */
-public final class ItemImpl extends AbstractPersistable implements Item {
+final class ItemImpl extends AbstractPersistable implements Item {
 
 	private String name;
 	private String description;

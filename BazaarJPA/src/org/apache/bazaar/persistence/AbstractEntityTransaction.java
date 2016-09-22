@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Jul 28, 2016 at 8:36:29 PM
  */
-package org.apache.bazaar.jpa;
+package org.apache.bazaar.persistence;
 
 import java.sql.Blob;
 import java.util.Locale;
@@ -19,9 +19,9 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.config.ConfigurationException;
-import org.apache.bazaar.i18n.Messages;
-import org.apache.bazaar.jpa.config.Configuration.TransactionType;
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.nls.Messages;
+import org.apache.bazaar.persistence.config.Configuration.TransactionType;
 
 /**
  * AbstractEntityTransaction decorates {@link EntityTransaction}
@@ -52,10 +52,10 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 	static {
 		try {
 			final Configuration configuration = Configuration.newInstance();
-			TRANSACTION_TYPE = org.apache.bazaar.jpa.config.Configuration.TransactionType
-					.valueOf(configuration.getProperty(org.apache.bazaar.jpa.config.Configuration.TRANSACTION_TYPE));
+			TRANSACTION_TYPE = org.apache.bazaar.persistence.config.Configuration.TransactionType
+					.valueOf(configuration.getProperty(org.apache.bazaar.persistence.config.Configuration.TRANSACTION_TYPE));
 			MANAGED_TRANSACTION_NAME = configuration
-					.getProperty(org.apache.bazaar.jpa.config.Configuration.MANAGED_TRANSACTION_NAME);
+					.getProperty(org.apache.bazaar.persistence.config.Configuration.MANAGED_TRANSACTION_NAME);
 		}
 		catch (final ConfigurationException exception) {
 			throw new ExceptionInInitializerError(exception);
@@ -200,10 +200,10 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.bazaar.jpa.EntityTransaction#getTransactionType()
+	 * @see org.apache.bazaar.persistence.EntityTransaction#getTransactionType()
 	 */
 	@Override
-	public final org.apache.bazaar.jpa.config.Configuration.TransactionType getTransactionType() {
+	public final org.apache.bazaar.persistence.config.Configuration.TransactionType getTransactionType() {
 		return AbstractEntityTransaction.TRANSACTION_TYPE;
 	}
 
@@ -333,7 +333,7 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.bazaar.jpa.EntityTransaction#newBlob()
+	 * @see org.apache.bazaar.persistence.EntityTransaction#newBlob()
 	 */
 	@Override
 	public abstract Blob newBlob() throws EntityTransactionException;
@@ -352,13 +352,13 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 		final EntityTransaction entityTransaction1;
 		try {
 			final Configuration configuration = Configuration.newInstance();
-			final org.apache.bazaar.jpa.config.Configuration.PersistenceProvider persistenceProvider = org.apache.bazaar.jpa.config.Configuration.PersistenceProvider
+			final org.apache.bazaar.persistence.config.Configuration.PersistenceProvider persistenceProvider = org.apache.bazaar.persistence.config.Configuration.PersistenceProvider
 					.valueOf(configuration
-							.getProperty(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_PROVIDER_NAME));
-			if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.HIBERNATE.equals(persistenceProvider)) {
+							.getProperty(org.apache.bazaar.persistence.config.Configuration.PERSISTENCE_PROVIDER_NAME));
+			if (org.apache.bazaar.persistence.config.Configuration.PersistenceProvider.HIBERNATE.equals(persistenceProvider)) {
 				entityTransaction1 = new HibernateEntityTransactionImpl(entityTransaction);
 			}
-			else if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.ECLIPSELINK
+			else if (org.apache.bazaar.persistence.config.Configuration.PersistenceProvider.ECLIPSELINK
 					.equals(persistenceProvider)) {
 				entityTransaction1 = new EclipseLinkEntityTransactionImpl(entityTransaction);
 			}
@@ -384,13 +384,13 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 		final EntityTransaction entityTransaction1;
 		try {
 			final Configuration configuration = Configuration.newInstance();
-			final org.apache.bazaar.jpa.config.Configuration.PersistenceProvider persistenceProvider = org.apache.bazaar.jpa.config.Configuration.PersistenceProvider
+			final org.apache.bazaar.persistence.config.Configuration.PersistenceProvider persistenceProvider = org.apache.bazaar.persistence.config.Configuration.PersistenceProvider
 					.valueOf(configuration
-							.getProperty(org.apache.bazaar.jpa.config.Configuration.PERSISTENCE_PROVIDER_NAME));
-			if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.HIBERNATE.equals(persistenceProvider)) {
+							.getProperty(org.apache.bazaar.persistence.config.Configuration.PERSISTENCE_PROVIDER_NAME));
+			if (org.apache.bazaar.persistence.config.Configuration.PersistenceProvider.HIBERNATE.equals(persistenceProvider)) {
 				entityTransaction1 = new HibernateEntityTransactionImpl(userTransaction);
 			}
-			else if (org.apache.bazaar.jpa.config.Configuration.PersistenceProvider.ECLIPSELINK
+			else if (org.apache.bazaar.persistence.config.Configuration.PersistenceProvider.ECLIPSELINK
 					.equals(persistenceProvider)) {
 				entityTransaction1 = new EclipseLinkEntityTransactionImpl(userTransaction);
 			}

@@ -21,8 +21,8 @@ import org.apache.bazaar.logging.Logger;
 /**
  * BidImpl implements {@link Bid} to provide a concrete implementation
  */
-@Entity(name = org.apache.bazaar.jpa.config.Configuration.BID_ENTITY_NAME)
-@Table(name = org.apache.bazaar.jpa.config.Configuration.BID_TABLE_NAME, schema = org.apache.bazaar.jpa.config.Configuration.DATABASE_SCHEMA_NAME)
+@Entity(name = org.apache.bazaar.persistence.config.Configuration.BID_ENTITY_NAME)
+@Table(name = org.apache.bazaar.persistence.config.Configuration.BID_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
 public class BidImpl extends AbstractPersistable implements Bid {
 
@@ -31,12 +31,12 @@ public class BidImpl extends AbstractPersistable implements Bid {
 	private static final long serialVersionUID = -7524536562095086760L;
 
 	@ManyToOne(targetEntity = BazaarImpl.class, optional = false)
-	@JoinColumn(name = "BAZAAR", referencedColumnName = org.apache.bazaar.jpa.config.Configuration.IDENTIFIABLE_COLUMN_NAME, nullable = false, updatable = false)
+	@JoinColumn(name = "BAZAAR", referencedColumnName = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME, nullable = false, updatable = false)
 	private Bazaar bazaar;
 	@Column(name = "PRICE")
 	private Double price;
 	@ManyToOne(targetEntity = BidderImpl.class, optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "BIDDER", referencedColumnName = org.apache.bazaar.jpa.config.Configuration.IDENTIFIABLE_COLUMN_NAME, nullable = false, updatable = false)
+	@JoinColumn(name = "BIDDER", referencedColumnName = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME, nullable = false, updatable = false)
 	private Bidder bidder;
 
 	// declare constructors

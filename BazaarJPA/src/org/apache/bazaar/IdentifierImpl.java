@@ -30,7 +30,7 @@ public class IdentifierImpl extends Identifier implements AttributeConverter<Ide
 
 	private static final long serialVersionUID = 1885084516766977953L;
 
-	@Column(name = org.apache.bazaar.jpa.config.Configuration.IDENTIFIABLE_COLUMN_NAME)
+	@Column(name = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME)
 	private String identifier;
 
 	// declare constructors

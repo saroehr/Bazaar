@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Jul 31, 2016 at 1:28:26 PM
  */
-package org.apache.bazaar.jpa;
+package org.apache.bazaar.persistence;
 
 import java.sql.Blob;
 
@@ -21,11 +21,11 @@ public interface EntityTransaction extends javax.persistence.EntityTransaction {
 	/**
 	 * Returns the TransactionType
 	 * 
-	 * @return The {@link org.apache.bazaar.jpa.config.Configuration.TransactionType}
+	 * @return The {@link org.apache.bazaar.persistence.config.Configuration.TransactionType}
 	 * @throws EntityTransactionException if the type
 	 *         could not be determined.
 	 */
-	public @NotNull org.apache.bazaar.jpa.config.Configuration.TransactionType getTransactionType()
+	public @NotNull org.apache.bazaar.persistence.config.Configuration.TransactionType getTransactionType()
 			throws EntityTransactionException;
 
 	/**

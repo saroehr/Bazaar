@@ -3,7 +3,7 @@
  * Created by: Scott A. Roehrig
  * Created on: Aug 5, 2016 at 10:55:46 AM
  */
-package org.apache.bazaar.jpa;
+package org.apache.bazaar.persistence;
 
 import java.sql.Blob;
 
@@ -49,7 +49,7 @@ final class HibernateEntityTransactionImpl extends AbstractEntityTransaction {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.bazaar.jpa.AbstractEntityTransaction#newBlob()
+	 * @see org.apache.bazaar.persistence.AbstractEntityTransaction#newBlob()
 	 */
 	@Override
 	public Blob newBlob() throws EntityTransactionException {
