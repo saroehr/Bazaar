@@ -6,10 +6,8 @@
 package org.apache.bazaar;
 
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -22,7 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -32,30 +29,20 @@ import org.apache.bazaar.Image.MimeType;
 import org.apache.bazaar.cache.Cache;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.web.RequestParameters;
+import org.apache.bazaar.web.RestWebClient;
 import org.apache.bazaar.web.RestWebServiceException;
 import org.apache.bazaar.web.config.Configuration;
-import org.glassfish.jersey.CommonProperties;
 
 /**
  * BazaarManagerImpl implements {@link BazaarManager}
  */
-final class BazaarManagerImpl implements BazaarManager {
+public final class BazaarManagerImpl implements BazaarManager {
 
 	// declare members
 
 	private static final Logger LOGGER = Logger.newInstance(BazaarManager.class);
-	private static final ClientBuilder CLIENT_BUILDER;
-	static {
-		CLIENT_BUILDER = ClientBuilder.newBuilder();
-		final List<Class<?>> providers = Arrays.asList(Configuration.PROVIDER_CLASSES);
-		for (final Class<?> provider : providers) {
-			BazaarManagerImpl.CLIENT_BUILDER.register(provider);
-		}
-		BazaarManagerImpl.CLIENT_BUILDER.property(CommonProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true);
-
-	}
 	private final Map<Class<? extends Persistable>, Cache<Identifier, ? extends Persistable>> persistableCache;
-	private final ThreadLocal<Client> threadLocal;
+	private final ThreadLocal<RestWebClient> threadLocal;
 	private Category rootCategory;
 
 	// declare constructors
@@ -72,17 +59,16 @@ final class BazaarManagerImpl implements BazaarManager {
 		map.put(Item.class, Cache.newInstance(Item.class.getName(), Identifier.class, Item.class));
 		map.put(Bidder.class, Cache.newInstance(Bidder.class.getName(), Identifier.class, Bidder.class));
 		this.persistableCache = Collections.unmodifiableMap(map);
-		this.threadLocal = new ThreadLocal<Client>();
+		this.threadLocal = new ThreadLocal<RestWebClient>();
 	}
 
 	// declare methods
 
 	/**
 	 * Factory method returns instance
-	 * 
+	 *
 	 * @return BazaarManagerImpl instance
-	 * @throws BazaarException if the instance could
-	 *         not be returned
+	 * @throws BazaarException if the instance could not be returned
 	 */
 	static BazaarManager newInstance() throws BazaarException {
 		return new BazaarManagerImpl();
@@ -90,9 +76,8 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/**
 	 * Method updates cache instance
-	 * 
-	 * @param persistable The persistable to be
-	 *        updated
+	 *
+	 * @param persistable The persistable to be updated
 	 */
 	@SuppressWarnings("unchecked")
 	void addToCache(@NotNull final Persistable persistable) {
@@ -119,7 +104,7 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/**
 	 * Method updates cache instances
-	 * 
+	 *
 	 * @param persistables The Set of persistable to be updated
 	 */
 	<T extends Persistable> void addToCache(@NotNull final Set<T> persistables) {
@@ -130,7 +115,7 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/**
 	 * Method removes cache instance
-	 * 
+	 *
 	 * @param persistable The persistable to be removed
 	 */
 	@SuppressWarnings("unchecked")
@@ -156,10 +141,9 @@ final class BazaarManagerImpl implements BazaarManager {
 	}
 
 	/**
-	 * Method returns cached instance of type with
-	 * identifier if exists in cache; otherwise
-	 * returns null
-	 * 
+	 * Method returns cached instance of type with identifier if exists in
+	 * cache; otherwise returns null
+	 *
 	 * @param identifier The identifier to retrieve
 	 * @return Persistable if found within cache; null otherwise
 	 */
@@ -184,18 +168,17 @@ final class BazaarManagerImpl implements BazaarManager {
 	}
 
 	/**
-	 * Utility method retrieves {@link Client} instance.
-	 * The instance is stored on an {@link ThreadLocal} as
-	 * the BazaarManager instance is stored as a singleton
-	 * on the BazaarManagerFactory and client instances
-	 * should not be shared across threads.
-	 * 
+	 * Utility method retrieves {@link Client} instance. The instance is stored
+	 * on an {@link ThreadLocal} as the BazaarManager instance is stored as a
+	 * singleton on the BazaarManagerFactory and client instances should not be
+	 * shared across threads.
+	 *
 	 * @return The client instance
 	 */
 	@NotNull
-	Client newClient() {
+	RestWebClient newRestWebClient() {
 		if (this.threadLocal.get() == null) {
-			final Client client = BazaarManagerImpl.CLIENT_BUILDER.build();
+			final RestWebClient client = RestWebClient.newInstance();
 			this.threadLocal.set(client);
 		}
 		return this.threadLocal.get();
@@ -204,24 +187,23 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/**
 	 * Utility method processes response instance
-	 * 
+	 *
 	 * @param type The type of persistable to be generated
 	 * @param response The response instance
 	 * @return The Persistable returned
-	 * @throws BazaarException if the response was
-	 *         could not be processed
+	 * @throws BazaarException if the response was could not be processed
 	 */
 	@SuppressWarnings("unchecked")
 	static <T> T processResponse(@NotNull final GenericType<T> type, @NotNull final Response response)
 			throws BazaarException {
 		final Object object;
-		if (response.hasEntity()) {
+		if (MediaType.APPLICATION_JSON_TYPE.equals(response.getMediaType()) && response.hasEntity()) {
 			try {
 				if (Response.Status.Family.CLIENT_ERROR.equals(Response.Status.Family.familyOf(response.getStatus()))
 						|| Response.Status.Family.SERVER_ERROR
 								.equals(Response.Status.Family.familyOf(response.getStatus()))) {
 					final Throwable throwable = response.readEntity(Throwable.class);
-					if ((throwable.getCause() != null) && (throwable.getCause() instanceof BazaarException)) {
+					if (throwable.getCause() != null && throwable.getCause() instanceof BazaarException) {
 						throw (BazaarException)throwable.getCause();
 					}
 					else if (throwable instanceof BazaarException) {
@@ -231,17 +213,14 @@ final class BazaarManagerImpl implements BazaarManager {
 						throw new BazaarException(throwable);
 					}
 				}
-				else {
-					object = response.readEntity(type);
-				}
+				object = response.readEntity(type);
 			}
 			catch (final ProcessingException exception) {
 				throw new RestWebServiceException(exception);
 			}
 		}
 		else {
-			throw new BazaarException(
-					new RestWebServiceException(Response.Status.INTERNAL_SERVER_ERROR.getReasonPhrase()));
+			throw new BazaarException(new RestWebServiceException(response.getStatusInfo().toString()));
 		}
 		// close the response instance
 		response.close();
@@ -250,7 +229,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.AuctionManager#findRootCategory()
 	 */
 	@Override
@@ -261,8 +239,10 @@ final class BazaarManagerImpl implements BazaarManager {
 					.newInstance();
 			((CategoryImpl)this.rootCategory).setIdentifier(Identifier.fromValue(
 					configuration.getProperty(org.apache.bazaar.config.Configuration.ROOT_CATEGORY_IDENTIFIER)));
-			this.rootCategory.setName(configuration.getProperty(Configuration.ROOT_CATEGORY_NAME));
-			this.rootCategory.setDescription(configuration.getProperty(Configuration.ROOT_CATEGORY_DESCRIPTION));
+			this.rootCategory
+					.setName(configuration.getProperty(org.apache.bazaar.config.Configuration.ROOT_CATEGORY_NAME));
+			this.rootCategory.setDescription(
+					configuration.getProperty(org.apache.bazaar.config.Configuration.ROOT_CATEGORY_DESCRIPTION));
 			this.rootCategory.setParent(this.rootCategory);
 		}
 		return this.rootCategory;
@@ -270,9 +250,7 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AuctionManager#findCategory(org.apache.bazaar.
+	 * @see org.apache.bazaar.AuctionManager#findCategory(org.apache.bazaar.
 	 * Identifier)
 	 */
 	@Override
@@ -282,7 +260,7 @@ final class BazaarManagerImpl implements BazaarManager {
 		// check for ROOT identifier
 		if (org.apache.bazaar.config.Configuration.newInstance()
 				.getProperty(org.apache.bazaar.config.Configuration.ROOT_CATEGORY_IDENTIFIER)
-				.equals(identifier.getValue()) && (this.rootCategory != null)) {
+				.equals(identifier.getValue()) && this.rootCategory != null) {
 			category = this.rootCategory;
 		}
 		else {
@@ -292,9 +270,8 @@ final class BazaarManagerImpl implements BazaarManager {
 				category = category1;
 			}
 			else {
-				final WebTarget webTarget = this.newClient()
-						.target(org.apache.bazaar.config.Configuration.newInstance()
-								.getProperty(org.apache.bazaar.web.config.Configuration.CATEGORY_REST_WEB_SERVICE_URL))
+				final WebTarget webTarget = this.newRestWebClient()
+						.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL))
 						.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
 				final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 				category = BazaarManagerImpl.processResponse(new GenericType<Category>() {
@@ -308,7 +285,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.AuctionManager#findItem(org.apache.bazaar.
 	 * Identifier)
 	 */
@@ -321,9 +297,8 @@ final class BazaarManagerImpl implements BazaarManager {
 			item = item1;
 		}
 		else {
-			final WebTarget webTarget = this.newClient()
-					.target(org.apache.bazaar.config.Configuration.newInstance()
-							.getProperty(org.apache.bazaar.web.config.Configuration.ITEM_REST_WEB_SERVICE_URL))
+			final WebTarget webTarget = this.newRestWebClient()
+					.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 					.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 			item = BazaarManagerImpl.processResponse(new GenericType<Item>() {
@@ -336,9 +311,7 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.BazaarManager#newAuction(org.apache.bazaar.Item,
+	 * @see org.apache.bazaar.BazaarManager#newAuction(org.apache.bazaar.Item,
 	 * java.util.Calendar, java.util.Calendar)
 	 */
 	@Override
@@ -348,9 +321,7 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.BazaarManager#newAuction(org.apache.bazaar.Item,
+	 * @see org.apache.bazaar.BazaarManager#newAuction(org.apache.bazaar.Item,
 	 * java.util.Calendar, java.util.Calendar, java.lang.Double)
 	 */
 	@Override
@@ -361,7 +332,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newName()
 	 */
 	@Override
@@ -371,7 +341,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newName(java.lang.String,
 	 * java.lang.String)
 	 */
@@ -382,7 +351,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newAddress()
 	 */
 	@Override
@@ -392,7 +360,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newAddress(java.lang.String,
 	 * java.lang.String, org.apache.bazaar.State, java.lang.Integer)
 	 */
@@ -403,7 +370,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newBidder()
 	 */
 	@Override
@@ -413,7 +379,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newBidder(org.apache.bazaar.Name,
 	 * org.apache.bazaar.Address, org.apache.bazaar.Address)
 	 */
@@ -424,7 +389,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newImage(java.lang.String,
 	 * org.apache.bazaar.Image.MimeType, java.io.InputStream)
 	 */
@@ -438,7 +402,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newItem()
 	 */
 	@Override
@@ -448,7 +411,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newItem(java.lang.String,
 	 * java.lang.String, org.apache.bazaar.Category)
 	 */
@@ -459,7 +421,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newCategory()
 	 */
 	@Override
@@ -469,7 +430,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#newCategory(java.lang.String,
 	 * java.lang.String, org.apache.bazaar.Category)
 	 */
@@ -480,7 +440,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#findAuction(org.apache.bazaar.
 	 * Identifier)
 	 */
@@ -493,9 +452,8 @@ final class BazaarManagerImpl implements BazaarManager {
 			bazaar = bazaar1;
 		}
 		else {
-			final WebTarget webTarget = this.newClient()
-					.target(org.apache.bazaar.config.Configuration.newInstance()
-							.getProperty(org.apache.bazaar.web.config.Configuration.BAZAAR_REST_WEB_SERVICE_URL))
+			final WebTarget webTarget = this.newRestWebClient()
+					.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL))
 					.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 			bazaar = BazaarManagerImpl.processResponse(new GenericType<Bazaar>() {
@@ -508,13 +466,12 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#findAllAuctions()
 	 */
 	@Override
 	public Set<Bazaar> findAllBazaars() throws BazaarException {
-		final WebTarget webTarget = this.newClient().target(org.apache.bazaar.config.Configuration.newInstance()
-				.getProperty(org.apache.bazaar.web.config.Configuration.BAZAAR_REST_WEB_SERVICE_URL));
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Bazaar> bazaars = Collections
 				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bazaar>>() {
@@ -526,14 +483,12 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#findCategories(java.lang.String)
 	 */
 	@Override
 	public Set<Category> findCategories(final String name) throws BazaarException {
-		final WebTarget webTarget = this.newClient()
-				.target(org.apache.bazaar.config.Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.CATEGORY_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.NAME, name);
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Category> categories = Collections
@@ -546,13 +501,12 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#findAllCategories()
 	 */
 	@Override
 	public Set<Category> findAllCategories() throws BazaarException {
-		final WebTarget webTarget = this.newClient().target(org.apache.bazaar.config.Configuration.newInstance()
-				.getProperty(org.apache.bazaar.web.config.Configuration.CATEGORY_REST_WEB_SERVICE_URL));
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Category> categories = Collections
 				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Category>>() {
@@ -564,14 +518,12 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#findItems(java.lang.String)
 	 */
 	@Override
 	public Set<Item> findItems(final String name) throws BazaarException {
-		final WebTarget webTarget = this.newClient()
-				.target(org.apache.bazaar.config.Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.ITEM_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.NAME, name);
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Item> items = Collections
@@ -584,15 +536,13 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.apache.bazaar.BazaarManager#findItems(org.apache.bazaar.Category)
 	 */
 	@Override
 	public Set<Item> findItems(final Category category) throws BazaarException {
-		final WebTarget webTarget = this.newClient()
-				.target(org.apache.bazaar.config.Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.ITEM_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.CATEGORY, category.getIdentifier().getValue());
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Item> items = Collections
@@ -605,13 +555,12 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#findAllItems()
 	 */
 	@Override
 	public Set<Item> findAllItems() throws BazaarException {
-		final WebTarget webTarget = this.newClient().target(org.apache.bazaar.config.Configuration.newInstance()
-				.getProperty(org.apache.bazaar.web.config.Configuration.ITEM_REST_WEB_SERVICE_URL));
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Item> items = Collections
 				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Item>>() {
@@ -623,7 +572,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#findBidder(org.apache.bazaar.
 	 * Identifier)
 	 */
@@ -636,9 +584,8 @@ final class BazaarManagerImpl implements BazaarManager {
 			bidder = bidder1;
 		}
 		else {
-			final WebTarget webTarget = this.newClient()
-					.target(org.apache.bazaar.config.Configuration.newInstance()
-							.getProperty(org.apache.bazaar.web.config.Configuration.BIDDER_REST_WEB_SERVICE_URL))
+			final WebTarget webTarget = this.newRestWebClient()
+					.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
 					.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 			bidder = BazaarManagerImpl.processResponse(new GenericType<Bidder>() {
@@ -651,15 +598,12 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.BazaarManager#findBidders(org.apache.bazaar.Name)
+	 * @see org.apache.bazaar.BazaarManager#findBidders(org.apache.bazaar.Name)
 	 */
 	@Override
 	public Set<Bidder> findBidders(final Name name) throws BazaarException {
-		final WebTarget webTarget = this.newClient()
-				.target(org.apache.bazaar.config.Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BIDDER_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.NAME, name);
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Bidder> bidders = Collections
@@ -672,13 +616,12 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#findAllBidders()
 	 */
 	@Override
 	public Set<Bidder> findAllBidders() throws BazaarException {
-		final WebTarget webTarget = this.newClient().target(org.apache.bazaar.config.Configuration.newInstance()
-				.getProperty(org.apache.bazaar.web.config.Configuration.BIDDER_REST_WEB_SERVICE_URL));
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Bidder> bidders = Collections
 				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bidder>>() {
@@ -690,7 +633,6 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.apache.bazaar.BazaarManager#findBid(org.apache.bazaar.Identifier)
 	 */
@@ -703,9 +645,8 @@ final class BazaarManagerImpl implements BazaarManager {
 			bid = bid1;
 		}
 		else {
-			final WebTarget webTarget = this.newClient()
-					.target(org.apache.bazaar.config.Configuration.newInstance()
-							.getProperty(org.apache.bazaar.web.config.Configuration.BID_REST_WEB_SERVICE_URL))
+			final WebTarget webTarget = this.newRestWebClient()
+					.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 					.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 			bid = BazaarManagerImpl.processResponse(new GenericType<Bid>() {
@@ -718,13 +659,12 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.BazaarManager#findAllBids()
 	 */
 	@Override
 	public Set<Bid> findAllBids() throws BazaarException {
-		final WebTarget webTarget = this.newClient().target(org.apache.bazaar.config.Configuration.newInstance()
-				.getProperty(org.apache.bazaar.web.config.Configuration.BID_REST_WEB_SERVICE_URL));
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Bid> bids = Collections
 				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bid>>() {
@@ -736,15 +676,13 @@ final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.apache.bazaar.BazaarManager#findAllBids(org.apache.bazaar.Bidder)
 	 */
 	@Override
 	public Set<Bid> findAllBids(final Bidder bidder) throws BazaarException {
-		final WebTarget webTarget = this.newClient()
-				.target(org.apache.bazaar.config.Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BID_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = this.newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.BIDDER, bidder.getIdentifier().getValue());
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Bid> bids = Collections

@@ -17,10 +17,10 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import javax.validation.constraints.NotNull;
 
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.config.ConfigurationException;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
+import org.apache.bazaar.persistence.config.Configuration;
 import org.apache.bazaar.persistence.config.Configuration.TransactionType;
 
 /**
@@ -36,9 +36,9 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 
 	static {
 		try {
-			final Configuration configuration = Configuration.newInstance();
 			DEFAULT_BUFFER_SIZE = Integer.valueOf(
-					configuration.getProperty(org.apache.bazaar.config.Configuration.DEFAULT_BYTE_ARRAY_BUFFER_SIZE));
+					Configuration.newInstance()
+					.getProperty(org.apache.bazaar.config.Configuration.DEFAULT_BYTE_ARRAY_BUFFER_SIZE));
 		}
 		catch (final ConfigurationException exception) {
 			throw new ExceptionInInitializerError(exception);
@@ -364,7 +364,7 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 			}
 			else {
 				throw new EntityTransactionException(
-						AbstractEntityTransaction.MESSAGES.findMessage(Messages.TRANSACTION_FAILURE_MESSAGE_KEY));
+						AbstractEntityTransaction.MESSAGES.findMessage(Messages.TRANSACTION_FAILURE));
 			}
 		}
 		catch (final ConfigurationException exception) {
@@ -383,7 +383,7 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 	public static EntityTransaction newInstance(@NotNull final javax.transaction.UserTransaction userTransaction) {
 		final EntityTransaction entityTransaction1;
 		try {
-			final Configuration configuration = Configuration.newInstance();
+			final Configuration configuration = org.apache.bazaar.persistence.config.Configuration.newInstance();
 			final org.apache.bazaar.persistence.config.Configuration.PersistenceProvider persistenceProvider = org.apache.bazaar.persistence.config.Configuration.PersistenceProvider
 					.valueOf(configuration
 							.getProperty(org.apache.bazaar.persistence.config.Configuration.PERSISTENCE_PROVIDER_NAME));
@@ -396,7 +396,7 @@ abstract class AbstractEntityTransaction implements EntityTransaction, UserTrans
 			}
 			else {
 				throw new EntityTransactionException(
-						AbstractEntityTransaction.MESSAGES.findMessage(Messages.TRANSACTION_FAILURE_MESSAGE_KEY));
+						AbstractEntityTransaction.MESSAGES.findMessage(Messages.TRANSACTION_FAILURE));
 			}
 		}
 		catch (final ConfigurationException exception) {

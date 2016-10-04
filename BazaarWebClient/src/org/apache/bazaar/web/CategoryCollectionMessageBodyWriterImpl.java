@@ -17,17 +17,22 @@ import java.util.Collection;
 
 import javax.json.Json;
 import javax.json.stream.JsonGenerator;
+import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.Provider;
 
 import org.apache.bazaar.Category;
 
 /**
  * CategoryCollectionMessageBodyWriterImpl
  * 
- * @param <E> The collection element type
+ * @param <E>
+ *            The collection element type
  */
+@Provider
+@Produces(value = MediaType.APPLICATION_JSON)
 public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
 		implements CollectionMessageBodyWriter<E> {
 
@@ -46,7 +51,6 @@ public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyWriter#isWriteable(java.lang.Class,
 	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType)
@@ -57,7 +61,7 @@ public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
 		boolean writeable = false;
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (type instanceof ParameterizedType) {
-				if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Category.class)) {
+				if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Category.class)) {
 					writeable = true;
 				}
 			}
@@ -67,7 +71,6 @@ public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyWriter#writeTo(java.lang.Object,
 	 * java.lang.Class, java.lang.reflect.Type,
 	 * java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType,
@@ -78,8 +81,8 @@ public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
 			final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String, Object> map,
 			final OutputStream outputStream) throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(outputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
-			final JsonGenerator jsonGenerator = Json.createGenerator(writer);
+				new OutputStreamWriter(outputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING));
+				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.writeStartArray(JsonKeys.CATEGORIES);
 			for (final Category category : collection) {
@@ -88,7 +91,6 @@ public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
 			jsonGenerator.writeEnd();
 			jsonGenerator.writeEnd();
 			jsonGenerator.flush();
-			jsonGenerator.close();
 		}
 	}
 

@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="BazaarEAR-0.0.1-SNAPSHOT">
-        <wb-resource deploy-path="/" source-path="/META-INF"/>
+        <wb-resource deploy-path="/" source-path="/bin/m2e-wtp/ear-resources"/>
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="BazaarWeb-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/BazaarWeb/BazaarWeb">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="BazaarEJB-0.0.1-SNAPSHOT.jar" deploy-path="/" handle="module:/resource/BazaarEJB/BazaarEJB">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="javaee-api-7.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/javaee-api/7.0/javaee-api-7.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="javax.mail-1.5.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/sun/mail/javax.mail/1.5.0/javax.mail-1.5.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="activation-1.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/activation/activation/1.1/activation-1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="Bazaar-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/Bazaar/Bazaar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -31,28 +47,16 @@
         <dependent-module archiveName="BazaarJPA-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/BazaarJPA/BazaarJPA">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="hibernate-core-5.2.2.FINAL.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/hibernate-core/5.2.2.FINAL/hibernate-core-5.2.2.FINAL.jar">
+        <dependent-module archiveName="hibernate-entitymanager-5.2.3.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/hibernate-entitymanager/5.2.3.Final/hibernate-entitymanager-5.2.3.Final.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="hibernate-jpa-2.1-api-1.0.0.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="javassist-3.20.0-GA.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar">
+        <dependent-module archiveName="hibernate-core-5.2.3.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/hibernate-core/5.2.3.Final/hibernate-core-5.2.3.Final.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="antlr-2.7.7.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/antlr/antlr/2.7.7/antlr-2.7.7.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="geronimo-jta_1.1_spec-1.1.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.1.1/geronimo-jta_1.1_spec-1.1.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="jandex-2.0.0.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/jboss/jandex/2.0.0.Final/jandex-2.0.0.Final.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="dom4j-1.6.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="hibernate-commons-annotations-5.0.1.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/common/hibernate-commons-annotations/5.0.1.Final/hibernate-commons-annotations-5.0.1.Final.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="cdi-api-1.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/enterprise/cdi-api/1.1/cdi-api-1.1.jar">
@@ -70,6 +74,24 @@
         <dependent-module archiveName="javax.inject-1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="dom4j-1.6.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-commons-annotations-5.0.1.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/common/hibernate-commons-annotations/5.0.1.Final/hibernate-commons-annotations-5.0.1.Final.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-jpa-2.1-api-1.0.0.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="javassist-3.20.0-GA.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="geronimo-jta_1.1_spec-1.1.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.1.1/geronimo-jta_1.1_spec-1.1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-envers-5.2.3.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/hibernate-envers/5.2.3.Final/hibernate-envers-5.2.3.Final.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="junit-4.9.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/junit/junit/4.9/junit-4.9.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -82,19 +104,7 @@
         <dependent-module archiveName="junit-dep-4.9.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/junit/junit-dep/4.9/junit-dep-4.9.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="BazaarEJB-0.0.1-SNAPSHOT.jar" deploy-path="/" handle="module:/resource/BazaarEJB/BazaarEJB">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="javaee-api-7.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/javaee-api/7.0/javaee-api-7.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="javax.mail-1.5.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/sun/mail/javax.mail/1.5.0/javax.mail-1.5.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="activation-1.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/activation/activation/1.1/activation-1.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="BazaarWeb-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/BazaarWeb/BazaarWeb">
+        <dependent-module archiveName="BazaarEJBClient-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/BazaarEJBClient/BazaarEJBClient">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>

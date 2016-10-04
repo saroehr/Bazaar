@@ -11,13 +11,13 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.web.RequestParameters;
+import org.apache.bazaar.web.config.Configuration;
 
 /**
- * BidImpl extends AbstractPersistable and implements Bid
- * to provide a concrete implementation
+ * BidImpl extends AbstractPersistable and implements Bid to provide a concrete
+ * implementation
  */
 public final class BidImpl extends AbstractPersistable implements Bid {
 
@@ -39,7 +39,7 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 
 	/**
 	 * Constructor for BidImpl
-	 * 
+	 *
 	 * @param bazaar The bazaar for bid
 	 * @param bidder The bidder for bid
 	 * @param price The price for bid
@@ -55,7 +55,6 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bid#getAuction()
 	 */
 	@Override
@@ -65,7 +64,6 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bid#getPrice()
 	 */
 	@Override
@@ -75,7 +73,6 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bid#getBidder()
 	 */
 	@Override
@@ -85,14 +82,12 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#persist()
 	 */
 	@Override
 	public void persist() throws BazaarException {
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BID_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
 				.queryParam(RequestParameters.BAZAAR, this.bazaar.getIdentifier().getValue())
 				.queryParam(RequestParameters.BIDDER, this.bidder.getIdentifier().getValue())
@@ -105,15 +100,13 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#delete()
 	 */
 	@Override
 	public void delete() throws BazaarException {
 		super.delete();
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BID_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Bid>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
@@ -121,7 +114,6 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.AbstractPersistable#toString()
 	 */
 	@Override

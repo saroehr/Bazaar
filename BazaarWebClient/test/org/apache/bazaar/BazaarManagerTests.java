@@ -11,8 +11,6 @@ import java.util.Calendar;
 import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 /**
  * BazaarManagerTests provides JUnit tests for {@link BazaarManager}
  */
@@ -79,7 +77,7 @@ public final class BazaarManagerTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 
 	}
@@ -104,17 +102,17 @@ public final class BazaarManagerTests {
 			endDate.setWeekDate(2017, 52, DayOfWeek.MONDAY.getValue());
 			final Double reservePrice = new Double(100.99);
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate, reservePrice);
-			TestCase.assertNotNull(bazaar);
-			TestCase.assertEquals(item, bazaar.getItem());
-			TestCase.assertEquals(startDate, bazaar.getStartDate());
-			TestCase.assertEquals(endDate, bazaar.getEndDate());
-			TestCase.assertEquals(reservePrice, bazaar.getReservePrice());
+			Assert.assertNotNull(bazaar);
+			Assert.assertEquals(item, bazaar.getItem());
+			Assert.assertEquals(startDate, bazaar.getStartDate());
+			Assert.assertEquals(endDate, bazaar.getEndDate());
+			Assert.assertEquals(reservePrice, bazaar.getReservePrice());
 			bazaar.persist();
-			TestCase.assertNotNull(manager.findBazaar(bazaar.getIdentifier()));
+			Assert.assertNotNull(manager.findBazaar(bazaar.getIdentifier()));
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -135,7 +133,7 @@ public final class BazaarManagerTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -153,7 +151,7 @@ public final class BazaarManagerTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

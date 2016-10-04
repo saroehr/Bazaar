@@ -27,10 +27,11 @@ import javax.ws.rs.ext.Provider;
 import org.apache.bazaar.Item;
 
 /**
- * ItemMessageBodyWriterImpl extends AbstractMessageBodyWriter to provide
- * an implementation for {@link Item} instances.
+ * ItemMessageBodyWriterImpl extends AbstractMessageBodyWriter to provide an
+ * implementation for {@link Item} instances.
  * 
- * @param <T> The type argument
+ * @param <T>
+ *            The type argument
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
@@ -50,13 +51,13 @@ public final class ItemMessageBodyWriterImpl<T extends Item> implements MessageB
 	// declare methods
 
 	/**
-	 * Utility method writes Item
-	 * instance to JsonObject
+	 * Utility method writes Item instance to JsonObject
 	 * 
-	 * @param item The Item instance
+	 * @param item
+	 *            The Item instance
 	 * @return The JsonObject representing item
-	 * @throws RestWebServiceException if the operation could
-	 *         not be completed
+	 * @throws RestWebServiceException
+	 *             if the operation could not be completed
 	 */
 	static JsonObject write(@NotNull final Item item) throws RestWebServiceException {
 		final JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
@@ -85,8 +86,7 @@ public final class ItemMessageBodyWriterImpl<T extends Item> implements MessageB
 	 * 
 	 * @see
 	 * org.apache.bazaar.web.AbstractMessageBodyWriter#isWriteable(java.lang.
-	 * Class,
-	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
+	 * Class, java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType)
 	 */
 	@Override
@@ -113,13 +113,12 @@ public final class ItemMessageBodyWriterImpl<T extends Item> implements MessageB
 			final MediaType mediaType, final MultivaluedMap<String, Object> map, final OutputStream outputStream)
 			throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(outputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
-			final JsonGenerator jsonGenerator = Json.createGenerator(writer);
+				new OutputStreamWriter(outputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING));
+				final JsonGenerator jsonGenerator = Json.createGenerator(writer);) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.write(JsonKeys.ITEM, ItemMessageBodyWriterImpl.write(object));
 			jsonGenerator.writeEnd();
 			jsonGenerator.flush();
-			jsonGenerator.close();
 		}
 	}
 

@@ -21,8 +21,6 @@ import org.apache.bazaar.State;
 import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 /**
  * BazaarTests provides JUnit tests for {@link Bazaar}
  */
@@ -74,7 +72,7 @@ public final class BazaarTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -104,7 +102,7 @@ public final class BazaarTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -130,7 +128,7 @@ public final class BazaarTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -159,7 +157,7 @@ public final class BazaarTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -177,12 +175,12 @@ public final class BazaarTests {
 			endDate.setWeekDate(2017, 25, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			final Bazaar auction1 = bazaar;
-			TestCase.assertSame(bazaar, auction1);
-			TestCase.assertEquals(bazaar, auction1);
+			Assert.assertSame(bazaar, auction1);
+			Assert.assertEquals(bazaar, auction1);
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

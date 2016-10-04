@@ -5,6 +5,15 @@
  */
 package org.apache.bazaar.persistence.config;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.Properties;
+
+import javax.validation.constraints.NotNull;
+
 import org.apache.bazaar.Bazaar;
 import org.apache.bazaar.Bid;
 import org.apache.bazaar.Bidder;
@@ -14,8 +23,8 @@ import org.apache.bazaar.Item;
 import org.apache.bazaar.Persistable;
 
 /**
- * Configuration extends org.apache.bazaar.config.Configuration
- * to declare the methods a provider must implement
+ * Configuration extends org.apache.bazaar.config.Configuration to encapsulate
+ * the additional persistence provider properties
  */
 public final class Configuration extends org.apache.bazaar.config.Configuration {
 
@@ -27,12 +36,12 @@ public final class Configuration extends org.apache.bazaar.config.Configuration 
 	public enum TransactionType {
 
 		/**
-		 * 
+		 * Local Transaction Type
 		 */
 		LOCAL,
 
 		/**
-		 * 
+		 * Managed Transaction Type
 		 */
 		MANAGED
 
@@ -44,18 +53,14 @@ public final class Configuration extends org.apache.bazaar.config.Configuration 
 	public enum PersistenceProvider {
 
 		/**
-		 * 
+		 * Hibernate Persistence Provider
 		 */
 		HIBERNATE, 
 
 		/**
-		 * 
+		 * EclipseLink Persistence Provider
 		 */
 		ECLIPSELINK, 
-		/**
-		 * 
-		 */
-		TOPLINK
 	}
 
 	/**
@@ -165,15 +170,43 @@ public final class Configuration extends org.apache.bazaar.config.Configuration 
 	 */
 	public static final String TRANSACTION_TYPE = "org.apache.bazaar.persistence.EntityTransaction.transactiontype";
 
+	private static final Properties PROPERTIES;
+
+	static {
+		try (final InputStream inputStream = Configuration.class
+				.getResourceAsStream("/org/apache/bazaar/persistence/config/configuration.properties")) {
+			if (inputStream == null) {
+				throw new ExceptionInInitializerError();
+			}
+			PROPERTIES = new Properties(org.apache.bazaar.config.Configuration.PROPERTIES);
+			Configuration.PROPERTIES.load(new BufferedReader(new InputStreamReader(inputStream,
+					Charset.forName(org.apache.bazaar.config.Configuration.DEFAULT_ENCODING))));
+		}
+		catch (final IOException exception) {
+			throw new ExceptionInInitializerError(exception);
+		}
+	}
+
 	// declare constructors
 
 	/**
 	 * Constructor for Configuration
+	 * 
+	 * @param properties The configuration properties
 	 */
-	private Configuration() {
-		super();
+	private Configuration(@NotNull final Properties properties) {
+		super(properties);
 	}
 
 	// declare methods
+
+	/**
+	 * Factory method for obtaining instance
+	 * 
+	 * @return The Configuration instance
+	 */
+	public static @NotNull Configuration newInstance() {
+		return new Configuration(Configuration.PROPERTIES);
+	}
 
 }

@@ -2,9 +2,9 @@
 <persistence version="2.1"
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-	<persistence-unit name="org.apache.bazaar" transaction-type="JTA">
-		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<!--<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
+	<persistence-unit name="org.apache.bazaar">
+		<!-- <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:comp/env/jdbc/Bazaar</jta-data-source>
 		<class>org.apache.bazaar.AbstractPersistable</class>
 		<class>org.apache.bazaar.AddressImpl</class>
@@ -17,6 +17,7 @@
 		<class>org.apache.bazaar.ItemImpl</class>
 		<class>org.apache.bazaar.NameImpl</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
 		<properties>
 			<property name="javax.persistence.sql-load-script-source"
 				value="META-INF/load.sql" />
@@ -25,10 +26,8 @@
 			<property name="eclipse.weaving" value="false" />
 			<property name="eclipselink.target-database" value="MYSQL" />
 			<property name="eclipselink.logging.level" value="INFO"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/BAZAAR?useSSL=false"/>
-			<property name="javax.persistence.jdbc.user" value="root"/>
-			<property name="javax.persistence.jdbc.password" value="s809926r"/>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+			<property name="hibernate.transaction.jta.platform " value="SunOne" />
 			<property name="javax.persistence.schema-generation.database.action" value="create"/> 
 		</properties>
 	</persistence-unit>

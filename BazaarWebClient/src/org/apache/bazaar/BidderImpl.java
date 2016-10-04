@@ -11,15 +11,15 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.web.RequestParameters;
+import org.apache.bazaar.web.config.Configuration;
 
 /**
- * BidderImpl extends AbstractPersistable and implements Bidder
- * to provide a concrete implementation.
+ * BidderImpl extends AbstractPersistable and implements Bidder to provide a
+ * concrete implementation.
  */
-final class BidderImpl extends AbstractPersistable implements Bidder {
+public final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	// declare members
 	private static final long serialVersionUID = -510811290366725532L;
@@ -39,7 +39,7 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/**
 	 * Constructor for BidderImpl
-	 * 
+	 *
 	 * @param name The name for bidder
 	 * @param billingAddress The billing address for bidder
 	 * @param shippingAddress The shipping address for bidder
@@ -56,7 +56,6 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bidder#getName()
 	 */
 	@Override
@@ -66,7 +65,6 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bidder#setName(org.apache.bazaar.Name)
 	 */
 	@Override
@@ -76,7 +74,6 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bidder#getBillingAddress()
 	 */
 	@Override
@@ -86,7 +83,6 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.apache.bazaar.Bidder#setBillingAddress(org.apache.bazaar.Address)
 	 */
@@ -97,7 +93,6 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bidder#getShippingAddress()
 	 */
 	@Override
@@ -107,7 +102,6 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.apache.bazaar.Bidder#setShippingAddress(org.apache.bazaar.Address)
 	 */
@@ -118,7 +112,6 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#persist()
 	 */
 	@Override
@@ -130,9 +123,8 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 		catch (final BidderNotFoundException exception) {
 			persisted = false;
 		}
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BIDDER_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
 				.queryParam(RequestParameters.FIRST_NAME, this.name.getFirstName())
 				.queryParam(RequestParameters.LAST_NAME, this.name.getLastName())
@@ -160,15 +152,13 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#delete()
 	 */
 	@Override
 	public void delete() throws BazaarException {
 		super.delete();
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BIDDER_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Bidder>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
@@ -176,7 +166,6 @@ final class BidderImpl extends AbstractPersistable implements Bidder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.AbstractPersistable#toString()
 	 */
 	@Override

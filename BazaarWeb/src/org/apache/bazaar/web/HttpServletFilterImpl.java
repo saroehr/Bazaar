@@ -22,11 +22,11 @@ import org.apache.bazaar.BazaarException;
 import org.apache.bazaar.BazaarManager;
 
 /**
- * HttpServletFilterImpl implements Filter to provide
- * an abstract class suitable for sub class implementations
+ * HttpServletFilterImpl implements Filter to provide an abstract class suitable
+ * for sub class implementations
  */
 @Resource(name = "java:comp/env/jdbc/Bazaar", lookup = "jdbc/Bazaar", type = javax.sql.XADataSource.class, shareable = true, authenticationType = AuthenticationType.CONTAINER)
-@WebFilter(filterName = "HttpServletFilterImpl", urlPatterns = { "/*" }, initParams = {
+@WebFilter(filterName = "org.apache.bazaar.web.HttpServletFilterImpl", urlPatterns = { "/ejb/*" }, initParams = {
 		@WebInitParam(name = "javax.servlet.jsp.jstl.fmt.localizationContext", value = "org.apache.bazaar.nls.messages") })
 public final class HttpServletFilterImpl implements Filter {
 
@@ -43,7 +43,6 @@ public final class HttpServletFilterImpl implements Filter {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.servlet.Filter#destroy()
 	 */
 	@Override
@@ -53,7 +52,6 @@ public final class HttpServletFilterImpl implements Filter {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
 	 * javax.servlet.ServletResponse, javax.servlet.FilterChain)
 	 */
@@ -71,7 +69,6 @@ public final class HttpServletFilterImpl implements Filter {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
 	 */
 	@Override

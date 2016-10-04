@@ -14,12 +14,12 @@ import javax.ws.rs.core.Response;
 
 import org.apache.bazaar.Category;
 import org.apache.bazaar.Identifier;
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.ejb.CategorySessionBean;
+import org.apache.bazaar.web.config.Configuration;
 
 /**
- * CategoryRestWebServiceImpl extends AbstractRestWebService and
- * provides a web service for handling {@link Category} requests
+ * CategoryRestWebServiceImpl extends AbstractRestWebService and provides a web
+ * service for handling {@link Category} requests
  */
 @Path("/Category")
 public class CategoryRestWebServiceImpl extends AbstractRestWebService {
@@ -37,9 +37,7 @@ public class CategoryRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doGet(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doGet(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
@@ -50,8 +48,9 @@ public class CategoryRestWebServiceImpl extends AbstractRestWebService {
 		final CategorySessionBean sessionBean = (CategorySessionBean)this.lookup(CategorySessionBean.BEAN_LOOKUP_NAME);
 		if (queryParameters.hasParameter(RequestParameters.IDENTIFIER)) {
 			final Category category;
-			if (Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)).equals(Identifier
-					.fromValue(Configuration.newInstance().getProperty(Configuration.ROOT_CATEGORY_IDENTIFIER)))) {
+			if (Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER))
+					.equals(Identifier.fromValue(Configuration.newInstance()
+							.getProperty(org.apache.bazaar.config.Configuration.ROOT_CATEGORY_IDENTIFIER)))) {
 				category = sessionBean.findRootCategory();
 			}
 			else {
@@ -73,9 +72,7 @@ public class CategoryRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doPost(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doPost(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
@@ -106,9 +103,7 @@ public class CategoryRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doPut(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doPut(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
@@ -131,9 +126,7 @@ public class CategoryRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doDelete(org.apache.bazaar
+	 * @see org.apache.bazaar.AbstractRestWebService#doDelete(org.apache.bazaar
 	 * .web.RestWebServiceRequest)
 	 */
 	@Override

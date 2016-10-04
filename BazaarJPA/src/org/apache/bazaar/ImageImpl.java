@@ -23,9 +23,9 @@ import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.config.ConfigurationException;
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.persistence.config.Configuration;
 
 /**
  * ImageImpl implements {@link Image} and provides
@@ -42,9 +42,9 @@ public class ImageImpl implements Image {
 
 	static {
 		try {
-			final Configuration configuration = org.apache.bazaar.config.Configuration.newInstance();
 			DEFAULT_BUFFER_SIZE = Integer
-					.valueOf(configuration.getProperty(Configuration.DEFAULT_BYTE_ARRAY_BUFFER_SIZE));
+					.valueOf(Configuration.newInstance()
+							.getProperty(org.apache.bazaar.config.Configuration.DEFAULT_BYTE_ARRAY_BUFFER_SIZE));
 		}
 		catch (final ConfigurationException exception) {
 			throw new ExceptionInInitializerError(exception);

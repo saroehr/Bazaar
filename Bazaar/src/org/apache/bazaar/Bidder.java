@@ -28,8 +28,7 @@ public interface Bidder extends Persistable, Serializable {
 	/**
 	 * Sets the name of bidder
 	 *
-	 * @param name
-	 *            The name of bidder to be set
+	 * @param name The name of bidder to be set
 	 */
 	public void setName(@NotNull final Name name);
 
@@ -43,8 +42,7 @@ public interface Bidder extends Persistable, Serializable {
 	/**
 	 * Sets the billing address of bidder
 	 *
-	 * @param address
-	 *            The billing address to be set
+	 * @param address The billing address to be set
 	 */
 	public void setBillingAddress(@NotNull final Address address);
 
@@ -58,10 +56,8 @@ public interface Bidder extends Persistable, Serializable {
 	/**
 	 * Sets the shipping address of bidder
 	 *
-	 * @param address
-	 *            The shipping address to be set
+	 * @param address The shipping address to be set
 	 */
 	public void setShippingAddress(@NotNull final Address address);
-
 
 }

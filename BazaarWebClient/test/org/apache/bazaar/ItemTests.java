@@ -7,13 +7,12 @@ package org.apache.bazaar;
 
 import org.apache.bazaar.Image.MimeType;
 import org.junit.Assert;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * ItemTests provides JUnit tests for @{link Item}
  */
-public final class ItemTests extends TestCase {
+public final class ItemTests {
 
 	// declare members
 
@@ -26,21 +25,12 @@ public final class ItemTests extends TestCase {
 		super();
 	}
 
-	/**
-	 * Constructor for ItemTests
-	 * 
-	 * @param name
-	 *        The test name
-	 */
-	public ItemTests(final String name) {
-		super(name);
-	}
-
 	// declare methods
 
 	/**
 	 * Test for {@link Item#persist()}
 	 */
+	@Test
 	public void testPersist() {
 		try {
 			final BazaarManager manager = BazaarManager.newInstance();
@@ -68,13 +58,14 @@ public final class ItemTests extends TestCase {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
 	/**
 	 * Test for {@link Item#delete()}
 	 */
+	@Test
 	public void testDelete() {
 		try {
 			final BazaarManager manager = BazaarManager.newInstance();
@@ -93,13 +84,14 @@ public final class ItemTests extends TestCase {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
 	/**
 	 * Test for {@link Item#getImages()}
 	 */
+	@Test
 	public void testGetImages() {
 		try {
 			final BazaarManager manager = BazaarManager.newInstance();
@@ -121,7 +113,7 @@ public final class ItemTests extends TestCase {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

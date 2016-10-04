@@ -31,8 +31,16 @@ public final class IdentifierImpl extends Identifier {
 	 * Constructor for IdentifierImpl
 	 */
 	public IdentifierImpl() {
+		this(UUID.randomUUID());
+	}
+	
+	/**
+	 * Constructor for IdentifierImpl
+	 * @param identifier The identifier string
+	 */
+	public IdentifierImpl(@NotNull final String identifier) {
 		super();
-		this.identifier = UUID.randomUUID().toString();
+		this.identifier = identifier;
 	}
 
 	/**
@@ -41,7 +49,7 @@ public final class IdentifierImpl extends Identifier {
 	 * @param uuid The {@link UUID} associated
 	 *        with instance.
 	 */
-	IdentifierImpl(@NotNull final UUID uuid) {
+	public IdentifierImpl(@NotNull final UUID uuid) {
 		super();
 		this.identifier = uuid.toString();
 	}

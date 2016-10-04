@@ -15,15 +15,15 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.web.RequestParameters;
+import org.apache.bazaar.web.config.Configuration;
 
 /**
- * CategoryImpl extends AbstractPersistable and implements {@link Category}
- * to provide a concrete implementation
+ * CategoryImpl extends AbstractPersistable and implements {@link Category} to
+ * provide a concrete implementation
  */
-final class CategoryImpl extends AbstractPersistable implements org.apache.bazaar.Category {
+public class CategoryImpl extends AbstractPersistable implements org.apache.bazaar.Category {
 
 	// declare members
 
@@ -43,7 +43,7 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/**
 	 * Constructor for CategoryImpl
-	 * 
+	 *
 	 * @param name The name for category
 	 * @param description The description for category
 	 * @param parent The parent for category
@@ -58,9 +58,7 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.Category#addChild(org.apache.bazaar.Category)
+	 * @see org.apache.bazaar.Category#addChild(org.apache.bazaar.Category)
 	 */
 	protected void addChild(final Category child) {
 		this.children.add(child);
@@ -68,7 +66,6 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Category#getName()
 	 */
 	@Override
@@ -78,7 +75,6 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Category#setName(java.lang.String)
 	 */
 	@Override
@@ -88,7 +84,6 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Category#getDescription()
 	 */
 	@Override
@@ -98,7 +93,6 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Category#setDescription(java.lang.String)
 	 */
 	@Override
@@ -108,7 +102,6 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Category#getParent()
 	 */
 	@Override
@@ -118,7 +111,6 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Category#setParent(org.apache.bazaar.Category)
 	 */
 	@Override
@@ -128,7 +120,6 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Category#getChildren()
 	 */
 	@Override
@@ -138,7 +129,6 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#persist()
 	 */
 	@Override
@@ -151,9 +141,8 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 		catch (final CategoryNotFoundException exception) {
 			persisted = false;
 		}
-		final WebTarget webTarget = ((BazaarManagerImpl)manager).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.CATEGORY_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)manager).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
 				.queryParam(RequestParameters.NAME, this.name)
 				.queryParam(RequestParameters.DESCRIPTION, this.description)
@@ -173,15 +162,13 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#delete()
 	 */
 	@Override
 	public void delete() throws BazaarException {
 		super.delete();
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.CATEGORY_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Category>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
@@ -190,7 +177,6 @@ final class CategoryImpl extends AbstractPersistable implements org.apache.bazaa
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

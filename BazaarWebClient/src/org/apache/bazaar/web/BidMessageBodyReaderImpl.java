@@ -111,7 +111,7 @@ public final class BidMessageBodyReaderImpl<T extends Bid> implements MessageBod
 			throws IOException, WebApplicationException {
 		final T bid;
 		try (final BufferedReader reader = new BufferedReader(
-				new InputStreamReader(inputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
+				new InputStreamReader(inputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING))) {
 			final JsonObject jsonObject = Json.createReader(reader).readObject().getJsonObject(JsonKeys.BID);
 			bid = (T)BidMessageBodyReaderImpl.read(jsonObject);
 		}

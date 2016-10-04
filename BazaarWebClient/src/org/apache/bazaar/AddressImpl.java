@@ -13,7 +13,7 @@ import org.apache.bazaar.logging.Logger;
  * AddressImpl implements {@link Address} to provide
  * a concrete implementation
  */
-final class AddressImpl implements Address {
+public final class AddressImpl implements Address {
 
 	// declare members
 

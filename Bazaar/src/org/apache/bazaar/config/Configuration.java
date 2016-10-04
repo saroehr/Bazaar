@@ -1,7 +1,7 @@
 /*
  * Configuration.java
- * Created by: Scott A. Roehrig
- * Created on: Jul 12, 2016
+ * Created On: Sep 30, 2016 at 1:15:25 AM
+ * Created By: Scott A. Roehrig (saroehr@hotmail.com)
  */
 package org.apache.bazaar.config;
 
@@ -12,12 +12,15 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+import javax.validation.constraints.NotNull;
+
+import org.apache.bazaar.logging.Logger;
+
 /**
- * Configuration defines the support provided for runtime configuration
- * attributes
- * to be specified externally.
+ * Configuration extends org.apache.bazaar.config.Configuration to encapsulate
+ * the additional web provider properties
  */
-public abstract class Configuration {
+public class Configuration {
 
 	// declare members
 
@@ -27,12 +30,28 @@ public abstract class Configuration {
 	public static final String DEFAULT_BYTE_ARRAY_BUFFER_SIZE = "org.apache.bazaar.bytearray.defaultBufferSize";
 
 	/**
-	 * The key for retrieval of the ROOT Category
-	 * identifier value
+	 * The key for retrieval of the ROOT Category identifier value
 	 */
 	public static final String ROOT_CATEGORY_IDENTIFIER = "org.apache.bazaar.Category.rootcategoryidentifier";
 
-	private static final Configuration INSTANCE;
+	/**
+	 * Default encoding of UTF-8 UTF-8 encoding string
+	 */
+	public static final String DEFAULT_ENCODING = "UTF-8";
+
+	/**
+	 * The key for retrieval of the ROOT Category name value
+	 */
+	public static final String ROOT_CATEGORY_NAME = "org.apache.bazaar.Category.rootcategoryname";
+
+	/**
+	 * The key for retrieval of the ROOT Category description value
+	 */
+	public static final String ROOT_CATEGORY_DESCRIPTION = "org.apache.bazaar.Category.rootcategorydescription";
+
+	protected static final Logger LOGGER = Logger.newInstance(Configuration.class);
+
+	protected static final Properties PROPERTIES;
 
 	static {
 		try (final InputStream inputStream = Configuration.class
@@ -40,47 +59,54 @@ public abstract class Configuration {
 			if (inputStream == null) {
 				throw new ExceptionInInitializerError();
 			}
-			final Properties properties = new Properties();
-			properties.load(new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8"))));
-			INSTANCE = new PropertiesConfigurationImpl(properties);
+			PROPERTIES = new Properties();
+			Configuration.PROPERTIES
+					.load(new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8"))));
 		}
 		catch (final IOException exception) {
 			throw new ExceptionInInitializerError(exception);
 		}
 	}
 
+	private final Properties properties;
+
 	// declare constructors
 
 	/**
 	 * Constructor for Configuration
+	 *
+	 * @param properties The configuration properties
 	 */
-	protected Configuration() {
+	protected Configuration(@NotNull final Properties properties) {
 		super();
+		this.properties = properties;
 	}
 
 	// declare methods
 
 	/**
-	 * Factory method returns instance.
-	 * 
-	 * @return Instance of Configuration
-	 * @throws ConfigurationException if instance could not be created.
+	 * Factory method for obtaining instance
+	 *
+	 * @return Instance of Configuration with default properties taken from the
+	 *         org.apache.bazaar.config.configuration.properties file
 	 */
-	public static Configuration newInstance() throws ConfigurationException {
-		return Configuration.INSTANCE;
+	public static @NotNull Configuration newInstance() {
+		return new Configuration(Configuration.PROPERTIES);
 	}
 
 	/**
-	 * Returns property value by key.
-	 * 
-	 * @param key The property key to lookup value for
-	 * @return Property value for key.
-	 * @throws NullPointerException if key provided is null
-	 * @throws PropertyNotFoundException if no property can be found with
-	 *         provided key
+	 * Returns property value for key
+	 *
+	 * @param key The key for value
+	 * @return The value for key
+	 * @throws PropertyNotFoundException if no key exists
 	 */
-	public String getProperty(final String key) throws PropertyNotFoundException {
-		return Configuration.INSTANCE.getProperty(key);
+	public @NotNull String getProperty(final String key) throws PropertyNotFoundException {
+		final String property = this.properties.getProperty(key);
+		if (property == null) {
+			throw new PropertyNotFoundException(key);
+		}
+		return property;
 	}
 
 }

@@ -29,10 +29,11 @@ import org.apache.bazaar.Bidder;
 import org.apache.bazaar.Name;
 
 /**
- * BidderMessageBodyWriterImpl extends AbstractMessageBodyWriter
- * to provide an implementation for {@link Bidder} instances
+ * BidderMessageBodyWriterImpl extends AbstractMessageBodyWriter to provide an
+ * implementation for {@link Bidder} instances
  * 
- * @param <T> The Type parameters
+ * @param <T>
+ *            The Type parameters
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
@@ -52,13 +53,13 @@ public final class BidderMessageBodyWriterImpl<T extends Bidder> implements Mess
 	// declare methods
 
 	/**
-	 * Utility method writes Bidder
-	 * instance to JsonObject
+	 * Utility method writes Bidder instance to JsonObject
 	 * 
-	 * @param bidder The Bidder instance
+	 * @param bidder
+	 *            The Bidder instance
 	 * @return The JsonObject representing bidder
-	 * @throws RestWebServiceException if the operation could
-	 *         not be completed
+	 * @throws RestWebServiceException
+	 *             if the operation could not be completed
 	 */
 	static JsonObject write(@NotNull final Bidder bidder) throws RestWebServiceException {
 		final JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
@@ -103,8 +104,7 @@ public final class BidderMessageBodyWriterImpl<T extends Bidder> implements Mess
 	 * 
 	 * @see
 	 * org.apache.bazaar.web.AbstractMessageBodyWriter#isWriteable(java.lang.
-	 * Class,
-	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
+	 * Class, java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType)
 	 */
 	@Override
@@ -130,13 +130,12 @@ public final class BidderMessageBodyWriterImpl<T extends Bidder> implements Mess
 			final MediaType mediaType, final MultivaluedMap<String, Object> map, final OutputStream outputStream)
 			throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(outputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
-			final JsonGenerator jsonGenerator = Json.createGenerator(writer);
+				new OutputStreamWriter(outputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING));
+				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.write(JsonKeys.BIDDER, BidderMessageBodyWriterImpl.write(object));
 			jsonGenerator.writeEnd();
 			jsonGenerator.flush();
-			jsonGenerator.close();
 		}
 	}
 

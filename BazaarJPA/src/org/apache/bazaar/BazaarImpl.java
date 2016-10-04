@@ -64,7 +64,7 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 	private Item item;
 	@Column(name = "RESERVEPRICE", nullable = true, updatable = false)
 	private Double reservePrice;
-	@OneToMany(targetEntity = BidImpl.class, mappedBy = "bazaar", fetch = FetchType.LAZY, cascade = {
+	@OneToMany(targetEntity = BidImpl.class, mappedBy = "bazaar", fetch = FetchType.EAGER, cascade = {
 			CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE })
 	private Set<Bid> bids;
 
@@ -230,12 +230,12 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 		// we override to enforce endDate for instance
 		if (System.currentTimeMillis() > this.endDate.getTimeInMillis()) {
 			throw new BazaarExpiredException(Messages.newInstance(Locale.getDefault())
-					.findMessage(Messages.AUCTION_HAS_EXPIRED_MESSAGE_KEY, new Object[] { this.getIdentifier() }));
+					.findMessage(Messages.BAZAAR_HAS_EXPIRED, new Object[] { this.getIdentifier() }));
 		}
 		else if (this.startDate.after(this.endDate)) {
 			throw new BazaarException(
 					Messages.newInstance(Locale.getDefault())
-							.findMessage(Messages.AUCTION_ENDDATE_INVALID_MESSAGE_KEY,
+					.findMessage(Messages.BAZAAR_ENDDATE_INVALID,
 							new Calendar[] { this.endDate, this.startDate }));
 		}
 		super.persist();

@@ -10,8 +10,6 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 /**
  * CategoryTests provides JUnit tests for {@link Category}.
  */
@@ -48,7 +46,7 @@ public final class CategoryTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -82,7 +80,7 @@ public final class CategoryTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -131,7 +129,7 @@ public final class CategoryTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -176,7 +174,7 @@ public final class CategoryTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

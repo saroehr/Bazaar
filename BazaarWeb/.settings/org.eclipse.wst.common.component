@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="BazaarWAR-0.0.1-SNAPSHOT">
+    <wb-module deploy-name="BazaarWeb-0.0.1-SNAPSHOT">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <dependent-module archiveName="Bazaar-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Bazaar/Bazaar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="BazaarEJB-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BazaarEJB/BazaarEJB">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="BazaarJPA-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BazaarJPA/BazaarJPA">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="BazaarWebClient-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BazaarWebClient/BazaarWebClient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="BazaarEJBClient-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BazaarEJBClient/BazaarEJBClient">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/BazaarWeb/WEB-INF/classes"/>

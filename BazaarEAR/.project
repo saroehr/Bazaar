@@ -3,10 +3,9 @@
 	<name>BazaarEAR</name>
 	<comment></comment>
 	<projects>
+		<project>Bazaar</project>
 		<project>BazaarEJB</project>
 		<project>BazaarJPA</project>
-		<project>BazaarCouchDBClient</project>
-		<project>Bazaar</project>
 		<project>BazaarWeb</project>
 		<project>BazaarWebClient</project>
 	</projects>

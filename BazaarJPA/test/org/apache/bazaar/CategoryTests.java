@@ -7,14 +7,12 @@ package org.apache.bazaar;
 
 import java.util.Set;
 
-import org.apache.bazaar.config.Configuration;
+import org.apache.bazaar.persistence.config.Configuration;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import junit.framework.TestCase;
 
 /**
  * CategoryTests provides JUnit tests for {@link Category}.
@@ -53,7 +51,7 @@ public final class CategoryTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -87,7 +85,7 @@ public final class CategoryTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -125,9 +123,8 @@ public final class CategoryTests {
 				failed = true;
 				Assert.assertEquals(CategoryNotFoundException.class, exception.getClass());
 			}
-			if (org.apache.bazaar.persistence.config.Configuration.PersistenceProvider.HIBERNATE.equals(
-					org.apache.bazaar.persistence.config.Configuration.PersistenceProvider.valueOf(Configuration.newInstance()
-							.getProperty(org.apache.bazaar.persistence.config.Configuration.PERSISTENCE_PROVIDER_NAME)))) {
+			if (Configuration.PersistenceProvider.HIBERNATE.equals(Configuration.PersistenceProvider
+					.valueOf(Configuration.newInstance().getProperty(Configuration.PERSISTENCE_PROVIDER_NAME)))) {
 				Assert.assertTrue(failed);
 			}
 			// persist parent
@@ -137,7 +134,7 @@ public final class CategoryTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -176,7 +173,7 @@ public final class CategoryTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

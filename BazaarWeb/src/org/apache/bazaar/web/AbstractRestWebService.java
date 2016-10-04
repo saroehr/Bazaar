@@ -72,7 +72,7 @@ public abstract class AbstractRestWebService implements RestWebService {
 	/**
 	 * Constructor for AbstractRestWebService
 	 */
-	AbstractRestWebService() {
+	public AbstractRestWebService() {
 		super();
 	}
 
@@ -80,9 +80,7 @@ public abstract class AbstractRestWebService implements RestWebService {
 
 	/*
 	 * Utility method dumps the contents of the JNDI namespace
-	 * 
 	 * @param name The namespace name to list bindings for
-	 * 
 	 * @throws NamingException if the operation fails
 	 */
 	private static void dumpNamespace(@NotNull final String name) throws NamingException {
@@ -108,50 +106,46 @@ public abstract class AbstractRestWebService implements RestWebService {
 
 	/*
 	 * Utility method to process throwable
-	 * 
 	 * @param exception The Throwable to process
-	 * 
 	 * @return The Response instance
 	 */
 	private static final Response processThrowable(final Throwable throwable) {
 		AbstractRestWebService.LOGGER.entering("processThrowable", throwable);
 		final Response response;
-		if ((throwable instanceof PersistableNotFoundException)
-				|| ((throwable.getCause() != null) && (throwable.getCause() instanceof PersistableNotFoundException))) {
+		if (throwable instanceof PersistableNotFoundException
+				|| throwable.getCause() != null && throwable.getCause() instanceof PersistableNotFoundException) {
 			response = Response.status(HttpServletResponse.SC_NOT_FOUND).entity(throwable)
 					.type(MediaType.APPLICATION_JSON_TYPE).language(Locale.getDefault())
-					.encoding(org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING).build();
+					.encoding(org.apache.bazaar.config.Configuration.DEFAULT_ENCODING).build();
 		}
 		else {
 			response = Response.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).entity(throwable)
 					.type(MediaType.APPLICATION_JSON_TYPE).language(Locale.getDefault())
-					.encoding(org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING).build();
+					.encoding(org.apache.bazaar.config.Configuration.DEFAULT_ENCODING).build();
 		}
 		AbstractRestWebService.LOGGER.exiting("processThrowable", response);
 		return response;
 	}
 
 	/**
-	 * Utility method extracts instance of class passed
-	 * from request
-	 * 
+	 * Utility method extracts instance of class passed from request
+	 *
 	 * @param map The map to convert
 	 * @return The Request Parameters instance
 	 * @throws IllegalArgumentException if the instance could not be converted
 	 */
-	protected static final RequestParameters convert(@NotNull final Map<String, List<String>> map,
-			@NotNull final RestWebServiceRequest request) throws IllegalArgumentException {
+	protected static final RequestParameters convert(@NotNull final Map<String, List<String>> map)
+			throws IllegalArgumentException {
 		return RequestParameters.newInstance(map);
 	}
 
 	/**
-	 * Utility method sets identifier on {@link Persistable}
-	 * using reflection to avoid exposing this to misuse
-	 * 
+	 * Utility method sets identifier on {@link Persistable} using reflection to
+	 * avoid exposing this to misuse
+	 *
 	 * @param identifier The {@link Identifier} to be set
 	 * @param persistable The {@link Persistable} to set it on
-	 * @throws RestWebServiceException if the operation could
-	 *         not be completed
+	 * @throws RestWebServiceException if the operation could not be completed
 	 */
 	protected final static void setIdentifier(@NotNull final Identifier identifier,
 			@NotNull final Persistable persistable) throws RestWebServiceException {
@@ -164,30 +158,25 @@ public abstract class AbstractRestWebService implements RestWebService {
 	}
 
 	/**
-	 * Utility method constructs {@link Response} instance. The response
-	 * is configured with {@link Response.Status.OK} status instance,
-	 * {@link Entity} instance,
-	 * instance, the Locale set to (@see Locale#getDefault()), and the encoding
-	 * set to
-	 * {@link org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING}
-	 * 
-	 * If callers wish to override the status, they should update the builder
-	 * with the appropriate status
-	 * 
+	 * Utility method constructs {@link Response} instance. The response is
+	 * configured with {@link Response.Status.OK} status instance,
+	 * {@link Entity} instance, instance, the Locale set to (@see
+	 * Locale#getDefault()), and the encoding set to
+	 * {@link org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING} If
+	 * callers wish to override the status, they should update the builder with
+	 * the appropriate status
+	 *
 	 * @param entity The {@link GenericEntity} instance
-	 * 
 	 * @return The {@link ResponseBuilder} instance
 	 */
 	protected final static ResponseBuilder newResponse(final GenericEntity<?> entity) {
 		return Response.status(Response.Status.OK).language(Locale.getDefault())
-				.encoding(org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING).entity(entity);
+				.encoding(org.apache.bazaar.config.Configuration.DEFAULT_ENCODING).entity(entity);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.RestWebService#doDelete()
+	 * @see org.apache.bazaar.RestWebService#doDelete()
 	 */
 	@Override
 	public final Response doDelete() {
@@ -205,9 +194,7 @@ public abstract class AbstractRestWebService implements RestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.RestWebService#doGet()
+	 * @see org.apache.bazaar.RestWebService#doGet()
 	 */
 	@Override
 	public final Response doGet() {
@@ -225,9 +212,7 @@ public abstract class AbstractRestWebService implements RestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.RestWebService#doPost()
+	 * @see org.apache.bazaar.RestWebService#doPost()
 	 */
 	@Override
 	public final Response doPost() {
@@ -245,9 +230,7 @@ public abstract class AbstractRestWebService implements RestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.RestWebService#doPut()
+	 * @see org.apache.bazaar.RestWebService#doPut()
 	 */
 	@Override
 	public final Response doPut() {
@@ -264,67 +247,62 @@ public abstract class AbstractRestWebService implements RestWebService {
 	}
 
 	/**
-	 * Subclasses may override to handle GET request processing
-	 * The default behavior is to throw RestWebServiceException
-	 * 
+	 * Subclasses may override to handle GET request processing The default
+	 * behavior is to throw RestWebServiceException
+	 *
 	 * @param request The {@link RestWebServiceRequest} instance
 	 * @return The Response instance
-	 * @throws Throwable if the request could
-	 *         not be processed
+	 * @throws Throwable if the request could not be processed
 	 */
 	protected Response doGet(@NotNull final RestWebServiceRequest request) throws Throwable {
-		throw new RestWebServiceException(AbstractRestWebService.MESSAGES.findMessage(
-				org.apache.bazaar.web.config.Configuration.UNSUPPORTED_METHOD_MESSAGE, new Object[] { "doGet" }));
+		throw new RestWebServiceException(
+				AbstractRestWebService.MESSAGES.findMessage(Messages.UNSUPPORTED_METHOD, new Object[] { "doGet" }));
 	}
 
 	/**
-	 * Subclasses may override to handle POST request processing
-	 * The default behavior is to throw RestWebServiceException
-	 * 
+	 * Subclasses may override to handle POST request processing The default
+	 * behavior is to throw RestWebServiceException
+	 *
 	 * @param request The {@link RestWebServiceRequest} instance
 	 * @return The Response instance
-	 * @throws Throwable if the request could
-	 *         not be processed
+	 * @throws Throwable if the request could not be processed
 	 */
 	protected Response doPost(@NotNull final RestWebServiceRequest request) throws Throwable {
-		throw new RestWebServiceException(AbstractRestWebService.MESSAGES.findMessage(
-				org.apache.bazaar.web.config.Configuration.UNSUPPORTED_METHOD_MESSAGE, new Object[] { "doPost" }));
+		throw new RestWebServiceException(
+				AbstractRestWebService.MESSAGES.findMessage(Messages.UNSUPPORTED_METHOD, new Object[] { "doPost" }));
 	}
 
 	/**
-	 * Subclasses may override to handle PUT request processing
-	 * The default behavior is to throw RestWebServiceException
-	 * 
+	 * Subclasses may override to handle PUT request processing The default
+	 * behavior is to throw RestWebServiceException
+	 *
 	 * @param request The {@link RestWebServiceRequest} instance
 	 * @return The Response instance
-	 * @throws Throwable if the request could
-	 *         not be processed
+	 * @throws Throwable if the request could not be processed
 	 */
 	protected Response doPut(@NotNull final RestWebServiceRequest request) throws Throwable {
-		throw new RestWebServiceException(AbstractRestWebService.MESSAGES.findMessage(
-				org.apache.bazaar.web.config.Configuration.UNSUPPORTED_METHOD_MESSAGE, new Object[] { "doPut" }));
+		throw new RestWebServiceException(
+				AbstractRestWebService.MESSAGES.findMessage(Messages.UNSUPPORTED_METHOD, new Object[] { "doPut" }));
 	}
 
 	/**
-	 * Subclasses may override to handle DELETE request processing
-	 * The default behavior is to throw RestWebServiceException
-	 * 
+	 * Subclasses may override to handle DELETE request processing The default
+	 * behavior is to throw RestWebServiceException
+	 *
 	 * @param request The {@link RestWebServiceRequest} instance
 	 * @return The Response instance
-	 * @throws Throwable if the request could
-	 *         not be processed
+	 * @throws Throwable if the request could not be processed
 	 */
 	protected Response doDelete(@NotNull final RestWebServiceRequest request) throws Throwable {
-		throw new RestWebServiceException(AbstractRestWebService.MESSAGES.findMessage(
-				org.apache.bazaar.web.config.Configuration.UNSUPPORTED_METHOD_MESSAGE, new Object[] { "doDelete" }));
+		throw new RestWebServiceException(
+				AbstractRestWebService.MESSAGES.findMessage(Messages.UNSUPPORTED_METHOD, new Object[] { "doDelete" }));
 	}
 
 	/**
 	 * Looks up object from name space
-	 * 
+	 *
 	 * @return The object from name space
-	 * @throws RestWebServiceException if the object
-	 *         could not be retrieved
+	 * @throws RestWebServiceException if the object could not be retrieved
 	 */
 	protected final Object lookup(@NotNull final String name) throws RestWebServiceException {
 		final Object result;

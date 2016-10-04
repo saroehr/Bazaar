@@ -27,10 +27,11 @@ import javax.ws.rs.ext.Provider;
 import org.apache.bazaar.Bid;
 
 /**
- * BidMessageBodyWriterImpl extends AbstractMessageBodyWriter to provide
- * an implementation for {@link Bid} instances
+ * BidMessageBodyWriterImpl extends AbstractMessageBodyWriter to provide an
+ * implementation for {@link Bid} instances
  * 
- * @param <T> The Type parameters
+ * @param <T>
+ *            The Type parameters
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
@@ -50,13 +51,13 @@ public final class BidMessageBodyWriterImpl<T extends Bid> implements MessageBod
 	// declare methods
 
 	/**
-	 * Utility method writes Bid
-	 * instance to JsonObject
+	 * Utility method writes Bid instance to JsonObject
 	 * 
-	 * @param item The Bid instance
+	 * @param item
+	 *            The Bid instance
 	 * @return The JsonObject representing Bid
-	 * @throws RestWebServiceException if the operation could
-	 *         not be completed
+	 * @throws RestWebServiceException
+	 *             if the operation could not be completed
 	 */
 	static JsonObject write(@NotNull final Bid bid) throws RestWebServiceException {
 		final JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
@@ -85,8 +86,7 @@ public final class BidMessageBodyWriterImpl<T extends Bid> implements MessageBod
 	 * 
 	 * @see
 	 * org.apache.bazaar.web.AbstractMessageBodyWriter#isWriteable(java.lang.
-	 * Class,
-	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
+	 * Class, java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType)
 	 */
 	@Override
@@ -112,13 +112,12 @@ public final class BidMessageBodyWriterImpl<T extends Bid> implements MessageBod
 			final MediaType mediaType, final MultivaluedMap<String, Object> map, final OutputStream outputStream)
 			throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(outputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
-			final JsonGenerator jsonGenerator = Json.createGenerator(writer);
+				new OutputStreamWriter(outputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING));
+				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.write(JsonKeys.BID, BidMessageBodyWriterImpl.write(object));
 			jsonGenerator.writeEnd();
 			jsonGenerator.flush();
-			jsonGenerator.close();
 		}
 	}
 

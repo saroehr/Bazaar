@@ -18,9 +18,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import org.apache.bazaar.Image.MimeType;
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
+import org.apache.bazaar.persistence.config.Configuration;
 
 /**
  * BazaarManagerImpl implements @Bazaar to provide a concrete implementation.
@@ -89,7 +89,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	public Bazaar newBazaar(final Item item, final Calendar startDate, final Calendar endDate) throws BazaarException {
 		if (!endDate.after(startDate)) {
 			throw new BazaarException(Messages.newInstance(Locale.getDefault())
-					.findMessage(Messages.AUCTION_ENDDATE_INVALID_MESSAGE_KEY, new Object[] { endDate, startDate }));
+					.findMessage(Messages.BAZAAR_ENDDATE_INVALID, new Object[] { endDate, startDate }));
 		}
 		return new BazaarImpl(item, startDate, endDate);
 	}
@@ -106,7 +106,7 @@ final class BazaarManagerImpl implements BazaarManager {
 			final Double reservePrice) throws BazaarException {
 		if (!endDate.after(startDate)) {
 			throw new BazaarException(Messages.newInstance(Locale.getDefault())
-					.findMessage(Messages.AUCTION_ENDDATE_INVALID_MESSAGE_KEY, new Object[] { endDate, startDate }));
+					.findMessage(Messages.BAZAAR_ENDDATE_INVALID, new Object[] { endDate, startDate }));
 		}
 		return new BazaarImpl(item, startDate, endDate, reservePrice);
 	}
@@ -290,7 +290,7 @@ final class BazaarManagerImpl implements BazaarManager {
 			transaction.commit();
 			if (bid == null) {
 				throw new BidNotFoundException(BazaarManagerImpl.MESSAGES
-						.findMessage(Messages.UNABLE_TO_FIND_BID_MESSAGE_KEY, new Object[] { identifier }));
+						.findMessage(Messages.UNABLE_TO_FIND_BID, new Object[] { identifier }));
 			}
 		}
 		finally {
@@ -364,13 +364,13 @@ final class BazaarManagerImpl implements BazaarManager {
 			final Category rootCategory;
 			try {
 				final Identifier identifier = Identifier
-						.fromValue(Configuration.newInstance().getProperty(Configuration.ROOT_CATEGORY_IDENTIFIER));
+						.fromValue(Configuration.newInstance().getProperty(org.apache.bazaar.config.Configuration.ROOT_CATEGORY_IDENTIFIER));
 				transaction.begin();
 				rootCategory = manager.find(CategoryImpl.class, identifier);
 				transaction.commit();
 				if (rootCategory == null) {
 					final CategoryNotFoundException exception = new CategoryNotFoundException(BazaarManagerImpl.MESSAGES
-							.findMessage(Messages.UNABLE_TO_FIND_CATEGORY_MESSAGE_KEY, new Object[] { identifier }));
+							.findMessage(Messages.UNABLE_TO_FIND_CATEGORY, new Object[] { identifier }));
 					BazaarManagerImpl.LOGGER.throwing("findCategory", exception);
 					throw exception;
 				}
@@ -394,7 +394,7 @@ final class BazaarManagerImpl implements BazaarManager {
 		BazaarManagerImpl.LOGGER.entering("findCategory", identifier);
 		final Category category;
 		// check for ROOT identifier
-		if (Configuration.newInstance().getProperty(Configuration.ROOT_CATEGORY_IDENTIFIER)
+		if (Configuration.newInstance().getProperty(org.apache.bazaar.config.Configuration.ROOT_CATEGORY_IDENTIFIER)
 				.equals(identifier.getValue()) && (this.rootCategory != null)) {
 			category = this.rootCategory;
 		}
@@ -407,7 +407,7 @@ final class BazaarManagerImpl implements BazaarManager {
 				transaction.commit();
 				if (category == null) {
 					final CategoryNotFoundException exception = new CategoryNotFoundException(
-							BazaarManagerImpl.MESSAGES.findMessage(Messages.UNABLE_TO_FIND_CATEGORY_MESSAGE_KEY,
+							BazaarManagerImpl.MESSAGES.findMessage(Messages.UNABLE_TO_FIND_CATEGORY,
 									new Object[] { identifier }));
 					BazaarManagerImpl.LOGGER.throwing("findCategory", exception);
 					throw exception;
@@ -482,7 +482,7 @@ final class BazaarManagerImpl implements BazaarManager {
 			transaction.commit();
 			if (item == null) {
 				final ItemNotFoundException exception = new ItemNotFoundException(BazaarManagerImpl.MESSAGES
-						.findMessage(Messages.UNABLE_TO_FIND_ITEM_MESSAGE_KEY, new Object[] { identifier }));
+						.findMessage(Messages.UNABLE_TO_FIND_ITEM, new Object[] { identifier }));
 				BazaarManagerImpl.LOGGER.throwing("findItem", exception);
 				throw exception;
 			}
@@ -592,7 +592,7 @@ final class BazaarManagerImpl implements BazaarManager {
 			transaction.commit();
 			if (bidder == null) {
 				final BidderNotFoundException exception = new BidderNotFoundException(BazaarManagerImpl.MESSAGES
-						.findMessage(Messages.UNABLE_TO_FIND_BIDDER_MESSAGE_KEY, new Object[] { identifier }));
+						.findMessage(Messages.UNABLE_TO_FIND_BIDDER, new Object[] { identifier }));
 				BazaarManagerImpl.LOGGER.throwing("findBidder", exception);
 				throw exception;
 			}

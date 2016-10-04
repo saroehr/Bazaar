@@ -5,8 +5,21 @@
 	<display-name>BazaarWeb</display-name>
 	<servlet>
 		<description>JAX-RS Tools Generated - Do not modify</description>
-		<display-name>RestServlet</display-name>
-		<servlet-name>RestServlet</servlet-name>
+		<display-name>EJBRestServlet</display-name>
+		<servlet-name>EJBRestServlet</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>org.apache.bazaar.web.BazaarApplicationImpl</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<enabled>true</enabled>
+		<async-supported>false</async-supported>
+	</servlet>
+	<servlet>
+		<description>JAX-RS Tools Generated - Do not modify</description>
+		<display-name>CouchDBRestServlet</display-name>
+		<servlet-name>CouchDBRestServlet</servlet-name>
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>javax.ws.rs.Application</param-name>
@@ -17,7 +30,11 @@
 		<async-supported>false</async-supported>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>RestServlet</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<servlet-name>EJBRestServlet</servlet-name>
+		<url-pattern>/ejb/*</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
+		<servlet-name>CouchDBRestServlet</servlet-name>
+		<url-pattern>/couchdb/*</url-pattern>
 	</servlet-mapping>
 </web-app>

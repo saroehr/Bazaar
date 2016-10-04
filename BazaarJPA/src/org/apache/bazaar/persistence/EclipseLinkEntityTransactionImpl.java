@@ -57,7 +57,7 @@ final class EclipseLinkEntityTransactionImpl extends AbstractEntityTransaction {
 			final Connection connection = this.getEntityManager().unwrap(Connection.class);
 			if (connection == null) {
 				throw new EntityTransactionException(EclipseLinkEntityTransactionImpl.MESSAGES
-						.findMessage(Messages.TRANSACTION_FAILURE_MESSAGE_KEY));
+						.findMessage(Messages.TRANSACTION_FAILURE));
 			}
 			blob = connection.createBlob();
 		}

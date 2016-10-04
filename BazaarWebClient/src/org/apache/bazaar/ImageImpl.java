@@ -12,7 +12,7 @@ import java.io.InputStream;
  * ImageImpl implements Image to
  * provide a concrete implementation
  */
-final class ImageImpl implements Image {
+public final class ImageImpl implements Image {
 	// declare members
 	private static final long serialVersionUID = -557405116691620796L;
 
@@ -74,6 +74,7 @@ final class ImageImpl implements Image {
 	 * Sets image
 	 * 
 	 * @param inputStream The inputStream to read from
+	 * @throws BazaarException if the operation could not be completed
 	 */
 	void setImage(final InputStream inputStream) throws BazaarException {
 		final ByteArrayInputStream inputStream1 = new ByteArrayInputStream(this.image);

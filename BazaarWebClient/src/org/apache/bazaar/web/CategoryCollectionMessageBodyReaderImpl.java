@@ -23,17 +23,22 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.Provider;
 
 import org.apache.bazaar.Category;
 
 /**
  * CategoryCollectionMessageBodyReaderImpl
  * 
- * @param <E> The collection element type
+ * @param <E>
+ *            The collection element type
  */
+@Provider
+@Consumes(value = MediaType.APPLICATION_JSON)
 public final class CategoryCollectionMessageBodyReaderImpl<E extends Category>
 		implements CollectionMessageBodyReader<E> {
 
@@ -52,7 +57,6 @@ public final class CategoryCollectionMessageBodyReaderImpl<E extends Category>
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyReader#isReadable(java.lang.Class,
 	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType)
@@ -63,7 +67,7 @@ public final class CategoryCollectionMessageBodyReaderImpl<E extends Category>
 		boolean readable = false;
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (type instanceof ParameterizedType) {
-				if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Category.class)) {
+				if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Category.class)) {
 					readable = true;
 				}
 			}
@@ -73,7 +77,6 @@ public final class CategoryCollectionMessageBodyReaderImpl<E extends Category>
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyReader#readFrom(java.lang.Class,
 	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType, javax.ws.rs.core.MultivaluedMap,
@@ -86,15 +89,15 @@ public final class CategoryCollectionMessageBodyReaderImpl<E extends Category>
 			throws IOException, WebApplicationException {
 		final Set<Category> categories;
 		try (final BufferedReader reader = new BufferedReader(
-				new InputStreamReader(inputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
+				new InputStreamReader(inputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING))) {
 			final JsonArray jsonArray = Json.createReader(reader).readObject().getJsonArray(JsonKeys.CATEGORIES);
 			categories = new HashSet<Category>(jsonArray.size());
 			for (final Iterator<JsonValue> iterator = jsonArray.iterator(); iterator.hasNext();) {
-				final JsonObject jsonObject1 = (JsonObject)iterator.next();
+				final JsonObject jsonObject1 = (JsonObject) iterator.next();
 				categories.add(CategoryMessageBodyReaderImpl.read(jsonObject1));
 			}
 		}
-		return (Collection<E>)Collections.unmodifiableSet(categories);
+		return (Collection<E>) Collections.unmodifiableSet(categories);
 	}
 
 }

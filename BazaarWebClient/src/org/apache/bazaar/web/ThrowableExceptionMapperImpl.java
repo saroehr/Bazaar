@@ -75,12 +75,12 @@ public final class ThrowableExceptionMapperImpl<T extends Throwable> implements 
 		if ((exception.getCause() != null)
 				&& PersistableNotFoundException.class.isAssignableFrom(exception.getCause().getClass())) {
 			response = Response.status(Status.NOT_FOUND).language(Locale.getDefault())
-					.encoding(org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING)
+					.encoding(org.apache.bazaar.config.Configuration.DEFAULT_ENCODING)
 					.type(MediaType.APPLICATION_JSON).entity(writer.toString()).build();
 		}
 		else {
 			response = Response.status(Status.INTERNAL_SERVER_ERROR).language(Locale.getDefault())
-					.encoding(org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING)
+					.encoding(org.apache.bazaar.config.Configuration.DEFAULT_ENCODING)
 					.type(MediaType.APPLICATION_JSON).entity(writer.toString()).build();
 		}
 		return response;

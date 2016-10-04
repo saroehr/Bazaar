@@ -22,9 +22,9 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 /**
- * ThrowableMessageBodyWriterImpl implements MessageBodyWriter to provide
- * an implementation for writing error json returns
- * 
+ * ThrowableMessageBodyWriterImpl implements MessageBodyWriter to provide an
+ * implementation for writing error json returns
+ *
  * @param <T> The type parameters
  */
 @Provider
@@ -46,7 +46,6 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyWriter#getSize(java.lang.Object,
 	 * java.lang.Class, java.lang.reflect.Type,
 	 * java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType)
@@ -59,7 +58,6 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyWriter#isWriteable(java.lang.Class,
 	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType)
@@ -68,8 +66,7 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 	public boolean isWriteable(final Class<?> type, final Type genericType, final Annotation[] annotations,
 			final MediaType mediaType) {
 		boolean writeable = false;
-		if (// MediaType.APPLICATION_JSON_TYPE.equals(mediaType) &&
-		Throwable.class.isAssignableFrom(type)) {
+		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Throwable.class.isAssignableFrom(type)) {
 			writeable = true;
 		}
 		return writeable;
@@ -78,7 +75,6 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.apache.bazaar.web.AbstractMessageBodyWriter#writeTo(java.lang.Object,
 	 * java.lang.Class, java.lang.reflect.Type,
@@ -90,8 +86,8 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 			final MediaType mediaType, final MultivaluedMap<String, Object> map, final OutputStream outputStream)
 			throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(outputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
-			final JsonGenerator jsonGenerator = Json.createGenerator(writer);
+				new OutputStreamWriter(outputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING));
+				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.writeStartObject(JsonKeys.THROWABLE);
 			jsonGenerator.write(JsonKeys.CLASS, object.getClass().getName());
@@ -111,18 +107,10 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 				jsonGenerator.write(JsonKeys.NATIVE, stackTraceElement.isNativeMethod());
 				jsonGenerator.writeEnd();
 			}
-			// final Throwable parent = this.object;
-			// final Throwable cause = this.object.getCause();
-			// while (cause != null) {
-			// this.object = (T)cause;
-			// this.writeObject(writer);
-			// this.object = (T)parent;
-			// }
 			jsonGenerator.writeEnd();
 			jsonGenerator.writeEnd();
 			jsonGenerator.writeEnd();
 			jsonGenerator.flush();
-			jsonGenerator.close();
 		}
 
 	}

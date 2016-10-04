@@ -13,7 +13,7 @@ import org.apache.bazaar.logging.Logger;
  * NameImpl implements {@link Name} to provide
  * a concrete implementation.
  */
-final class NameImpl implements Name {
+public final class NameImpl implements Name {
 
 	// declare members
 

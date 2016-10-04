@@ -5,6 +5,15 @@
  */
 package org.apache.bazaar.web.config;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.Properties;
+
+import javax.validation.constraints.NotNull;
+
 import org.apache.bazaar.Bazaar;
 import org.apache.bazaar.Bid;
 import org.apache.bazaar.Bidder;
@@ -34,63 +43,35 @@ import org.apache.bazaar.web.ThrowableMessageBodyReaderImpl;
 import org.apache.bazaar.web.ThrowableMessageBodyWriterImpl;
 
 /**
- * Configuration extends Configuration and declares the methods
- * an implementation must provide
+ * Configuration extends Configuration and declares the methods an
+ * implementation must provide
  */
-public final class Configuration extends org.apache.bazaar.config.Configuration {
+public class Configuration extends org.apache.bazaar.config.Configuration {
 
 	// declare members
 
 	/**
-	 * Default encoding of UTF-8
-	 * UTF-8 encoding string
-	 */
-	public static final String DEFAULT_ENCODING = "UTF-8";
-
-	/**
-	 * The key for retrieval of the ROOT Category
-	 * name value
-	 */
-	public static final String ROOT_CATEGORY_NAME = "org.apache.bazaar.Category.rootcategoryname";
-
-	/**
-	 * The key for retrieval of the ROOT Category
-	 * description value
-	 */
-	public static final String ROOT_CATEGORY_DESCRIPTION = "org.apache.bazaar.Category.rootcategorydescription";
-
-	/**
-	 * Key for lookup of unsupported method message
-	 */
-	public static final String UNSUPPORTED_METHOD_MESSAGE = "org.apache.bazaar.RestWebService.unsupportedmethod";
-
-	/**
-	 * The key for retrieval of the {@link Bazaar} web service
-	 * url value
+	 * The key for retrieval of the {@link Bazaar} web service url value
 	 */
 	public static final String BAZAAR_REST_WEB_SERVICE_URL = Bazaar.class.getName() + "." + "restwebservice.url";
 
 	/**
-	 * The key for retrieval of the {@link Item} web service
-	 * url value
+	 * The key for retrieval of the {@link Item} web service url value
 	 */
 	public static final String ITEM_REST_WEB_SERVICE_URL = Item.class.getName() + "." + "restwebservice.url";
 
 	/**
-	 * The key for retrieval of the {@link Category} web service
-	 * url value
+	 * The key for retrieval of the {@link Category} web service url value
 	 */
 	public static final String CATEGORY_REST_WEB_SERVICE_URL = Category.class.getName() + "." + "restwebservice.url";
 
 	/**
-	 * The key for retrieval of the {@link Bidder} web service
-	 * url value
+	 * The key for retrieval of the {@link Bidder} web service url value
 	 */
 	public static final String BIDDER_REST_WEB_SERVICE_URL = Bidder.class.getName() + "." + "restwebservice.url";
 
 	/**
-	 * The key for retrieval of the {@link Bid} web service
-	 * url value
+	 * The key for retrieval of the {@link Bid} web service url value
 	 */
 	public static final String BID_REST_WEB_SERVICE_URL = Bid.class.getName() + "." + "restwebservice.url";
 
@@ -109,15 +90,43 @@ public final class Configuration extends org.apache.bazaar.config.Configuration 
 			BidCollectionMessageBodyReaderImpl.class, BidCollectionMessageBodyWriterImpl.class,
 			ThrowableMessageBodyReaderImpl.class, ThrowableMessageBodyWriterImpl.class };
 
+	protected static final Properties PROPERTIES;
+
+	static {
+		try (final InputStream inputStream = Configuration.class
+				.getResourceAsStream("/org/apache/bazaar/web/config/configuration.properties")) {
+			if (inputStream == null) {
+				throw new ExceptionInInitializerError();
+			}
+			PROPERTIES = new Properties(org.apache.bazaar.config.Configuration.PROPERTIES);
+			Configuration.PROPERTIES.load(new BufferedReader(new InputStreamReader(inputStream,
+					Charset.forName(org.apache.bazaar.config.Configuration.DEFAULT_ENCODING))));
+		}
+		catch (final IOException exception) {
+			throw new ExceptionInInitializerError(exception);
+		}
+	}
+
 	// declare constructors
 
 	/**
 	 * Constructor for Configuration
+	 *
+	 * @param properties The configuration properties
 	 */
-	private Configuration() {
-		super();
+	protected Configuration(@NotNull final Properties properties) {
+		super(properties);
 	}
 
 	// declare methods
+
+	/**
+	 * Factory method for obtaining instance
+	 *
+	 * @return Instance of configuration
+	 */
+	public static @NotNull org.apache.bazaar.config.Configuration newInstance() {
+		return new Configuration(Configuration.PROPERTIES);
+	}
 
 }

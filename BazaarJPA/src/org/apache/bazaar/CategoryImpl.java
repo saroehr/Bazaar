@@ -24,10 +24,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
 import org.apache.bazaar.persistence.EntityManagerFactory;
+import org.apache.bazaar.persistence.config.Configuration;
 
 /**
  * CategoryImpl implements {@link Category} to provide a concrete
@@ -201,10 +201,10 @@ public class CategoryImpl extends AbstractPersistable implements Category {
 		// check for this equals parent and fail if not
 		// root category
 		if (this.equals(this.parent) && !this.getIdentifier().getValue()
-				.equals(Configuration.newInstance().getProperty(Configuration.ROOT_CATEGORY_IDENTIFIER)) ? true
+				.equals(Configuration.newInstance().getProperty(org.apache.bazaar.config.Configuration.ROOT_CATEGORY_IDENTIFIER)) ? true
 						: false) {
 			throw new BazaarException(
-					CategoryImpl.MESSAGES.findMessage(Messages.UNABLE_TO_CREATE_CATEGORY_MESSAGE_KEY));
+					CategoryImpl.MESSAGES.findMessage(Messages.UNABLE_TO_CREATE_CATEGORY));
 		}
 		super.persist();
 	}

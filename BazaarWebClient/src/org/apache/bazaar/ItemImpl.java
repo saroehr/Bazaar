@@ -15,15 +15,15 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.web.RequestParameters;
+import org.apache.bazaar.web.config.Configuration;
 
 /**
- * ItemImpl extends AbstractPersistable and implements {@link Item} to provide
- * a concrete implementation
+ * ItemImpl extends AbstractPersistable and implements {@link Item} to provide a
+ * concrete implementation
  */
-final class ItemImpl extends AbstractPersistable implements Item {
+public class ItemImpl extends AbstractPersistable implements Item {
 
 	private String name;
 	private String description;
@@ -42,7 +42,7 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/**
 	 * Constructor for ItemImpl
-	 * 
+	 *
 	 * @param name The name for item
 	 * @param description The description for item
 	 * @param category The category for item
@@ -56,7 +56,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Item#getName()
 	 */
 	@Override
@@ -66,7 +65,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Item#setName(java.lang.String)
 	 */
 	@Override
@@ -76,7 +74,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Item#getDescription()
 	 */
 	@Override
@@ -86,7 +83,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Item#setDescription(java.lang.String)
 	 */
 	@Override
@@ -96,7 +92,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Item#getCategory()
 	 */
 	@Override
@@ -106,7 +101,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Item#setCategory(org.apache.bazaar.Category)
 	 */
 	@Override
@@ -116,7 +110,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Item#addImage(org.apache.bazaar.Image)
 	 */
 	@Override
@@ -126,7 +119,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Item#getImages()
 	 */
 	@Override
@@ -136,7 +128,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#persist()
 	 */
 	@Override
@@ -149,9 +140,8 @@ final class ItemImpl extends AbstractPersistable implements Item {
 		catch (final ItemNotFoundException exception) {
 			persisted = false;
 		}
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.ITEM_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
 				.queryParam(RequestParameters.NAME, this.name)
 				.queryParam(RequestParameters.DESCRIPTION, this.description)
@@ -171,15 +161,13 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#delete()
 	 */
 	@Override
 	public void delete() throws BazaarException {
 		super.delete();
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.ITEM_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Item>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
@@ -187,7 +175,6 @@ final class ItemImpl extends AbstractPersistable implements Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

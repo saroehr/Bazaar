@@ -6,10 +6,9 @@
 package org.apache.bazaar.web;
 
 /**
- * JsonKeys encapsulates the Json attribute
- * key names
+ * JsonKeys encapsulates the Json attribute key names
  */
-final class JsonKeys {
+public final class JsonKeys {
 
 	// declare members
 
@@ -54,6 +53,10 @@ final class JsonKeys {
 	static final String FILE = "file";
 	static final String NATIVE = "native";
 	static final String STACK = "stack";
+	/**
+	 * Key for Json attribute "ok"
+	 */
+	public static final String OK = "ok";
 
 	// declare constructors
 

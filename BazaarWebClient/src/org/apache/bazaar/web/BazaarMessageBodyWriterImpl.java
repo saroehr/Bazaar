@@ -27,10 +27,11 @@ import javax.ws.rs.ext.Provider;
 import org.apache.bazaar.Bazaar;
 
 /**
- * BazaarMessageBodyWriterImpl extends AbstractMessageBodyWriter to provide
- * an implementation for {@link Bazaar} instances
+ * BazaarMessageBodyWriterImpl extends AbstractMessageBodyWriter to provide an
+ * implementation for {@link Bazaar} instances
  * 
- * @param <T> The Type parameter
+ * @param <T>
+ *            The Type parameter
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
@@ -50,13 +51,13 @@ public final class BazaarMessageBodyWriterImpl<T extends Bazaar> implements Mess
 	// declare methods
 
 	/**
-	 * Utility method writes Bazaar
-	 * instance to JsonObject
+	 * Utility method writes Bazaar instance to JsonObject
 	 * 
-	 * @param bidder The Bazaar instance
+	 * @param bidder
+	 *            The Bazaar instance
 	 * @return The JsonObject representing bazaar
-	 * @throws RestWebServiceException if the operation could
-	 *         not be completed
+	 * @throws RestWebServiceException
+	 *             if the operation could not be completed
 	 */
 	static JsonObject write(@NotNull final Bazaar bazaar) throws RestWebServiceException {
 		final JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
@@ -88,8 +89,7 @@ public final class BazaarMessageBodyWriterImpl<T extends Bazaar> implements Mess
 	 * 
 	 * @see
 	 * org.apache.bazaar.web.AbstractMessageBodyWriter#isWriteable(java.lang.
-	 * Class,
-	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
+	 * Class, java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType)
 	 */
 	@Override
@@ -116,13 +116,12 @@ public final class BazaarMessageBodyWriterImpl<T extends Bazaar> implements Mess
 			final MediaType mediaType, final MultivaluedMap<String, Object> map, final OutputStream outputStream)
 			throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(outputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
-			final JsonGenerator jsonGenerator = Json.createGenerator(writer);
+				new OutputStreamWriter(outputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING));
+				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.write(JsonKeys.BAZAAR, BazaarMessageBodyWriterImpl.write(object));
 			jsonGenerator.writeEnd();
 			jsonGenerator.flush();
-			jsonGenerator.close();
 		}
 	}
 

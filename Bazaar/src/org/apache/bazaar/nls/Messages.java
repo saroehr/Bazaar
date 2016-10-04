@@ -19,7 +19,9 @@ import org.apache.bazaar.Bazaar;
 import org.apache.bazaar.Bid;
 import org.apache.bazaar.Bidder;
 import org.apache.bazaar.Category;
+import org.apache.bazaar.Identifiable;
 import org.apache.bazaar.Item;
+import org.apache.bazaar.Versionable;
 
 /**
  * Messages provides a utility class for retrieving
@@ -45,62 +47,68 @@ public final class Messages {
 	}
 
 	/**
+	 * Key for lookup of unable to find identifiable message
+	 */
+	public static final String UNABLE_TO_FIND_IDENTIFIABLE = Identifiable.class.getName() + "."
+			+ "unabletofindidentifiable";
+
+	/**
+	 * Key for lookup of unable to find versionable message
+	 */
+	public static final String UNABLE_TO_FIND_VERSIONABLE = Versionable.class.getName() + "."
+			+ "unabletofindversionable";
+
+	/**
 	 * Key for lookup of unable to find category message
 	 */
-	public static final String UNABLE_TO_FIND_CATEGORY_MESSAGE_KEY = Category.class.getName() + "."
-			+ "unabletofindcategory";
+	public static final String UNABLE_TO_FIND_CATEGORY = Category.class.getName() + "." + "unabletofindcategory";
 	/**
 	 * Key for lookup of unable to find item message
 	 */
-	public static final String UNABLE_TO_FIND_ITEM_MESSAGE_KEY = Item.class.getName() + "." + "unabletofinditem";
+	public static final String UNABLE_TO_FIND_ITEM = Item.class.getName() + "." + "unabletofinditem";
 
 	/**
 	 * Key for lookup of unable to find bidder message
 	 */
-	public static final String UNABLE_TO_FIND_BIDDER_MESSAGE_KEY = Bidder.class.getName() + "." + "unabletofindbidder";
+	public static final String UNABLE_TO_FIND_BIDDER = Bidder.class.getName() + "." + "unabletofindbidder";
 
 	/**
 	 * Key for lookup of unable to find bid message
 	 */
-	public static final String UNABLE_TO_FIND_BID_MESSAGE_KEY = Bid.class.getName() + "." + "unabletofindbid";
+	public static final String UNABLE_TO_FIND_BID = Bid.class.getName() + "." + "unabletofindbid";
 	/**
 	 * Key for lookup of unable to delete bidder due to auction found
 	 * message
 	 */
-	public static final String UNABLE_TO_DELETE_BIDDER_AUCTION_FOUND_MESSAGE_KEY = Bidder.class.getName() + "."
+	public static final String UNABLE_TO_DELETE_BIDDER_AUCTION_FOUND = Bidder.class.getName() + "."
 			+ "auctionfoundexception";
 	/**
-	 * Key for lookup of unable to find auction message
+	 * Key for lookup of unable to find bazaar message
 	 */
-	public static final String UNABLE_TO_FIND_AUCTION_MESSAGE_KEY = Bazaar.class.getName() + "."
-			+ "unabletofindauction";
+	public static final String UNABLE_TO_FIND_BAZAAR = Bazaar.class.getName() + "." + "unabletofindauction";
 	/**
 	 * Key for lookup of auction expired message
 	 */
-	public static final String AUCTION_HAS_EXPIRED_MESSAGE_KEY = Bazaar.class.getName() + "."
-			+ "auctionexpiredexception";
+	public static final String BAZAAR_HAS_EXPIRED = Bazaar.class.getName() + "." + "auctionexpiredexception";
 	/**
 	 * Key for lookup of auction invalid end date message
 	 */
-	public static final String AUCTION_ENDDATE_INVALID_MESSAGE_KEY = Bazaar.class.getName() + "."
-			+ "invalidenddateexception";
+	public static final String BAZAAR_ENDDATE_INVALID = Bazaar.class.getName() + "." + "invalidenddateexception";
 
 	/**
 	 * Key for lookup of invalid category message
 	 */
-	public static final String UNABLE_TO_CREATE_CATEGORY_MESSAGE_KEY = Category.class.getName() + "."
-			+ "unabletocreatecategory";
+	public static final String UNABLE_TO_CREATE_CATEGORY = Category.class.getName() + "." + "unabletocreatecategory";
 
 	/**
 	 * Key for lookup of transaction failure message
 	 */
-	public static final String TRANSACTION_FAILURE_MESSAGE_KEY = "org.apache.bazaar.jpa.EntityManager" + "."
-			+ "failure";
+	public static final String TRANSACTION_FAILURE = "org.apache.bazaar.jpa.EntityManager" + "." + "failure";
 
 	/**
 	 * Key for lookup of unsupported method exception message
 	 */
-	public static final String UNSUPPORTED_METHOD_MESSAGE_KEY = "org.apache.bazaar.web.RestWebService.unsupportedmethod";
+	public static final String UNSUPPORTED_METHOD = "org.apache.bazaar.web.RestWebService.unsupportedmethod";
 
 	private final ResourceBundle resourceBundle;
 

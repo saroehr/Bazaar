@@ -17,9 +17,11 @@ import java.util.Collection;
 
 import javax.json.Json;
 import javax.json.stream.JsonGenerator;
+import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.Provider;
 
 import org.apache.bazaar.Bid;
 import org.apache.bazaar.Bidder;
@@ -27,8 +29,11 @@ import org.apache.bazaar.Bidder;
 /**
  * BidderCollectionMessageBodyWriterImpl
  * 
- * @param <E> The collection element type
+ * @param <E>
+ *            The collection element type
  */
+@Provider
+@Produces(value = MediaType.APPLICATION_JSON)
 public final class BidderCollectionMessageBodyWriterImpl<E extends Bidder> implements CollectionMessageBodyWriter<E> {
 
 	// declare members
@@ -58,7 +63,7 @@ public final class BidderCollectionMessageBodyWriterImpl<E extends Bidder> imple
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 				if (type instanceof ParameterizedType) {
-					if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Bid.class)) {
+					if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Bid.class)) {
 						writeable = true;
 					}
 				}
@@ -80,8 +85,8 @@ public final class BidderCollectionMessageBodyWriterImpl<E extends Bidder> imple
 			final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String, Object> map,
 			final OutputStream outputStream) throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(outputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
-			final JsonGenerator jsonGenerator = Json.createGenerator(writer);
+				new OutputStreamWriter(outputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING));
+				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.writeStartArray(JsonKeys.BIDDERS);
 			for (final Bidder bidder : collection) {
@@ -90,7 +95,6 @@ public final class BidderCollectionMessageBodyWriterImpl<E extends Bidder> imple
 			jsonGenerator.writeEnd();
 			jsonGenerator.writeEnd();
 			jsonGenerator.flush();
-			jsonGenerator.close();
 		}
 	}
 

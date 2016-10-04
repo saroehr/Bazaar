@@ -18,11 +18,10 @@ import org.apache.bazaar.web.config.Configuration;
 import org.glassfish.jersey.CommonProperties;
 
 /**
- * BazaarApplicationImpl extends Application to
- * provide a JAX-RS Application instance for the
- * Bazaar
+ * BazaarApplicationImpl extends Application to provide a JAX-RS Application
+ * instance for the Bazaar
  */
-// @ApplicationPath("/")
+// @ApplicationPath("/ejb")
 public final class BazaarApplicationImpl extends Application {
 
 	// declare members
@@ -62,7 +61,6 @@ public final class BazaarApplicationImpl extends Application {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.core.Application#getClasses()
 	 */
 	@Override
@@ -72,7 +70,6 @@ public final class BazaarApplicationImpl extends Application {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.core.Application#getProperties()
 	 */
 	@Override

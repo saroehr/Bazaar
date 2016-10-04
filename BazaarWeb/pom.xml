@@ -52,14 +52,14 @@
 			<artifactId>Bazaar</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
+				<dependency>
 			<groupId>org.apache.bazaar</groupId>
-			<artifactId>BazaarEJB</artifactId>
+			<artifactId>BazaarWebClient</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.bazaar</groupId>
-			<artifactId>BazaarWebClient</artifactId>
+			<artifactId>BazaarEJBClient</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

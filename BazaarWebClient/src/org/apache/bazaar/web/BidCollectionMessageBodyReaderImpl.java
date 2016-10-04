@@ -23,17 +23,22 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.Provider;
 
 import org.apache.bazaar.Bid;
 
 /**
  * BidCollectionMessageBodyReaderImpl
  * 
- * @param <E> The collection element type
+ * @param <E>
+ *            The collection element type
  */
+@Provider
+@Consumes(value = MediaType.APPLICATION_JSON)
 public final class BidCollectionMessageBodyReaderImpl<E extends Bid> implements CollectionMessageBodyReader<E> {
 
 	// declare members
@@ -51,7 +56,6 @@ public final class BidCollectionMessageBodyReaderImpl<E extends Bid> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyReader#isReadable(java.lang.Class,
 	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType)
@@ -62,7 +66,7 @@ public final class BidCollectionMessageBodyReaderImpl<E extends Bid> implements 
 		boolean readable = false;
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (type instanceof ParameterizedType) {
-				if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Bid.class)) {
+				if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Bid.class)) {
 					readable = true;
 				}
 			}
@@ -72,7 +76,6 @@ public final class BidCollectionMessageBodyReaderImpl<E extends Bid> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyReader#readFrom(java.lang.Class,
 	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType, javax.ws.rs.core.MultivaluedMap,
@@ -85,15 +88,15 @@ public final class BidCollectionMessageBodyReaderImpl<E extends Bid> implements 
 			throws IOException, WebApplicationException {
 		final Set<Bid> bids;
 		try (final BufferedReader reader = new BufferedReader(
-				new InputStreamReader(inputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
+				new InputStreamReader(inputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING))) {
 			final JsonArray jsonArray = Json.createReader(reader).readObject().getJsonArray(JsonKeys.BIDS);
 			bids = new HashSet<Bid>(jsonArray.size());
 			for (final Iterator<JsonValue> iterator = jsonArray.iterator(); iterator.hasNext();) {
-				final JsonObject jsonObject1 = (JsonObject)iterator.next();
+				final JsonObject jsonObject1 = (JsonObject) iterator.next();
 				bids.add(BidMessageBodyReaderImpl.read(jsonObject1));
 			}
 		}
-		return (Collection<E>)Collections.unmodifiableSet(bids);
+		return (Collection<E>) Collections.unmodifiableSet(bids);
 	}
 
 }

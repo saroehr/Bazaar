@@ -116,7 +116,7 @@ public final class BazaarMessageBodyReaderImpl<T extends Bazaar> implements Mess
 			throws IOException, WebApplicationException {
 		final Bazaar bazaar;
 		try (final BufferedReader reader = new BufferedReader(
-				new InputStreamReader(inputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
+				new InputStreamReader(inputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING))) {
 			final JsonObject jsonObject = Json.createReader(reader).readObject().getJsonObject(JsonKeys.BAZAAR);
 			bazaar = BazaarMessageBodyReaderImpl.read(jsonObject);
 		}

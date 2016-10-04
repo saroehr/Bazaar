@@ -19,8 +19,6 @@ import org.apache.bazaar.State;
 import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 /**
  * BidderTests provides JUnit tests for {@link Bidder}
  */
@@ -67,7 +65,7 @@ public final class BidderTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -111,7 +109,7 @@ public final class BidderTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

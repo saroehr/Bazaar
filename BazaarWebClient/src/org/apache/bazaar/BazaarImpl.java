@@ -16,15 +16,15 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.bazaar.config.Configuration;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.web.RequestParameters;
+import org.apache.bazaar.web.config.Configuration;
 
 /**
- * BazaarImpl extends AbstractPersistable and implements Bazaar
- * to provide a concrete implementation
+ * BazaarImpl extends AbstractPersistable and implements Bazaar to provide a
+ * concrete implementation
  */
-final class BazaarImpl extends AbstractPersistable implements Bazaar {
+public class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	// declare members
 	private Item item;
@@ -37,13 +37,13 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 	/**
 	 * Constructor for BazaarImpl
 	 */
-	BazaarImpl() {
+	protected BazaarImpl() {
 		super();
 	}
 
 	/**
 	 * Constructor for BazaarImpl
-	 * 
+	 *
 	 * @param item The item for bazaar
 	 * @param startDate The start date for bazaar
 	 * @param endDate the end date for bazaar
@@ -57,7 +57,7 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/**
 	 * Constructor for BazaarImpl
-	 * 
+	 *
 	 * @param item The item for bazaar
 	 * @param startDate The start date for bazaar
 	 * @param endDate the end date for bazaar
@@ -76,7 +76,6 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bazaar#newBid(org.apache.bazaar.Bidder,
 	 * java.lang.Double)
 	 */
@@ -87,7 +86,6 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bazaar#getStartDate()
 	 */
 	@Override
@@ -97,7 +95,6 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bazaar#getEndDate()
 	 */
 	@Override
@@ -107,7 +104,6 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bazaar#getItem()
 	 */
 	@Override
@@ -117,7 +113,6 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bazaar#getReservePrice()
 	 */
 	@Override
@@ -127,15 +122,13 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bazaar#findBids(org.apache.bazaar.Bidder)
 	 */
 	@Override
 	public Set<Bid> findBids(final Bidder bidder) throws BazaarException {
 		final Set<Bid> bids;
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BID_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.BAZAAR, this.getIdentifier().getValue())
 				.queryParam(RequestParameters.BIDDER, bidder.getIdentifier().getValue());
 		bids = Collections.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bid>>() {
@@ -147,15 +140,13 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Bazaar#findAllBids()
 	 */
 	@Override
 	public Set<Bid> findAllBids() throws BazaarException {
 		final Set<Bid> bids;
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(org.apache.bazaar.config.Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BID_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.BAZAAR, this.getIdentifier().getValue());
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		bids = Collections.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bid>>() {
@@ -168,14 +159,12 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#persist()
 	 */
 	@Override
 	public void persist() throws BazaarException {
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BAZAAR_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
 				.queryParam(RequestParameters.ITEM, this.item.getIdentifier().getValue())
 				.queryParam(RequestParameters.START_DATE, this.startDate.getTimeInMillis())
@@ -189,15 +178,13 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#delete()
 	 */
 	@Override
 	public void delete() throws BazaarException {
 		super.delete();
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newClient()
-				.target(Configuration.newInstance()
-						.getProperty(org.apache.bazaar.web.config.Configuration.BAZAAR_REST_WEB_SERVICE_URL))
+		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+				.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Bazaar>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
@@ -205,7 +192,6 @@ final class BazaarImpl extends AbstractPersistable implements Bazaar {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.AbstractPersistable#toString()
 	 */
 	@Override

@@ -124,7 +124,7 @@ public final class CategoryMessageBodyReaderImpl<T extends Category> implements 
 			throws IOException, WebApplicationException {
 		final T category;
 		try (final BufferedReader reader = new BufferedReader(
-				new InputStreamReader(inputStream, org.apache.bazaar.web.config.Configuration.DEFAULT_ENCODING))) {
+				new InputStreamReader(inputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING))) {
 			final JsonObject jsonObject = Json.createReader(reader).readObject().getJsonObject(JsonKeys.CATEGORY);
 			category = (T)CategoryMessageBodyReaderImpl.read(jsonObject);
 		}

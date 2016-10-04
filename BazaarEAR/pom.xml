@@ -1,37 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.apache.bazaar</groupId>
+	<groupId>BazaarEAR</groupId>
 	<artifactId>BazaarEAR</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>ear</packaging>
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.bazaar</groupId>
-			<artifactId>Bazaar</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.bazaar</groupId>
-			<artifactId>BazaarJPA</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.bazaar</groupId>
-			<artifactId>BazaarEJB</artifactId>
-			<type>ejb</type>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.bazaar</groupId>
-			<artifactId>BazaarWeb</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<type>war</type>
-		</dependency>
-	</dependencies>
 	<build>
 		<sourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\</sourceDirectory>
-		<outputDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\bin</outputDirectory>
+		<scriptSourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\scripts</scriptSourceDirectory>
 		<resources>
 			<resource>
 				<directory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\lib</directory>
@@ -42,14 +18,33 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-ear-plugin</artifactId>
-				<version>2.10</version>
+				<version>2.10.1</version>
 				<configuration>
-					<earSourceDirectory>lib</earSourceDirectory>
-					<generateApplicationXml>false</generateApplicationXml>
-					<version>7</version>
+					<earSourceDirectory>EarContent</earSourceDirectory>
+					<version>6</version>
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<generateApplicationXml>true</generateApplicationXml>
+					<generateModuleId>true</generateModuleId>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+						<compress>true</compress>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.bazaar</groupId>
+			<artifactId>BazaarWeb</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.bazaar</groupId>
+			<artifactId>BazaarEJB</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>ejb</type>
+		</dependency>
+	</dependencies>
 </project>
