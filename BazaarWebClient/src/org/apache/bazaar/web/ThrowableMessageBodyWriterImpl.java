@@ -100,7 +100,7 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 				jsonGenerator.write(JsonKeys.CLASS,
 						stackTraceElement.getClassName() == null ? "null" : stackTraceElement.getClassName());
 				jsonGenerator.write(JsonKeys.METHOD,
-						stackTraceElement.getMethodName() == null ? "null" : stackTraceElement.getClassName());
+						stackTraceElement.getMethodName() == null ? "null" : stackTraceElement.getMethodName());
 				jsonGenerator.write(JsonKeys.FILE,
 						stackTraceElement.getFileName() == null ? "null" : stackTraceElement.getFileName());
 				jsonGenerator.write(JsonKeys.LINE, stackTraceElement.getLineNumber());

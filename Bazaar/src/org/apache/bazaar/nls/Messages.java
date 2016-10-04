@@ -24,8 +24,7 @@ import org.apache.bazaar.Item;
 import org.apache.bazaar.Versionable;
 
 /**
- * Messages provides a utility class for retrieving
- * localized messages.
+ * Messages provides a utility class for retrieving localized messages.
  */
 public final class Messages {
 
@@ -77,8 +76,7 @@ public final class Messages {
 	 */
 	public static final String UNABLE_TO_FIND_BID = Bid.class.getName() + "." + "unabletofindbid";
 	/**
-	 * Key for lookup of unable to delete bidder due to auction found
-	 * message
+	 * Key for lookup of unable to delete bidder due to auction found message
 	 */
 	public static final String UNABLE_TO_DELETE_BIDDER_AUCTION_FOUND = Bidder.class.getName() + "."
 			+ "auctionfoundexception";
@@ -108,7 +106,7 @@ public final class Messages {
 	/**
 	 * Key for lookup of unsupported method exception message
 	 */
-	public static final String UNSUPPORTED_METHOD = "org.apache.bazaar.web.RestWebService.unsupportedmethod";
+	public static final String UNSUPPORTED_METHOD = "org.apache.bazaar.unsupportedmethod";
 
 	private final ResourceBundle resourceBundle;
 
@@ -116,9 +114,8 @@ public final class Messages {
 
 	/**
 	 * Constructor for Messages
-	 * 
-	 * @param locale
-	 *        The Locale for bundle instance
+	 *
+	 * @param locale The Locale for bundle instance
 	 */
 	private Messages(final Locale locale) {
 		super();
@@ -129,9 +126,8 @@ public final class Messages {
 
 	/**
 	 * Factory method for obtaining instance.
-	 * 
-	 * @param locale
-	 *        The Locale for instance
+	 *
+	 * @param locale The Locale for instance
 	 * @return Instance of class
 	 */
 	public static Messages newInstance(final Locale locale) {
@@ -148,14 +144,12 @@ public final class Messages {
 	}
 
 	/**
-	 * Returns message instance for key. If no message for key
-	 * can be found, then the key itself is returned as the message.
-	 * This eliminates runtime exceptions if an incorrect key is specified.
-	 * 
-	 * @param key
-	 *        The key for message
-	 * @return The message for key or key value if no value for key can
-	 *         be found
+	 * Returns message instance for key. If no message for key can be found,
+	 * then the key itself is returned as the message. This eliminates runtime
+	 * exceptions if an incorrect key is specified.
+	 *
+	 * @param key The key for message
+	 * @return The message for key or key value if no value for key can be found
 	 */
 	public String findMessage(final String key) {
 		try {
@@ -168,14 +162,11 @@ public final class Messages {
 
 	/**
 	 * Returns formatted parameterized message instance for key. If no message
-	 * for key
-	 * can be found, then the key itself is returned as the message.
+	 * for key can be found, then the key itself is returned as the message.
 	 * This eliminates runtime exceptions if an incorrect key is specified
-	 * 
-	 * @param key
-	 *        The key for parameterized
-	 * @param parameters
-	 *        The parameter values for message
+	 *
+	 * @param key The key for parameterized
+	 * @param parameters The parameter values for message
 	 * @return The formatted parameterized message for key or key value if no
 	 *         value for key can be found
 	 */
