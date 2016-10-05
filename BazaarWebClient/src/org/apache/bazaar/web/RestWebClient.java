@@ -27,7 +27,7 @@ import org.glassfish.jersey.CommonProperties;
  * RestWebClient implements {@link Client} to provide a concrete implementation
  * for the repository.
  */
-public final class RestWebClient implements Client {
+public final class RestWebClient implements Client, AutoCloseable {
 
 	// declare members
 
@@ -69,7 +69,7 @@ public final class RestWebClient implements Client {
 
 	/**
 	 * Factory method for obtaining instance
-	 * 
+	 *
 	 * @param configuration the {@link Configuration} to use when creating
 	 *        client
 	 * @return Instance of RestWebClient

@@ -28,7 +28,7 @@ import javax.ws.rs.ext.Provider;
  * @param <T> The type parameters
  */
 @Provider
-@Produces(value = MediaType.APPLICATION_JSON)
+@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.TEXT_HTML })
 public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implements MessageBodyWriter<T> {
 
 	// declare members
@@ -66,7 +66,8 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 	public boolean isWriteable(final Class<?> type, final Type genericType, final Annotation[] annotations,
 			final MediaType mediaType) {
 		boolean writeable = false;
-		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Throwable.class.isAssignableFrom(type)) {
+		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) || MediaType.TEXT_HTML_TYPE.equals(mediaType)
+				|| MediaType.TEXT_PLAIN_TYPE.equals(mediaType) && Throwable.class.isAssignableFrom(type)) {
 			writeable = true;
 		}
 		return writeable;

@@ -33,7 +33,7 @@ import javax.ws.rs.ext.Provider;
  * @param <T> The Type parameter
  */
 @Provider
-@Consumes(value = { MediaType.TEXT_PLAIN, MediaType.TEXT_HTML, MediaType.APPLICATION_JSON })
+@Consumes(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.TEXT_HTML })
 public final class ThrowableMessageBodyReaderImpl<T extends Throwable> implements MessageBodyReader<T> {
 
 	// declare members
@@ -96,14 +96,6 @@ public final class ThrowableMessageBodyReaderImpl<T extends Throwable> implement
 				}
 				throwable.setStackTrace(stackTrace);
 			}
-			else if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
-				final Stream<String> stream = reader.lines();
-				final StringBuilder builder = new StringBuilder(5000);
-				for (final Iterator<String> iterator = stream.iterator(); iterator.hasNext();) {
-					builder.append(iterator.next());
-				}
-				throwable = (T)new RestWebServiceException(builder.toString());
-			}
 			else if (MediaType.TEXT_PLAIN_TYPE.equals(mediaType)) {
 				final Stream<String> stream = reader.lines();
 				final StringBuilder builder = new StringBuilder(5000);
@@ -112,6 +104,15 @@ public final class ThrowableMessageBodyReaderImpl<T extends Throwable> implement
 				}
 				throwable = (T)new RestWebServiceException(builder.toString());
 			}
+			else if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
+				final Stream<String> stream = reader.lines();
+				final StringBuilder builder = new StringBuilder(5000);
+				for (final Iterator<String> iterator = stream.iterator(); iterator.hasNext();) {
+					builder.append(iterator.next());
+				}
+				throwable = (T)new RestWebServiceException(builder.toString());
+			}
+
 			else {
 				throw new RestWebServiceException(); // TODO localize message
 			}

@@ -71,6 +71,7 @@ public final class HttpServletFilterImpl implements Filter {
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
 			throws IOException, ServletException {
+		HttpServletFilterImpl.LOGGER.entering("doFilter", new Object[] { request, response, chain });
 		chain.doFilter(request, response);
 	}
 
@@ -80,45 +81,88 @@ public final class HttpServletFilterImpl implements Filter {
 	 */
 	@Override
 	public void init(final FilterConfig config) throws ServletException {
-		// initialize the couchdb database
-		try {
-			final RestWebClient client = RestWebClient.newInstance();
-			final WebTarget webTarget = client
-					.target(Configuration.newInstance().getProperty(Configuration.COUCHDB_URL))
-					.path(Bazaar.class.getName());
+		HttpServletFilterImpl.LOGGER.entering("init", new Object[] { config });
+		try (final RestWebClient client = RestWebClient.newInstance();) {
+			if (Boolean.TRUE.equals(Boolean
+					.valueOf(Configuration.newInstance().getProperty(Configuration.INITIALIZE_COUCHDB)))) {
+				// delete the couchdb datastores
+				WebTarget webTarget = client
+						.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_COUCHDB_URL));
+				Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke();
+				if (Status.OK.equals(response.getStatus()) || Status.NOT_FOUND.equals(response.getStatus())) {
+					HttpServletFilterImpl.LOGGER
+							.config("CouchDB " + Bazaar.class.getSimpleName() + " database deleted");
+				}
+				webTarget = client
+						.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_COUCHDB_URL));
+				response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke();
+				if (Status.OK.equals(response.getStatus()) || Status.NOT_FOUND.equals(response.getStatus())) {
+					HttpServletFilterImpl.LOGGER
+							.config("CouchDB " + Category.class.getSimpleName() + " database deleted");
+				}
+				webTarget = client
+						.target(Configuration.newInstance().getProperty(Configuration.ITEM_COUCHDB_URL));
+				response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke();
+				if (Status.OK.equals(response.getStatus()) || Status.NOT_FOUND.equals(response.getStatus())) {
+					HttpServletFilterImpl.LOGGER.config("CouchDB " + Item.class.getSimpleName() + " database deleted");
+				}
+				webTarget = client
+						.target(Configuration.newInstance().getProperty(Configuration.BIDDER_COUCHDB_URL));
+				response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke();
+				if (Status.OK.equals(response.getStatus()) || Status.NOT_FOUND.equals(response.getStatus())) {
+					HttpServletFilterImpl.LOGGER
+							.config("CouchDB " + Bidder.class.getSimpleName() + " database deleted");
+				}
+				webTarget = client
+						.target(Configuration.newInstance().getProperty(Configuration.BID_COUCHDB_URL));
+				response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke();
+				if (Status.OK.equals(response.getStatus()) || Status.NOT_FOUND.equals(response.getStatus())) {
+					HttpServletFilterImpl.LOGGER.config("CouchDB " + Bid.class.getSimpleName() + " database deleted");
+				}
+			}
+			// initialize the couchdb datastores
+			WebTarget webTarget = client
+					.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_COUCHDB_URL));
 			Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE)
-					.buildPut(Entity.json(Bazaar.class.getName())).invoke();
-			if (Status.OK.equals(response.getStatus()) || Status.PRECONDITION_FAILED.equals(response.getStatus())) {
-				HttpServletFilterImpl.LOGGER.config("CouchDB " + Bazaar.class.getName() + " database created");
+					.buildPut(Entity.json(Bazaar.class.getSimpleName())).invoke();
+			if (Status.CREATED.equals(response.getStatus())
+					|| Status.PRECONDITION_FAILED.equals(response.getStatus())) {
+				HttpServletFilterImpl.LOGGER.config("CouchDB " + Bazaar.class.getSimpleName() + " database created");
 			}
-			webTarget.path(Category.class.getName());
+			webTarget = client
+					.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_COUCHDB_URL));
 			response = webTarget.request(MediaType.APPLICATION_JSON_TYPE)
-					.buildPut(Entity.json(Category.class.getName())).invoke();
-			if (Status.OK.equals(response.getStatus()) || Status.PRECONDITION_FAILED.equals(response.getStatus())) {
-				HttpServletFilterImpl.LOGGER.config("CouchDB " + Category.class.getName() + " database created");
+					.buildPut(Entity.json(Category.class.getSimpleName())).invoke();
+			if (Status.CREATED.equals(response.getStatus())
+					|| Status.PRECONDITION_FAILED.equals(response.getStatus())) {
+				HttpServletFilterImpl.LOGGER.config("CouchDB " + Category.class.getSimpleName() + " database created");
 			}
-			webTarget.path(Item.class.getName());
-			response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildPut(Entity.json(Item.class.getName()))
-					.invoke();
-			if (Status.OK.equals(response.getStatus()) || Status.PRECONDITION_FAILED.equals(response.getStatus())) {
-				HttpServletFilterImpl.LOGGER.config("CouchDB " + Item.class.getName() + " database created");
+			webTarget = client.target(Configuration.newInstance().getProperty(Configuration.ITEM_COUCHDB_URL));
+			response = webTarget.request(MediaType.APPLICATION_JSON_TYPE)
+					.buildPut(Entity.json(Item.class.getSimpleName())).invoke();
+			if (Status.CREATED.equals(response.getStatus())
+					|| Status.PRECONDITION_FAILED.equals(response.getStatus())) {
+				HttpServletFilterImpl.LOGGER.config("CouchDB " + Item.class.getSimpleName() + " database created");
 			}
-			webTarget.path(Bidder.class.getName());
-			response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildPut(Entity.json(Bidder.class.getName()))
-					.invoke();
-			if (Status.OK.equals(response.getStatus()) || Status.PRECONDITION_FAILED.equals(response.getStatus())) {
-				HttpServletFilterImpl.LOGGER.config("CouchDB " + Bidder.class.getName() + " database created");
+			webTarget = client
+					.target(Configuration.newInstance().getProperty(Configuration.BIDDER_COUCHDB_URL));
+			response = webTarget.request(MediaType.APPLICATION_JSON_TYPE)
+					.buildPut(Entity.json(Bidder.class.getSimpleName())).invoke();
+			if (Status.CREATED.equals(response.getStatus())
+					|| Status.PRECONDITION_FAILED.equals(response.getStatus())) {
+				HttpServletFilterImpl.LOGGER.config("CouchDB " + Bidder.class.getSimpleName() + " database created");
 			}
-			webTarget.path(Bid.class.getName());
-			response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildPut(Entity.json(Bid.class.getName()))
-					.invoke();
-			if (Status.OK.equals(response.getStatus()) || Status.PRECONDITION_FAILED.equals(response.getStatus())) {
-				HttpServletFilterImpl.LOGGER.config("CouchDB " + Bid.class.getName() + " database created");
+			webTarget = client.target(Configuration.newInstance().getProperty(Configuration.BID_COUCHDB_URL));
+			response = webTarget.request(MediaType.APPLICATION_JSON_TYPE)
+					.buildPut(Entity.json(Bid.class.getSimpleName())).invoke();
+			if (Status.CREATED.equals(response.getStatus())
+					|| Status.PRECONDITION_FAILED.equals(response.getStatus())) {
+				HttpServletFilterImpl.LOGGER.config("CouchDB " + Bid.class.getSimpleName() + " database created");
 			}
 		}
 		catch (final BazaarException exception) {
 			throw new ServletException(exception);
 		}
+		HttpServletFilterImpl.LOGGER.exiting("init");
 	}
-
 }

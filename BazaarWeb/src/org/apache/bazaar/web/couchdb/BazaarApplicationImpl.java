@@ -12,16 +12,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import org.apache.bazaar.web.couchdb.config.Configuration;
+import org.apache.bazaar.web.config.Configuration;
 import org.glassfish.jersey.CommonProperties;
 
 /**
  * BazaarApplicationImpl extends Application to provide a JAX-RS Application
  * instance for the Bazaar
  */
-// @ApplicationPath("/couchdb")
+@ApplicationPath("/couchdb")
 public final class BazaarApplicationImpl extends Application {
 
 	// declare members

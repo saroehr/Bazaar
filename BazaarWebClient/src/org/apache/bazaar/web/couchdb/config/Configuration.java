@@ -17,6 +17,11 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.bazaar.Bazaar;
+import org.apache.bazaar.Bid;
+import org.apache.bazaar.Bidder;
+import org.apache.bazaar.Category;
+import org.apache.bazaar.Item;
 import org.apache.bazaar.web.couchdb.DatabaseMessageBodyReaderImpl;
 
 /**
@@ -28,10 +33,35 @@ public final class Configuration extends org.apache.bazaar.web.config.Configurat
 	// declare members
 
 	/**
-	 * Key for couchdb url
+	 * Key for retrieval of value for initialization of couchdb datastores if
+	 * value is true
 	 */
-	public static final String COUCHDB_URL = "org.apache.bazaar.couchdb.url";
+	public static final String INITIALIZE_COUCHDB = "org.apache.bazaar.couchdb.initialize";
 
+	/**
+	 * The key for retrieval of the {@link Bazaar} web service url value
+	 */
+	public static final String BAZAAR_COUCHDB_URL = Bazaar.class.getName() + "." + "couchdb.url";
+
+	/**
+	 * The key for retrieval of the {@link Item} web service url value
+	 */
+	public static final String ITEM_COUCHDB_URL = Item.class.getName() + "." + "couchdb.url";
+
+	/**
+	 * The key for retrieval of the {@link Category} web service url value
+	 */
+	public static final String CATEGORY_COUCHDB_URL = Category.class.getName() + "." + "couchdb.url";
+
+	/**
+	 * The key for retrieval of the {@link Bidder} web service url value
+	 */
+	public static final String BIDDER_COUCHDB_URL = Bidder.class.getName() + "." + "couchdb.url";
+
+	/**
+	 * The key for retrieval of the {@link Bid} web service url value
+	 */
+	public static final String BID_COUCHDB_URL = Bid.class.getName() + "." + "couchdb.url";
 	/**
 	 * List of provider classes
 	 */
@@ -66,7 +96,7 @@ public final class Configuration extends org.apache.bazaar.web.config.Configurat
 
 	/**
 	 * Constructor for Configuration
-	 * 
+	 *
 	 * @param properties The configuration properties
 	 */
 	private Configuration(@NotNull final Properties properties) {
