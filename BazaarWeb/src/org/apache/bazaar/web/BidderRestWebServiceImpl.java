@@ -19,8 +19,8 @@ import org.apache.bazaar.State;
 import org.apache.bazaar.ejb.BidderSessionBean;
 
 /**
- * BidderRestWebServiceImpl extends AbstractRestWebService and
- * provides a web service for handling {@link Bidder} requests
+ * BidderRestWebServiceImpl extends AbstractRestWebService and provides a web
+ * service for handling {@link Bidder} requests
  */
 @Path("/Bidder")
 public final class BidderRestWebServiceImpl extends AbstractRestWebService {
@@ -40,28 +40,24 @@ public final class BidderRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doGet(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doGet(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
 	protected Response doGet(final RestWebServiceRequest request) throws Throwable {
 		final Bidder bidder;
-		final RequestParameters queryParameters = RequestParameters
-				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final BidderSessionBean sessionBean = (BidderSessionBean)this.lookup(BidderSessionBean.BEAN_LOOKUP_NAME);
 		bidder = sessionBean
-				.findBidder(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+				.findBidder(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 		return AbstractRestWebService.newResponse(new GenericEntity<Bidder>(bidder) {
 		}).build();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doPost(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doPost(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
@@ -69,9 +65,11 @@ public final class BidderRestWebServiceImpl extends AbstractRestWebService {
 		final Bidder bidder;
 		final RequestParameters queryParameters = RequestParameters
 				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final BidderSessionBean sessionBean = (BidderSessionBean)this.lookup(BidderSessionBean.BEAN_LOOKUP_NAME);
 		bidder = sessionBean
-				.findBidder(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+				.findBidder(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 		if (queryParameters.hasParameter(RequestParameters.FIRST_NAME)) {
 			bidder.getName().setFirstName(queryParameters.getParameter(RequestParameters.FIRST_NAME));
 
@@ -116,9 +114,7 @@ public final class BidderRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doPut(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doPut(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
@@ -126,6 +122,8 @@ public final class BidderRestWebServiceImpl extends AbstractRestWebService {
 		final Bidder bidder;
 		final RequestParameters queryParameters = RequestParameters
 				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final BidderSessionBean sessionBean = (BidderSessionBean)this.lookup(BidderSessionBean.BEAN_LOOKUP_NAME);
 		final Name name = sessionBean.newName();
 		name.setFirstName(queryParameters.getParameter(RequestParameters.FIRST_NAME));
@@ -143,8 +141,8 @@ public final class BidderRestWebServiceImpl extends AbstractRestWebService {
 		shippingAddress
 				.setZipcode(Integer.valueOf(queryParameters.getParameter(RequestParameters.SHIPPING_ADDRESS_ZIPCODE)));
 		bidder = sessionBean.newBidder(name, billingAddress, shippingAddress);
-		AbstractRestWebService.setIdentifier(
-				Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)), bidder);
+		AbstractRestWebService
+				.setIdentifier(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)), bidder);
 		bidder.persist();
 		return AbstractRestWebService.newResponse(new GenericEntity<Bidder>(bidder) {
 		}).location(new URI(bidder.getIdentifier().getValue())).build();
@@ -152,19 +150,17 @@ public final class BidderRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doDelete(org.apache.bazaar
+	 * @see org.apache.bazaar.AbstractRestWebService#doDelete(org.apache.bazaar
 	 * .web.RestWebServiceRequest)
 	 */
 	@Override
 	protected Response doDelete(final RestWebServiceRequest request) throws Throwable {
 		final Response response;
-		final RequestParameters queryParameters = RequestParameters
-				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final BidderSessionBean sessionBean = (BidderSessionBean)this.lookup(BidderSessionBean.BEAN_LOOKUP_NAME);
 		final Bidder bidder = sessionBean
-				.findBidder(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+				.findBidder(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 		response = AbstractRestWebService.newResponse(new GenericEntity<Bidder>(bidder) {
 		}).build();
 		bidder.delete();

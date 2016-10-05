@@ -129,7 +129,7 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 		final Set<Bid> bids;
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.BAZAAR, this.getIdentifier().getValue())
+				.path(this.getIdentifier().getValue())
 				.queryParam(RequestParameters.BIDDER, bidder.getIdentifier().getValue());
 		bids = Collections.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bid>>() {
 		}, webTarget.request().accept(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke()));
@@ -147,7 +147,7 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 		final Set<Bid> bids;
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.BAZAAR, this.getIdentifier().getValue());
+				.path(this.getIdentifier().getValue());
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		bids = Collections.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bid>>() {
 		}, response));
@@ -165,7 +165,7 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 	public void persist() throws BazaarException {
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
+				.path(this.getIdentifier().getValue())
 				.queryParam(RequestParameters.ITEM, this.item.getIdentifier().getValue())
 				.queryParam(RequestParameters.START_DATE, this.startDate.getTimeInMillis())
 				.queryParam(RequestParameters.END_DATE, this.endDate.getTimeInMillis())
@@ -185,7 +185,7 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 		super.delete();
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
+				.path(this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Bazaar>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
 	}

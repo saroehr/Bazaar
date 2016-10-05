@@ -142,8 +142,7 @@ public class ItemImpl extends AbstractPersistable implements Item {
 		}
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
-				.queryParam(RequestParameters.NAME, this.name)
+				.path(this.getIdentifier().getValue()).queryParam(RequestParameters.NAME, this.name)
 				.queryParam(RequestParameters.DESCRIPTION, this.description)
 				.queryParam(RequestParameters.CATEGORY, this.category.getIdentifier().getValue());
 		if (persisted) {
@@ -168,7 +167,7 @@ public class ItemImpl extends AbstractPersistable implements Item {
 		super.delete();
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
+				.path(this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Item>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
 	}

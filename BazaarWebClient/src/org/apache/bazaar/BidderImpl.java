@@ -125,7 +125,7 @@ public final class BidderImpl extends AbstractPersistable implements Bidder {
 		}
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
+				.path(this.getIdentifier().getValue())
 				.queryParam(RequestParameters.FIRST_NAME, this.name.getFirstName())
 				.queryParam(RequestParameters.LAST_NAME, this.name.getLastName())
 				.queryParam(RequestParameters.BILLING_ADDRESS_STREET, this.billingAddress.getStreet())
@@ -159,7 +159,7 @@ public final class BidderImpl extends AbstractPersistable implements Bidder {
 		super.delete();
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
+				.path(this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Bidder>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
 	}

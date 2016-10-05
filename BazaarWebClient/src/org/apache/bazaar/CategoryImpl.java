@@ -143,8 +143,7 @@ public class CategoryImpl extends AbstractPersistable implements org.apache.baza
 		}
 		final WebTarget webTarget = ((BazaarManagerImpl)manager).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
-				.queryParam(RequestParameters.NAME, this.name)
+				.path(this.getIdentifier().getValue()).queryParam(RequestParameters.NAME, this.name)
 				.queryParam(RequestParameters.DESCRIPTION, this.description)
 				.queryParam(RequestParameters.PARENT, this.parent.getIdentifier().getValue());
 		if (persisted) {
@@ -169,7 +168,7 @@ public class CategoryImpl extends AbstractPersistable implements org.apache.baza
 		super.delete();
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
+				.path(this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Category>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
 		((CategoryImpl)this.parent).children.remove(this);

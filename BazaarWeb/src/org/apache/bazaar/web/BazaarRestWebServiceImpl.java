@@ -20,8 +20,8 @@ import org.apache.bazaar.ejb.BazaarSessionBean;
 import org.apache.bazaar.ejb.ItemSessionBean;
 
 /**
- * BazaarRestWebServiceImpl extends AbstractRestWebService and
- * provides a web service for handling {@link Bazaar} requests
+ * BazaarRestWebServiceImpl extends AbstractRestWebService and provides a web
+ * service for handling {@link Bazaar} requests
  */
 @Path("/Bazaar")
 public class BazaarRestWebServiceImpl extends AbstractRestWebService {
@@ -41,20 +41,18 @@ public class BazaarRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doGet(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doGet(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
 	protected Response doGet(final RestWebServiceRequest request) throws Throwable {
 		final Response response;
-		final RequestParameters queryParameters = RequestParameters
-				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final BazaarSessionBean sessionBean = (BazaarSessionBean)this.lookup(BazaarSessionBean.BEAN_LOOKUP_NAME);
-		if (queryParameters.hasParameter(RequestParameters.IDENTIFIER)) {
+		if (pathParameters.hasParameter(RequestParameters.IDENTIFIER)) {
 			final Bazaar bazaar = sessionBean
-					.findBazaar(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+					.findBazaar(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 			response = AbstractRestWebService.newResponse(new GenericEntity<Bazaar>(bazaar) {
 			}).build();
 		}
@@ -68,9 +66,7 @@ public class BazaarRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doPut(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doPut(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
@@ -78,6 +74,8 @@ public class BazaarRestWebServiceImpl extends AbstractRestWebService {
 		final Bazaar bazaar;
 		final RequestParameters queryParameters = RequestParameters
 				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final BazaarSessionBean bazaarSessionBean = (BazaarSessionBean)this.lookup(BazaarSessionBean.BEAN_LOOKUP_NAME);
 		final ItemSessionBean itemSessionBean = (ItemSessionBean)this.lookup(ItemSessionBean.BEAN_LOOKUP_NAME);
 		final Item item = itemSessionBean
@@ -93,8 +91,8 @@ public class BazaarRestWebServiceImpl extends AbstractRestWebService {
 		else {
 			bazaar = bazaarSessionBean.newBazaar(item, startDate, endDate);
 		}
-		AbstractRestWebService.setIdentifier(
-				Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)), bazaar);
+		AbstractRestWebService
+				.setIdentifier(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)), bazaar);
 		bazaar.persist();
 		return AbstractRestWebService.newResponse(new GenericEntity<Bazaar>(bazaar) {
 		}).location(new URI(bazaar.getIdentifier().getValue())).build();
@@ -102,19 +100,17 @@ public class BazaarRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doDelete(org.apache.bazaar
+	 * @see org.apache.bazaar.AbstractRestWebService#doDelete(org.apache.bazaar
 	 * .web.RestWebServiceRequest)
 	 */
 	@Override
 	protected Response doDelete(final RestWebServiceRequest request) throws Throwable {
 		final Response response;
-		final RequestParameters queryParameters = RequestParameters
-				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final BazaarSessionBean bazaarSessionBean = (BazaarSessionBean)this.lookup(BazaarSessionBean.BEAN_LOOKUP_NAME);
 		final Bazaar bazaar = bazaarSessionBean
-				.findBazaar(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+				.findBazaar(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 		response = AbstractRestWebService.newResponse(new GenericEntity<Bazaar>(bazaar) {
 		}).build();
 		bazaar.delete();

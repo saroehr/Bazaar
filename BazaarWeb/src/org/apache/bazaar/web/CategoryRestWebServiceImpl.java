@@ -43,19 +43,20 @@ public class CategoryRestWebServiceImpl extends AbstractRestWebService {
 	@Override
 	protected Response doGet(final RestWebServiceRequest request) throws Throwable {
 		final Response response;
-		final RequestParameters queryParameters = RequestParameters
-				.newInstance(request.getUriInfo().getQueryParameters());
+		RequestParameters.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final CategorySessionBean sessionBean = (CategorySessionBean)this.lookup(CategorySessionBean.BEAN_LOOKUP_NAME);
-		if (queryParameters.hasParameter(RequestParameters.IDENTIFIER)) {
+		if (pathParameters.hasParameter(RequestParameters.IDENTIFIER)) {
 			final Category category;
-			if (Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER))
+			if (Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER))
 					.equals(Identifier.fromValue(Configuration.newInstance()
 							.getProperty(org.apache.bazaar.config.Configuration.ROOT_CATEGORY_IDENTIFIER)))) {
 				category = sessionBean.findRootCategory();
 			}
 			else {
 				category = sessionBean
-						.findCategory(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+						.findCategory(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 			}
 			category.getChildren();
 			response = AbstractRestWebService.newResponse(new GenericEntity<Category>(category) {
@@ -80,9 +81,11 @@ public class CategoryRestWebServiceImpl extends AbstractRestWebService {
 		final Category category;
 		final RequestParameters queryParameters = RequestParameters
 				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final CategorySessionBean sessionBean = (CategorySessionBean)this.lookup(CategorySessionBean.BEAN_LOOKUP_NAME);
 		category = sessionBean
-				.findCategory(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+				.findCategory(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 		if (queryParameters.hasParameter(RequestParameters.NAME)) {
 			category.setName(queryParameters.getParameter(RequestParameters.NAME));
 		}
@@ -111,12 +114,14 @@ public class CategoryRestWebServiceImpl extends AbstractRestWebService {
 		final Category category;
 		final RequestParameters queryParameters = RequestParameters
 				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final CategorySessionBean sessionBean = (CategorySessionBean)this.lookup(CategorySessionBean.BEAN_LOOKUP_NAME);
 		category = sessionBean.newCategory(queryParameters.getParameter(RequestParameters.NAME),
 				queryParameters.getParameter(RequestParameters.DESCRIPTION),
 				sessionBean.findCategory(Identifier.fromValue(queryParameters.getParameter(RequestParameters.PARENT))));
 		AbstractRestWebService.setIdentifier(
-				Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)), category);
+				Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)), category);
 		// we need to persist children recursively but right now
 		// we don't receive the json representation of the category
 		category.persist();
@@ -132,11 +137,11 @@ public class CategoryRestWebServiceImpl extends AbstractRestWebService {
 	@Override
 	protected Response doDelete(final RestWebServiceRequest request) throws Throwable {
 		final Response response;
-		final RequestParameters queryParameters = RequestParameters
-				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final CategorySessionBean sessionBean = (CategorySessionBean)this.lookup(CategorySessionBean.BEAN_LOOKUP_NAME);
 		final Category category = sessionBean
-				.findCategory(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+				.findCategory(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 		response = AbstractRestWebService.newResponse(new GenericEntity<Category>(category) {
 		}).build();
 		category.delete();

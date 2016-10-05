@@ -88,7 +88,7 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 	public void persist() throws BazaarException {
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue())
+				.path(this.getIdentifier().getValue())
 				.queryParam(RequestParameters.BAZAAR, this.bazaar.getIdentifier().getValue())
 				.queryParam(RequestParameters.BIDDER, this.bidder.getIdentifier().getValue())
 				.queryParam(RequestParameters.PRICE, this.price);
@@ -107,7 +107,7 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 		super.delete();
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
-				.queryParam(RequestParameters.IDENTIFIER, this.getIdentifier().getValue());
+				.path(this.getIdentifier().getValue());
 		BazaarManagerImpl.processResponse(new GenericType<Bid>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
 	}

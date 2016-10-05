@@ -20,9 +20,8 @@ import org.apache.bazaar.ejb.CategorySessionBean;
 import org.apache.bazaar.ejb.ItemSessionBean;
 
 /**
- * ItemRestWebServiceImpl provides a JAX-RS WebService
- * implementation handling {@link Item}
- * instances
+ * ItemRestWebServiceImpl provides a JAX-RS WebService implementation handling
+ * {@link Item} instances
  */
 @Path("/Item")
 public class ItemRestWebServiceImpl extends AbstractRestWebService {
@@ -42,20 +41,18 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doGet(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doGet(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
 	protected Response doGet(final RestWebServiceRequest request) throws Throwable {
 		final Response response;
-		final RequestParameters queryParameters = RequestParameters
-				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final ItemSessionBean itemSessionBean = (ItemSessionBean)this.lookup(ItemSessionBean.BEAN_LOOKUP_NAME);
-		if (queryParameters.hasParameter(RequestParameters.IDENTIFIER)) {
+		if (pathParameters.hasParameter(RequestParameters.IDENTIFIER)) {
 			response = AbstractRestWebService.newResponse(new GenericEntity<Item>(itemSessionBean
-					.findItem(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)))) {
+					.findItem(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)))) {
 			}).build();
 		}
 		else {
@@ -67,9 +64,7 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doPost(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doPost(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
@@ -77,11 +72,13 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 		final Item item;
 		final RequestParameters queryParameters = RequestParameters
 				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final ItemSessionBean itemSessionBean = (ItemSessionBean)this.lookup(ItemSessionBean.BEAN_LOOKUP_NAME);
 		final CategorySessionBean categorySessionBean = (CategorySessionBean)this
 				.lookup(CategorySessionBean.BEAN_LOOKUP_NAME);
 		item = itemSessionBean
-				.findItem(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+				.findItem(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 		if (queryParameters.hasParameter(RequestParameters.NAME)) {
 			item.setName(queryParameters.getParameter(RequestParameters.NAME));
 		}
@@ -103,9 +100,7 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doPut(org.apache.bazaar.
+	 * @see org.apache.bazaar.AbstractRestWebService#doPut(org.apache.bazaar.
 	 * web.RestWebServiceRequest)
 	 */
 	@Override
@@ -113,6 +108,8 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 		final Item item;
 		final RequestParameters queryParameters = RequestParameters
 				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final ItemSessionBean itemSessionBean = (ItemSessionBean)this.lookup(ItemSessionBean.BEAN_LOOKUP_NAME);
 		final CategorySessionBean categorySessionBean = (CategorySessionBean)this
 				.lookup(CategorySessionBean.BEAN_LOOKUP_NAME);
@@ -133,7 +130,7 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 		item = itemSessionBean.newItem(queryParameters.getParameter(RequestParameters.NAME),
 				queryParameters.getParameter(RequestParameters.DESCRIPTION), category);
 		AbstractRestWebService
-				.setIdentifier(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)), item);
+				.setIdentifier(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)), item);
 		item.persist();
 		return AbstractRestWebService.newResponse(new GenericEntity<Item>(item) {
 		}).location(new URI(item.getIdentifier().getValue())).build();
@@ -141,19 +138,17 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.AbstractRestWebService#doDelete(org.apache.bazaar
+	 * @see org.apache.bazaar.AbstractRestWebService#doDelete(org.apache.bazaar
 	 * .web.RestWebServiceRequest)
 	 */
 	@Override
 	protected Response doDelete(final RestWebServiceRequest request) throws Throwable {
 		final Response response;
-		final RequestParameters queryParameters = RequestParameters
-				.newInstance(request.getUriInfo().getQueryParameters());
+		final RequestParameters pathParameters = RequestParameters
+				.newInstance(request.getUriInfo().getPathParameters());
 		final ItemSessionBean sessionBean = (ItemSessionBean)this.lookup(ItemSessionBean.BEAN_LOOKUP_NAME);
 		final Item item = sessionBean
-				.findItem(Identifier.fromValue(queryParameters.getParameter(RequestParameters.IDENTIFIER)));
+				.findItem(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 		response = AbstractRestWebService.newResponse(new GenericEntity<Item>(item) {
 		}).build();
 		item.delete();

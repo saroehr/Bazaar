@@ -17,6 +17,11 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Context;
@@ -179,6 +184,8 @@ public abstract class AbstractRestWebService implements RestWebService {
 	 * @see org.apache.bazaar.RestWebService#doDelete()
 	 */
 	@Override
+	@DELETE
+	@Path("{identifier}")
 	public final Response doDelete() {
 		AbstractRestWebService.LOGGER.entering("doDelete");
 		Response response;
@@ -197,6 +204,8 @@ public abstract class AbstractRestWebService implements RestWebService {
 	 * @see org.apache.bazaar.RestWebService#doGet()
 	 */
 	@Override
+	@GET
+	@Path("{identifier}")
 	public final Response doGet() {
 		AbstractRestWebService.LOGGER.entering("doGet");
 		Response response;
@@ -215,6 +224,8 @@ public abstract class AbstractRestWebService implements RestWebService {
 	 * @see org.apache.bazaar.RestWebService#doPost()
 	 */
 	@Override
+	@POST
+	@Path("{identifier}")
 	public final Response doPost() {
 		AbstractRestWebService.LOGGER.entering("doPost");
 		Response response;
@@ -233,6 +244,8 @@ public abstract class AbstractRestWebService implements RestWebService {
 	 * @see org.apache.bazaar.RestWebService#doPut()
 	 */
 	@Override
+	@PUT
+	@Path("{identifier}")
 	public final Response doPut() {
 		AbstractRestWebService.LOGGER.entering("doPut");
 		Response response;

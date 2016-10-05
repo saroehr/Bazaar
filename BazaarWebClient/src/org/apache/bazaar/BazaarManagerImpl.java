@@ -272,7 +272,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 			else {
 				final WebTarget webTarget = this.newRestWebClient()
 						.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL))
-						.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
+						.path(identifier.getValue());
 				final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 				category = BazaarManagerImpl.processResponse(new GenericType<Category>() {
 				}, response);
@@ -299,7 +299,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		else {
 			final WebTarget webTarget = this.newRestWebClient()
 					.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
-					.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
+					.path(identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 			item = BazaarManagerImpl.processResponse(new GenericType<Item>() {
 			}, response);
@@ -454,7 +454,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		else {
 			final WebTarget webTarget = this.newRestWebClient()
 					.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL))
-					.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
+					.path(identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 			bazaar = BazaarManagerImpl.processResponse(new GenericType<Bazaar>() {
 			}, response);
@@ -586,7 +586,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		else {
 			final WebTarget webTarget = this.newRestWebClient()
 					.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
-					.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
+					.path(identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 			bidder = BazaarManagerImpl.processResponse(new GenericType<Bidder>() {
 			}, response);
@@ -647,7 +647,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		else {
 			final WebTarget webTarget = this.newRestWebClient()
 					.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
-					.queryParam(RequestParameters.IDENTIFIER, identifier.getValue());
+					.path(identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 			bid = BazaarManagerImpl.processResponse(new GenericType<Bid>() {
 			}, response);
