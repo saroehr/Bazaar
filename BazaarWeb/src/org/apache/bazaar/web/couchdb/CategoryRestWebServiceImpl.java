@@ -6,11 +6,15 @@
 package org.apache.bazaar.web.couchdb;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import org.apache.bazaar.BazaarManager;
+import org.apache.bazaar.Category;
 import org.apache.bazaar.web.RequestParameters;
 import org.apache.bazaar.web.RestWebClient;
 import org.apache.bazaar.web.RestWebServiceRequest;
@@ -45,14 +49,14 @@ public final class CategoryRestWebServiceImpl extends AbstractRestWebService {
 	protected Response doGet(final RestWebServiceRequest request) throws Throwable {
 		final Response response;
 		try (final RestWebClient client = RestWebClient.newInstance();) {
-			final RequestParameters queryParameters = RequestParameters
-					.newInstance(request.getUriInfo().getQueryParameters());
+			final RequestParameters pathParameters = RequestParameters
+					.newInstance(request.getUriInfo().getPathParameters());
 			final UriBuilder builder = UriBuilder
 					.fromPath(Configuration.newInstance().getProperty(Configuration.CATEGORY_COUCHDB_URL));
-			builder.path(queryParameters.getParameter(RequestParameters.IDENTIFIER));
+			builder.path(pathParameters.getParameter(RequestParameters.IDENTIFIER));
 			final WebTarget webTarget = client.target(builder);
-			response = webTarget.request(MediaType.APPLICATION_JSON).buildGet().invoke();
-			System.out.println(response);
+			response = AbstractRestWebService.processResponse(new GenericType<Category>() {
+			}, webTarget.request(MediaType.APPLICATION_JSON).buildGet().invoke());
 		}
 		return response;
 
@@ -81,12 +85,20 @@ public final class CategoryRestWebServiceImpl extends AbstractRestWebService {
 		try (final RestWebClient client = RestWebClient.newInstance();) {
 			final RequestParameters queryParameters = RequestParameters
 					.newInstance(request.getUriInfo().getQueryParameters());
+			final RequestParameters pathParameters = RequestParameters
+					.newInstance(request.getUriInfo().getPathParameters());
+			final BazaarManager manager = BazaarManager.newInstance();
+			final Category category = manager.newCategory();
+			category.setName(queryParameters.getParameter(RequestParameters.NAME));
+			category.setDescription(queryParameters.getParameter(RequestParameters.DESCRIPTION));
+			category.setParent(manager.findRootCategory());
 			final UriBuilder builder = UriBuilder
 					.fromPath(Configuration.newInstance().getProperty(Configuration.CATEGORY_COUCHDB_URL));
-			builder.path(queryParameters.getParameter(RequestParameters.IDENTIFIER));
+			builder.path(pathParameters.getParameter(RequestParameters.IDENTIFIER));
 			final WebTarget webTarget = client.target(builder);
-			response = webTarget.request(MediaType.APPLICATION_JSON).buildGet().invoke();
-			System.out.println(response);
+			response = AbstractRestWebService.processResponse(new GenericType<Category>() {
+			}, webTarget.request(MediaType.APPLICATION_JSON)
+					.buildPut(Entity.entity(category, MediaType.APPLICATION_JSON_TYPE)).invoke());
 		}
 		return response;
 	}

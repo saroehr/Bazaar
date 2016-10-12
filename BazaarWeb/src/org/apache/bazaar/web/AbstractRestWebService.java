@@ -22,7 +22,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
@@ -46,7 +45,6 @@ import org.apache.bazaar.nls.Messages;
 // @Resource(name = "java:comp/env/jdbc/Bazaar", lookup = "jdbc/Bazaar", type =
 // javax.sql.XADataSource.class, shareable = true, authenticationType =
 // AuthenticationType.CONTAINER)
-@Produces(MediaType.APPLICATION_JSON)
 public abstract class AbstractRestWebService implements RestWebService {
 
 	// declare members
