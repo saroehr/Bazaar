@@ -68,9 +68,9 @@ public interface BazaarManager {
 	 * Factory method creates new Bazaar.
 	 * End date must be beyond start date.
 	 * 
-	 * @param item The item to be auctioned
-	 * @param startDate The auction start date
-	 * @param endDate The auction end date
+	 * @param item The item to be Bazaared
+	 * @param startDate The Bazaar start date
+	 * @param endDate The Bazaar end date
 	 * @return Instance of Bazaar
 	 * @throws BazaarException if the instance could
 	 *         not be created
@@ -82,10 +82,10 @@ public interface BazaarManager {
 	 * Factory method creates new Bazaar with reserve price
 	 * End date must be beyond start date.
 	 * 
-	 * @param item The item to be auctioned
-	 * @param startDate The auction start date
-	 * @param endDate The auction end date
-	 * @param reservePrice The auction reserve price
+	 * @param item The item to be Bazaared
+	 * @param startDate The Bazaar start date
+	 * @param endDate The Bazaar end date
+	 * @param reservePrice The Bazaar reserve price
 	 * @return Instance of Bazaar with reserve price
 	 * @throws BazaarException if the instance could not be created
 	 */
@@ -196,20 +196,20 @@ public interface BazaarManager {
 			@NotNull @Size(min = 1, max = 255) final String description, @NotNull final Category parent);
 
 	/**
-	 * Returns auction with identifier
+	 * Returns Bazaar with identifier
 	 * 
-	 * @param identifier The identifier of auction
-	 * @return The auction with identifier
-	 * @throws BazaarNotFoundException if no auction
+	 * @param identifier The identifier of Bazaar
+	 * @return The Bazaar with identifier
+	 * @throws BazaarNotFoundException if no Bazaar
 	 *         with identifier exists
 	 * @throws BazaarException if the operation could not be completed
 	 */
 	public Bazaar findBazaar(@NotNull final Identifier identifier) throws BazaarNotFoundException, BazaarException;
 
 	/**
-	 * Returns all auctions
+	 * Returns all Bazaars
 	 * 
-	 * @return The unmodifiable set of all auctions
+	 * @return The unmodifiable set of all Bazaars
 	 * @throws BazaarException if the operation
 	 *         could not be completed
 	 */

@@ -65,17 +65,17 @@ public class BidImpl extends AbstractPersistable implements Bid {
 	 * 
 	 * @param bid The bid to associate with instance
 	 */
-	void setAuction(@NotNull final Bazaar bazaar) {
+	void setBazaar(@NotNull final Bazaar bazaar) {
 		this.bazaar = bazaar;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.bazaar.Bid#getAuction()
+	 * @see org.apache.bazaar.Bid#getBazaar()
 	 */
 	@Override
-	public Bazaar getAuction() {
+	public Bazaar getBazaar() {
 		return this.bazaar;
 	}
 

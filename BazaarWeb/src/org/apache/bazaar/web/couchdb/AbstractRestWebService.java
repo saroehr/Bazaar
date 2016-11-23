@@ -6,6 +6,7 @@
 package org.apache.bazaar.web.couchdb;
 
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -62,8 +63,7 @@ abstract class AbstractRestWebService extends org.apache.bazaar.web.AbstractRest
 			if (Response.Status.Family.CLIENT_ERROR.equals(Response.Status.Family.familyOf(response.getStatus()))
 					|| Response.Status.Family.SERVER_ERROR
 							.equals(Response.Status.Family.familyOf(response.getStatus()))) {
-				if (Response.Status.NO_CONTENT.getStatusCode() == response.getStatus()
-						|| Response.Status.NOT_FOUND.getStatusCode() == response.getStatus()) {
+				if (Response.Status.NOT_FOUND.equals(Response.Status.fromStatusCode(response.getStatus()))) {
 					if (Bazaar.class.isAssignableFrom(type.getRawType())) {
 						throw new BazaarNotFoundException();
 					}
@@ -83,8 +83,19 @@ abstract class AbstractRestWebService extends org.apache.bazaar.web.AbstractRest
 						throw new RestWebServiceException(response.getStatusInfo().getReasonPhrase());
 					}
 				}
+				else {
+					throw new RestWebServiceException(response.getStatusInfo().getReasonPhrase());
+				}
+
 			}
-			response1 = null;
+			else if (Response.Status.CREATED.equals(Response.Status.fromStatusCode(response.getStatus()))) {
+				response1 = Response.fromResponse(response).build();
+			}
+			else {
+				response1 = org.apache.bazaar.web.AbstractRestWebService
+						.newResponse(new GenericEntity<T>(response.readEntity(type)) {
+						}).status(response.getStatus()).build();
+			}
 		}
 		else {
 			throw new RestWebServiceException(response.getStatusInfo().getReasonPhrase());

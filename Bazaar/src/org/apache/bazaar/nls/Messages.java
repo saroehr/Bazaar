@@ -76,20 +76,20 @@ public final class Messages {
 	 */
 	public static final String UNABLE_TO_FIND_BID = Bid.class.getName() + "." + "unabletofindbid";
 	/**
-	 * Key for lookup of unable to delete bidder due to auction found message
+	 * Key for lookup of unable to delete bidder due to Bazaar found message
 	 */
-	public static final String UNABLE_TO_DELETE_BIDDER_AUCTION_FOUND = Bidder.class.getName() + "."
-			+ "auctionfoundexception";
+	public static final String UNABLE_TO_DELETE_BIDDER_BAZAAR_FOUND = Bidder.class.getName() + "."
+			+ "bazaarfoundexception";
 	/**
 	 * Key for lookup of unable to find bazaar message
 	 */
-	public static final String UNABLE_TO_FIND_BAZAAR = Bazaar.class.getName() + "." + "unabletofindauction";
+	public static final String UNABLE_TO_FIND_BAZAAR = Bazaar.class.getName() + "." + "unabletofindbazaar";
 	/**
-	 * Key for lookup of auction expired message
+	 * Key for lookup of Bazaar expired message
 	 */
-	public static final String BAZAAR_HAS_EXPIRED = Bazaar.class.getName() + "." + "auctionexpiredexception";
+	public static final String BAZAAR_HAS_EXPIRED = Bazaar.class.getName() + "." + "bazaarexpiredexception";
 	/**
-	 * Key for lookup of auction invalid end date message
+	 * Key for lookup of Bazaar invalid end date message
 	 */
 	public static final String BAZAAR_ENDDATE_INVALID = Bazaar.class.getName() + "." + "invalidenddateexception";
 

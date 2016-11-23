@@ -52,7 +52,7 @@ public class CategorySessionBeanImpl implements CategorySessionBean {
 	 * 
 	 * @see
 	 * org.apache.bazaar.ejb.CategorySessionBean#findCategory(org.
-	 * apache.auction.Identifier)
+	 * apache.Bazaar.Identifier)
 	 */
 	@Override
 	public Category findCategory(final Identifier identifier) throws CategoryNotFoundException, BazaarException {

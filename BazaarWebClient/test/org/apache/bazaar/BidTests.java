@@ -37,20 +37,20 @@ public final class BidTests {
 	}
 
 	/**
-	 * Test for {@link Bid#getAuction()}
+	 * Test for {@link Bid#getBazaar()}
 	 */
 	@Test
-	public void testGetAuction() {
+	public void testGetBazaar() {
 		try {
 			final BazaarManager manager = BazaarManager.newInstance();
 			final Bidder bidder = manager.newBidder();
-			bidder.setName(manager.newName("testGetAuction", "testGetAuction"));
-			final Address address = manager.newAddress("testGetAuction", "testGetAuction", State.Illinois, 60102);
+			bidder.setName(manager.newName("testGetBazaar", "testGetBazaar"));
+			final Address address = manager.newAddress("testGetBazaar", "testGetBazaar", State.Illinois, 60102);
 			bidder.setBillingAddress(address);
 			bidder.setShippingAddress(address);
-			final Category category = manager.newCategory("testGetAuction", "testGetAuction",
+			final Category category = manager.newCategory("testGetBazaar", "testGetBazaar",
 					manager.findRootCategory());
-			final Item item = manager.newItem("testGetAuction", "testGetAuction", category);
+			final Item item = manager.newItem("testGetBazaar", "testGetBazaar", category);
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
@@ -58,7 +58,7 @@ public final class BidTests {
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			final Bid bid = bazaar.newBid(bidder, new Double(10000.10));
 			bazaar.persist();
-			Assert.assertEquals(bazaar, bid.getAuction());
+			Assert.assertEquals(bazaar, bid.getBazaar());
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);

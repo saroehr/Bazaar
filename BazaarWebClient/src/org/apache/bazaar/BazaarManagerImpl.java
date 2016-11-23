@@ -229,7 +229,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.bazaar.AuctionManager#findRootCategory()
+	 * @see org.apache.bazaar.BazaarManager#findRootCategory()
 	 */
 	@Override
 	public Category findRootCategory() throws BazaarException {
@@ -250,7 +250,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.bazaar.AuctionManager#findCategory(org.apache.bazaar.
+	 * @see org.apache.bazaar.BazaarManager#findCategory(org.apache.bazaar.
 	 * Identifier)
 	 */
 	@Override
@@ -285,7 +285,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.bazaar.AuctionManager#findItem(org.apache.bazaar.
+	 * @see org.apache.bazaar.BazaarManager#findItem(org.apache.bazaar.
 	 * Identifier)
 	 */
 	@Override
@@ -311,7 +311,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.bazaar.BazaarManager#newAuction(org.apache.bazaar.Item,
+	 * @see org.apache.bazaar.BazaarManager#newBazaar(org.apache.bazaar.Item,
 	 * java.util.Calendar, java.util.Calendar)
 	 */
 	@Override
@@ -321,7 +321,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.bazaar.BazaarManager#newAuction(org.apache.bazaar.Item,
+	 * @see org.apache.bazaar.BazaarManager#newBazaar(org.apache.bazaar.Item,
 	 * java.util.Calendar, java.util.Calendar, java.lang.Double)
 	 */
 	@Override
@@ -440,7 +440,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.bazaar.BazaarManager#findAuction(org.apache.bazaar.
+	 * @see org.apache.bazaar.BazaarManager#findBazaar(org.apache.bazaar.
 	 * Identifier)
 	 */
 	@Override
@@ -466,7 +466,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.bazaar.BazaarManager#findAllAuctions()
+	 * @see org.apache.bazaar.BazaarManager#findAllBazaars()
 	 */
 	@Override
 	public Set<Bazaar> findAllBazaars() throws BazaarException {

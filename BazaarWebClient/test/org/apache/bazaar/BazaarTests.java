@@ -174,9 +174,9 @@ public final class BazaarTests {
 			final Calendar endDate = Calendar.getInstance();
 			endDate.setWeekDate(2017, 25, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
-			final Bazaar auction1 = bazaar;
-			Assert.assertSame(bazaar, auction1);
-			Assert.assertEquals(bazaar, auction1);
+			final Bazaar Bazaar1 = bazaar;
+			Assert.assertSame(bazaar, Bazaar1);
+			Assert.assertEquals(bazaar, Bazaar1);
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);

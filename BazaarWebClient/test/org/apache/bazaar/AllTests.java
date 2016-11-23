@@ -13,7 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * AllTests provides a JUnit test suite
- * to execute all auction tests.
+ * to execute all Bazaar tests.
  */
 @RunWith(Suite.class)
 @SuiteClasses({ BazaarManagerTests.class, BazaarTests.class, CategoryTests.class, ItemTests.class, BidderTests.class,

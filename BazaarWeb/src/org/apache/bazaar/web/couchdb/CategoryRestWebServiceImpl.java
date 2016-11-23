@@ -81,7 +81,7 @@ public final class CategoryRestWebServiceImpl extends AbstractRestWebService {
 	 */
 	@Override
 	protected Response doPut(final RestWebServiceRequest request) throws Throwable {
-		final Response response;
+		Response response;
 		try (final RestWebClient client = RestWebClient.newInstance();) {
 			final RequestParameters queryParameters = RequestParameters
 					.newInstance(request.getUriInfo().getQueryParameters());
@@ -96,11 +96,13 @@ public final class CategoryRestWebServiceImpl extends AbstractRestWebService {
 					.fromPath(Configuration.newInstance().getProperty(Configuration.CATEGORY_COUCHDB_URL));
 			builder.path(pathParameters.getParameter(RequestParameters.IDENTIFIER));
 			final WebTarget webTarget = client.target(builder);
-			response = AbstractRestWebService.processResponse(new GenericType<Category>() {
+			response = Response.fromResponse(AbstractRestWebService.processResponse(new GenericType<Category>() {
 			}, webTarget.request(MediaType.APPLICATION_JSON)
-					.buildPut(Entity.entity(category, MediaType.APPLICATION_JSON_TYPE)).invoke());
+					.buildPut(Entity.entity(category, MediaType.APPLICATION_JSON_TYPE)).invoke())).entity(category)
+					.build();
 		}
 		return response;
+
 	}
 
 	/*

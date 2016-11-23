@@ -3,7 +3,7 @@
         <wb-resource deploy-path="/" source-path="/.apt_generated"/>
         <wb-resource deploy-path="/" source-path="/src"/>
         <property name="java-output-path" value="/BazaarEJB/bin"/>
-        <property name="ClientProject" value="OnlineAuctionEJBClient"/>
-        <property name="ClientJARURI" value="OnlineAuctionEJBClient.jar"/>
+        <property name="ClientProject" value="OnlineBazaarEJBClient"/>
+        <property name="ClientJARURI" value="OnlineBazaarEJBClient.jar"/>
     </wb-module>
 </project-modules>

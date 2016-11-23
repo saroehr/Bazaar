@@ -43,7 +43,7 @@ public class BazaarSessionBeanImpl implements BazaarSessionBean {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.apache.bazaar.ejb.BazaarSessionBean#newAuction(org.apache.bazaar.
+	 * org.apache.bazaar.ejb.BazaarSessionBean#newBazaar(org.apache.bazaar.
 	 * Item, java.util.Calendar, java.util.Calendar)
 	 */
 	@Override
@@ -55,7 +55,7 @@ public class BazaarSessionBeanImpl implements BazaarSessionBean {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.apache.bazaar.ejb.BazaarSessionBean#newAuction(org.apache.bazaar.
+	 * org.apache.bazaar.ejb.BazaarSessionBean#newBazaar(org.apache.bazaar.
 	 * Item, java.util.Calendar, java.util.Calendar, java.lang.Double)
 	 */
 	@Override
@@ -68,7 +68,7 @@ public class BazaarSessionBeanImpl implements BazaarSessionBean {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.apache.bazaar.ejb.BazaarSessionBean#findAuction(org.apache.bazaar.
+	 * org.apache.bazaar.ejb.BazaarSessionBean#findBazaar(org.apache.bazaar.
 	 * Identifier)
 	 */
 	@Override
@@ -79,7 +79,7 @@ public class BazaarSessionBeanImpl implements BazaarSessionBean {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.bazaar.ejb.BazaarSessionBean#findAllAuctions()
+	 * @see org.apache.bazaar.ejb.BazaarSessionBean#findAllBazaars()
 	 */
 	@Override
 	public Set<Bazaar> findAllBazaars() throws BazaarException {

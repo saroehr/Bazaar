@@ -30,30 +30,30 @@ public interface Bazaar extends Persistable {
 	public @NotNull Bid newBid(@NotNull final Bidder bidder, @NotNull final Double price);
 
 	/**
-	 * Returns the start date for the auction.
+	 * Returns the start date for the Bazaar.
 	 * 
-	 * @return The start date for auction
+	 * @return The start date for Bazaar
 	 */
 	public @NotNull Calendar getStartDate();
 
 	/**
-	 * Returns the end date for the auction
+	 * Returns the end date for the Bazaar
 	 * 
-	 * @return The end date for auction
+	 * @return The end date for Bazaar
 	 */
 	public @NotNull Calendar getEndDate();
 
 	/**
-	 * Returns the item associated with auction
+	 * Returns the item associated with Bazaar
 	 * 
-	 * @return The Item being auctioned
+	 * @return The Item being Bazaared
 	 */
 	public @NotNull Item getItem();
 
 	/**
-	 * Returns the reserve price associated with auction
+	 * Returns the reserve price associated with Bazaar
 	 * 
-	 * @return The reserve price associated with auction
+	 * @return The reserve price associated with Bazaar
 	 *         or null if no reserve price has been specified.
 	 */
 	public Double getReservePrice();

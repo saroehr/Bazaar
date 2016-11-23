@@ -64,7 +64,7 @@ public class ItemSessionBeanImpl implements ItemSessionBean {
 	 * 
 	 * @see
 	 * org.apache.bazaar.ejb.ItemSessionBean#findItem(org.apache.
-	 * auction.Identifier)
+	 * Bazaar.Identifier)
 	 */
 	@Override
 	public Item findItem(final Identifier identifier) throws ItemNotFoundException, BazaarException {

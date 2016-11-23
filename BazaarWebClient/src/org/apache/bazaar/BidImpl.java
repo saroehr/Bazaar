@@ -55,10 +55,10 @@ public final class BidImpl extends AbstractPersistable implements Bid {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.bazaar.Bid#getAuction()
+	 * @see org.apache.bazaar.Bid#getBazaar()
 	 */
 	@Override
-	public Bazaar getAuction() {
+	public Bazaar getBazaar() {
 		return this.bazaar;
 	}
 

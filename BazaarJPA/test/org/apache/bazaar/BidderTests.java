@@ -97,14 +97,14 @@ public final class BidderTests {
 			bazaar.newBid(bidder, new Double(100.00));
 			bazaar.persist();
 			try {
-				// should fail since auction exists with bids
+				// should fail since Bazaar exists with bids
 				bidder.delete();
 			}
 			catch (final BazaarException exception) {
 				Assert.assertNotNull(exception);
 			}
 			bazaar.delete();
-			// should pass since auction and bids deleted
+			// should pass since Bazaar and bids deleted
 			bidder.delete();
 			try {
 				manager.findBidder(bidder.getIdentifier());

@@ -81,9 +81,9 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 	/**
 	 * Constructor for BazaarImpl
 	 * 
-	 * @param item The item to be auctioned
-	 * @param startDate The auction start date
-	 * @param endDate The auction end date
+	 * @param item The item to be Bazaared
+	 * @param startDate The Bazaar start date
+	 * @param endDate The Bazaar end date
 	 */
 	BazaarImpl(@NotNull final Item item, @NotNull final Calendar startDate, @NotNull final Calendar endDate) {
 		this();
@@ -95,9 +95,9 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 	/**
 	 * Constructor for BazaarImpl
 	 * 
-	 * @param item The item to be auctioned
-	 * @param startDate The auction start date
-	 * @param endDate The auction end date
+	 * @param item The item to be Bazaared
+	 * @param startDate The Bazaar start date
+	 * @param endDate The Bazaar end date
 	 * @param reservePrice The reserve price
 	 */
 	BazaarImpl(@NotNull final Item item, @NotNull final Calendar startDate, @NotNull final Calendar endDate,
@@ -117,7 +117,7 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 	@Override
 	public Bid newBid(final Bidder bidder, final Double price) {
 		final BidImpl bid = new BidImpl(bidder, price);
-		bid.setAuction(this);
+		bid.setBazaar(this);
 		this.bids.add(bid);
 		return bid;
 	}

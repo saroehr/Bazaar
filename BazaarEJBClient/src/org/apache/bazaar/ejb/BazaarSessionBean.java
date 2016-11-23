@@ -33,9 +33,9 @@ public interface BazaarSessionBean {
 	/**
 	 * Creates new Bazaar instance.
 	 * 
-	 * @param item The Item to be auctioned
-	 * @param startDate The start date for auction
-	 * @param endDate The end date for auction
+	 * @param item The Item to be Bazaared
+	 * @param startDate The start date for Bazaar
+	 * @param endDate The end date for Bazaar
 	 * @return The Bazaar instance
 	 * @throws BazaarException if the instance
 	 *         could not be created
@@ -46,10 +46,10 @@ public interface BazaarSessionBean {
 	/**
 	 * Creates new Bazaar instance.
 	 * 
-	 * @param item The Item to be auctioned
-	 * @param startDate The start date for auction
-	 * @param endDate The end date for auction
-	 * @param reservePrice The reserve price for auction
+	 * @param item The Item to be Bazaared
+	 * @param startDate The start date for Bazaar
+	 * @param endDate The end date for Bazaar
+	 * @param reservePrice The reserve price for Bazaar
 	 * @return The Bazaar instance
 	 * @throws BazaarException if the instance
 	 *         could not be created
@@ -62,7 +62,7 @@ public interface BazaarSessionBean {
 	 * 
 	 * @param identifier The identifier for instance
 	 * @return The Bazaar instance
-	 * @throws BazaarNotFoundException if no auction
+	 * @throws BazaarNotFoundException if no Bazaar
 	 *         with identifier exists
 	 * @throws BazaarException if the operation could
 	 *         not be completed

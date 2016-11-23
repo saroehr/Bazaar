@@ -14,7 +14,7 @@ import com.mycila.junit.concurrent.ConcurrentSuiteRunner;
 
 /**
  * AllTests provides a JUnit test suite
- * to execute all auction tests.
+ * to execute all Bazaar tests.
  */
 @RunWith(ConcurrentSuiteRunner.class)
 @SuiteClasses({ BazaarManagerTests.class, BazaarTests.class, CategoryTests.class, ItemTests.class, BidderTests.class,

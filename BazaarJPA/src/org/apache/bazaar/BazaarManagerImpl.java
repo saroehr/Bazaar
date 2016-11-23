@@ -82,7 +82,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.apache.bazaar.BazaarManager#newAuction(org.apache.bazaar.Item,
+	 * org.apache.bazaar.BazaarManager#newBazaar(org.apache.bazaar.Item,
 	 * java.util.Calendar, java.util.Calendar)
 	 */
 	@Override
@@ -98,7 +98,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.apache.bazaar.BazaarManager#newAuction(org.apache.bazaar.Item,
+	 * org.apache.bazaar.BazaarManager#newBazaar(org.apache.bazaar.Item,
 	 * java.util.Calendar, java.util.Calendar, java.lang.Double)
 	 */
 	@Override
@@ -234,12 +234,12 @@ final class BazaarManagerImpl implements BazaarManager {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.bazaar.BazaarManager#findAuction(org.apache.bazaar.
+	 * @see org.apache.bazaar.BazaarManager#findBazaar(org.apache.bazaar.
 	 * Identifier)
 	 */
 	@Override
 	public Bazaar findBazaar(final Identifier identifier) throws BazaarNotFoundException, BazaarException {
-		BazaarManagerImpl.LOGGER.entering("findAuction", identifier);
+		BazaarManagerImpl.LOGGER.entering("findBazaar", identifier);
 		final Bazaar bazaar;
 		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
@@ -249,27 +249,27 @@ final class BazaarManagerImpl implements BazaarManager {
 			transaction.commit();
 			if (bazaar == null) {
 				final BazaarNotFoundException exception = new BazaarNotFoundException();
-				BazaarManagerImpl.LOGGER.throwing("findAuction", exception);
+				BazaarManagerImpl.LOGGER.throwing("findBazaar", exception);
 				throw exception;
 			}
 		}
 		finally {
 			manager.close();
 		}
-		BazaarManagerImpl.LOGGER.exiting("findAuction", bazaar);
+		BazaarManagerImpl.LOGGER.exiting("findBazaar", bazaar);
 		return bazaar;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.bazaar.BazaarManager#findAllAuctions()
+	 * @see org.apache.bazaar.BazaarManager#findAllBazaars()
 	 */
 	@Override
 	public Set<Bazaar> findAllBazaars() throws BazaarException {
-		BazaarManagerImpl.LOGGER.entering("findAllAuctions");
+		BazaarManagerImpl.LOGGER.entering("findAllBazaars");
 		final Set<Bazaar> bazaars = new HashSet<Bazaar>(0);
-		BazaarManagerImpl.LOGGER.exiting("findAllAuctions", bazaars);
+		BazaarManagerImpl.LOGGER.exiting("findAllBazaars", bazaars);
 		return Collections.unmodifiableSet(bazaars);
 	}
 

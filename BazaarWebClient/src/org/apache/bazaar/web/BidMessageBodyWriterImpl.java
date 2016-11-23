@@ -62,7 +62,7 @@ public final class BidMessageBodyWriterImpl<T extends Bid> implements MessageBod
 	static JsonObject write(@NotNull final Bid bid) throws RestWebServiceException {
 		final JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 		jsonBuilder.add(JsonKeys.IDENTIFIER, bid.getIdentifier().getValue());
-		jsonBuilder.add(JsonKeys.BAZAAR, bid.getAuction().getIdentifier().getValue());
+		jsonBuilder.add(JsonKeys.BAZAAR, bid.getBazaar().getIdentifier().getValue());
 		jsonBuilder.add(JsonKeys.BIDDER, bid.getBidder().getIdentifier().getValue());
 		jsonBuilder.add(JsonKeys.PRICE, bid.getPrice().toString());
 		return jsonBuilder.build();

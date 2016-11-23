@@ -21,11 +21,11 @@ public interface Bid extends Persistable, Serializable {
 	// declare methods
 
 	/**
-	 * Returns the auction associated with this bid
+	 * Returns the Bazaar associated with this bid
 	 * 
-	 * @return The auction associated with this bid
+	 * @return The Bazaar associated with this bid
 	 */
-	public @NotNull Bazaar getAuction();
+	public @NotNull Bazaar getBazaar();
 
 	/**
 	 * Returns the bid price

@@ -54,11 +54,11 @@ public interface BidSessionBean {
 
 	/**
 	 * Returns all bids associated
-	 * with auction.
+	 * with Bazaar.
 	 * 
-	 * @param bazaar The auction to retrieve bids
+	 * @param bazaar The Bazaar to retrieve bids
 	 *        for
-	 * @return Set of all Bids for auction. Set is
+	 * @return Set of all Bids for Bazaar. Set is
 	 *         unmodifiable
 	 * @throws BazaarException if the operation could
 	 *         not be completed
@@ -77,12 +77,12 @@ public interface BidSessionBean {
 
 	/**
 	 * Returns all bids by bidder associated
-	 * with auction
+	 * with Bazaar
 	 * 
-	 * @param bazaar The auction to retrieve bids
+	 * @param bazaar The Bazaar to retrieve bids
 	 *        by bidder for
 	 * @param bidder The bidder to retrieve bids for
-	 * @return Set of all Bids for auction by Bidder. Set is
+	 * @return Set of all Bids for Bazaar by Bidder. Set is
 	 *         unmodifiable
 	 * @throws BazaarException if the operation could not be completed
 	 */
@@ -92,7 +92,7 @@ public interface BidSessionBean {
 	/**
 	 * Creates new Bid by Bidder for Bazaar.
 	 * 
-	 * @param bazaar The auction to create bid for
+	 * @param bazaar The Bazaar to create bid for
 	 * @param bidder The bidder to create bid for
 	 * @param price The bid price
 	 * @return The Bid instance
