@@ -103,4 +103,9 @@
 			</plugin>
 		</plugins>
 	</build>
+	<name>Bazaar</name>
+	<url>http://www.github.com/saroehr/Bazaar</url>
+	<scm>
+		<url>http://www.github.com/saroehr/Bazaar</url>
+	</scm>
 </project>

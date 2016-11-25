@@ -21,7 +21,6 @@ import org.apache.bazaar.Bidder;
 import org.apache.bazaar.Category;
 import org.apache.bazaar.Identifiable;
 import org.apache.bazaar.Item;
-import org.apache.bazaar.Versionable;
 
 /**
  * Messages provides a utility class for retrieving localized messages.
@@ -50,12 +49,6 @@ public final class Messages {
 	 */
 	public static final String UNABLE_TO_FIND_IDENTIFIABLE = Identifiable.class.getName() + "."
 			+ "unabletofindidentifiable";
-
-	/**
-	 * Key for lookup of unable to find versionable message
-	 */
-	public static final String UNABLE_TO_FIND_VERSIONABLE = Versionable.class.getName() + "."
-			+ "unabletofindversionable";
 
 	/**
 	 * Key for lookup of unable to find category message
@@ -107,6 +100,11 @@ public final class Messages {
 	 * Key for lookup of unsupported method exception message
 	 */
 	public static final String UNSUPPORTED_METHOD = "org.apache.bazaar.unsupportedmethod";
+
+	/**
+	 * Key for lookup of unsupported media type message
+	 */
+	public static final String UNSUPPORTED_MEDIA_TYPE = "org.apache.bazaar.unsupportedmediatype";
 
 	private final ResourceBundle resourceBundle;
 

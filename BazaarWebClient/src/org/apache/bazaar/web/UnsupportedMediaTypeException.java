@@ -6,11 +6,10 @@
 package org.apache.bazaar.web;
 
 /**
- * UnsupportedMediaTypeException extends RestWebServiceException
- * to provide an exception type for when an unsupported media type
- * is provided.
+ * UnsupportedMediaTypeException extends RestWebServiceException to provide an
+ * exception type for when an unsupported media type is provided.
  */
-public class UnsupportedMediaTypeException extends RestWebServiceException {
+public final class UnsupportedMediaTypeException extends RestWebServiceException {
 
 	// declare members
 	private static final long serialVersionUID = -1732740555160699193L;
@@ -26,7 +25,7 @@ public class UnsupportedMediaTypeException extends RestWebServiceException {
 
 	/**
 	 * Constructor for UnsupportedMediaTypeException
-	 * 
+	 *
 	 * @param message The exception message
 	 */
 	public UnsupportedMediaTypeException(final String message) {
@@ -35,7 +34,7 @@ public class UnsupportedMediaTypeException extends RestWebServiceException {
 
 	/**
 	 * Constructor for UnsupportedMediaTypeException
-	 * 
+	 *
 	 * @param cause The exception cause
 	 */
 	public UnsupportedMediaTypeException(final Throwable cause) {
@@ -44,7 +43,7 @@ public class UnsupportedMediaTypeException extends RestWebServiceException {
 
 	/**
 	 * Constructor for UnsupportedMediaTypeException
-	 * 
+	 *
 	 * @param message The exception message
 	 * @param cause The exception cause
 	 */

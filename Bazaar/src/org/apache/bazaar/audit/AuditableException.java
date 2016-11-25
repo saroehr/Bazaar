@@ -3,7 +3,9 @@
  * Created On: Sep 29, 2016
  * Created By: Scott A. Roehrig (saroehr@hotmail.com
  */
-package org.apache.bazaar;
+package org.apache.bazaar.audit;
+
+import org.apache.bazaar.BazaarException;
 
 /**
  * AuditableException extends {@link BazaarException} to provide a base

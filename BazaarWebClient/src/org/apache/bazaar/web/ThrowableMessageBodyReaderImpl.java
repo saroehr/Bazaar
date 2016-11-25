@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 import javax.json.Json;
@@ -26,6 +27,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.bazaar.nls.Messages;
+
 /**
  * ThrowableMessageBodyReaderImpl implements MessageBodyReader to provide a
  * custom type for processing exception return messages
@@ -37,6 +40,8 @@ import javax.ws.rs.ext.Provider;
 public final class ThrowableMessageBodyReaderImpl<T extends Throwable> implements MessageBodyReader<T> {
 
 	// declare members
+
+	private static final Messages MESSAGES = Messages.newInstance(Locale.getDefault());
 
 	/**
 	 * Constructor for ThrowableMessageBodyReaderImpl
@@ -114,7 +119,8 @@ public final class ThrowableMessageBodyReaderImpl<T extends Throwable> implement
 			}
 
 			else {
-				throw new RestWebServiceException(); // TODO localize message
+				throw new RestWebServiceException(ThrowableMessageBodyReaderImpl.MESSAGES
+						.findMessage(Messages.UNSUPPORTED_MEDIA_TYPE, new Object[] { mediaType }));
 			}
 		}
 		catch (final ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException
