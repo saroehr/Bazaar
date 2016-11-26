@@ -8,7 +8,6 @@ package org.apache.bazaar.version;
 import javax.validation.constraints.NotNull;
 
 import org.apache.bazaar.Identifier;
-import org.apache.bazaar.Persistable;
 import org.apache.bazaar.logging.Logger;
 
 /**
@@ -17,21 +16,21 @@ import org.apache.bazaar.logging.Logger;
 final class VersionImpl implements Version {
 
 	// declare members
-	private final Identifier versionNumber;
-	private final Persistable persistable;
+	private final Identifier identifier;
+	private final Versionable versionable;
 
 	// declare constructors
 
 	/**
 	 * Constructor for VersionImpl
-	 * 
-	 * @param versionNumber The version number
-	 * @param persistable The persistable associated with version;
+	 *
+	 * @param identifier The version number
+	 * @param versionable The versionable associated with version;
 	 */
-	VersionImpl(@NotNull final Identifier versionNumber, @NotNull final Persistable persistable) {
+	VersionImpl(@NotNull final Identifier identifier, @NotNull final Versionable versionable) {
 		super();
-		this.versionNumber = versionNumber;
-		this.persistable = persistable;
+		this.identifier = identifier;
+		this.versionable = versionable;
 	}
 
 	// declare methods
@@ -41,16 +40,17 @@ final class VersionImpl implements Version {
 	 * @see org.apache.bazaar.version.Version#getVersionNumber()
 	 */
 	@Override
-	public Identifier getVersionIdentifier() {
-		return this.versionNumber;
+	public Identifier getIdentifier() {
+		return this.identifier;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see org.apache.bazaar.version.Version#getPersistable()
 	 */
 	@Override
-	public Persistable getPersistable() {
-		return this.persistable;
+	public Versionable getVersionable() {
+		return this.versionable;
 	}
 
 	/*
@@ -61,8 +61,8 @@ final class VersionImpl implements Version {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = (prime * result) + ((this.persistable == null) ? 0 : this.persistable.hashCode());
-		result = (prime * result) + ((this.versionNumber == null) ? 0 : this.versionNumber.hashCode());
+		result = prime * result + (this.versionable == null ? 0 : this.versionable.hashCode());
+		result = prime * result + (this.identifier == null ? 0 : this.identifier.hashCode());
 		return result;
 	}
 
@@ -82,20 +82,20 @@ final class VersionImpl implements Version {
 			return false;
 		}
 		final VersionImpl other = (VersionImpl)object;
-		if (this.persistable == null) {
-			if (other.persistable != null) {
+		if (this.versionable == null) {
+			if (other.versionable != null) {
 				return false;
 			}
 		}
-		else if (!this.persistable.equals(other.persistable)) {
+		else if (!this.versionable.equals(other.versionable)) {
 			return false;
 		}
-		if (this.versionNumber == null) {
-			if (other.versionNumber != null) {
+		if (this.identifier == null) {
+			if (other.identifier != null) {
 				return false;
 			}
 		}
-		else if (!this.versionNumber.equals(other.versionNumber)) {
+		else if (!this.identifier.equals(other.identifier)) {
 			return false;
 		}
 		return true;
@@ -107,7 +107,7 @@ final class VersionImpl implements Version {
 	 */
 	@Override
 	public String toString() {
-		return Logger.toString(this, new Object[] { this.versionNumber, this.persistable });
+		return Logger.toString(this, new Object[] { this.identifier, this.versionable });
 	}
 
 }

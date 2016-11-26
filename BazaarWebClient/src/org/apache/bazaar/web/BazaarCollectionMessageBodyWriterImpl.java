@@ -27,13 +27,10 @@ import org.apache.bazaar.Bazaar;
 
 /**
  * BazaarCollectionMessageBodyWriterImpl
- * 
- * @param <E>
- *            The collection element type
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
-public final class BazaarCollectionMessageBodyWriterImpl<E extends Bazaar> implements CollectionMessageBodyWriter<E> {
+public final class BazaarCollectionMessageBodyWriterImpl implements VersionableCollectionMessageBodyWriter<Bazaar> {
 
 	// declare members
 
@@ -60,7 +57,7 @@ public final class BazaarCollectionMessageBodyWriterImpl<E extends Bazaar> imple
 		boolean writeable = false;
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (type instanceof ParameterizedType) {
-				if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Bazaar.class)) {
+				if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Bazaar.class)) {
 					writeable = true;
 				}
 			}
@@ -76,7 +73,7 @@ public final class BazaarCollectionMessageBodyWriterImpl<E extends Bazaar> imple
 	 * javax.ws.rs.core.MultivaluedMap, java.io.OutputStream)
 	 */
 	@Override
-	public void writeTo(final Collection<E> collection, final Class<?> clazz, final Type type,
+	public void writeTo(final Collection<Bazaar> collection, final Class<?> clazz, final Type type,
 			final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String, Object> map,
 			final OutputStream outputStream) throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
@@ -84,14 +81,14 @@ public final class BazaarCollectionMessageBodyWriterImpl<E extends Bazaar> imple
 				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.writeStartArray(JsonKeys.BAZAARS);
+			final VersionableJsonWriter<Bazaar> writer1 = new BazaarJsonWriterImpl();
 			for (final Bazaar bazaar : collection) {
-				jsonGenerator.write(BazaarMessageBodyWriterImpl.write(bazaar));
+				jsonGenerator.write(writer1.write(bazaar));
 			}
 			jsonGenerator.writeEnd();
 			jsonGenerator.writeEnd();
 			jsonGenerator.flush();
 		}
-
 	}
 
 }

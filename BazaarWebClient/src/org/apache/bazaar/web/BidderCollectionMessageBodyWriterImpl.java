@@ -28,13 +28,10 @@ import org.apache.bazaar.Bidder;
 
 /**
  * BidderCollectionMessageBodyWriterImpl
- * 
- * @param <E>
- *            The collection element type
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
-public final class BidderCollectionMessageBodyWriterImpl<E extends Bidder> implements CollectionMessageBodyWriter<E> {
+public final class BidderCollectionMessageBodyWriterImpl implements VersionableCollectionMessageBodyWriter<Bidder> {
 
 	// declare members
 
@@ -51,7 +48,6 @@ public final class BidderCollectionMessageBodyWriterImpl<E extends Bidder> imple
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyWriter#isWriteable(java.lang.Class,
 	 * java.lang.reflect.Type, java.lang.annotation.Annotation[],
 	 * javax.ws.rs.core.MediaType)
@@ -63,7 +59,7 @@ public final class BidderCollectionMessageBodyWriterImpl<E extends Bidder> imple
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 				if (type instanceof ParameterizedType) {
-					if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Bid.class)) {
+					if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Bid.class)) {
 						writeable = true;
 					}
 				}
@@ -74,14 +70,13 @@ public final class BidderCollectionMessageBodyWriterImpl<E extends Bidder> imple
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyWriter#writeTo(java.lang.Object,
 	 * java.lang.Class, java.lang.reflect.Type,
 	 * java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType,
 	 * javax.ws.rs.core.MultivaluedMap, java.io.OutputStream)
 	 */
 	@Override
-	public void writeTo(final Collection<E> collection, final Class<?> clazz, final Type type,
+	public void writeTo(final Collection<Bidder> collection, final Class<?> clazz, final Type type,
 			final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String, Object> map,
 			final OutputStream outputStream) throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
@@ -89,8 +84,9 @@ public final class BidderCollectionMessageBodyWriterImpl<E extends Bidder> imple
 				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.writeStartArray(JsonKeys.BIDDERS);
+			final VersionableJsonWriter<Bidder> writer1 = new BidderJsonWriterImpl();
 			for (final Bidder bidder : collection) {
-				jsonGenerator.write(BidderMessageBodyWriterImpl.write(bidder));
+				jsonGenerator.write(writer1.write(bidder));
 			}
 			jsonGenerator.writeEnd();
 			jsonGenerator.writeEnd();

@@ -27,13 +27,10 @@ import org.apache.bazaar.Bid;
 
 /**
  * BidCollectionMessageBodyWriterImpl
- * 
- * @param <E>
- *            The collection element type
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
-public final class BidCollectionMessageBodyWriterImpl<E extends Bid> implements CollectionMessageBodyWriter<E> {
+public final class BidCollectionMessageBodyWriterImpl implements VersionableCollectionMessageBodyWriter<Bid> {
 
 	// declare members
 
@@ -60,7 +57,7 @@ public final class BidCollectionMessageBodyWriterImpl<E extends Bid> implements 
 		boolean writeable = false;
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (type instanceof ParameterizedType) {
-				if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Bid.class)) {
+				if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Bid.class)) {
 					writeable = true;
 				}
 			}
@@ -76,7 +73,7 @@ public final class BidCollectionMessageBodyWriterImpl<E extends Bid> implements 
 	 * javax.ws.rs.core.MultivaluedMap, java.io.OutputStream)
 	 */
 	@Override
-	public void writeTo(final Collection<E> collection, final Class<?> clazz, final Type type,
+	public void writeTo(final Collection<Bid> collection, final Class<?> clazz, final Type type,
 			final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String, Object> map,
 			final OutputStream outputStream) throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
@@ -84,8 +81,9 @@ public final class BidCollectionMessageBodyWriterImpl<E extends Bid> implements 
 				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.writeStartArray(JsonKeys.BIDS);
+			final VersionableJsonWriter<Bid> writer1 = new BidJsonWriterImpl();
 			for (final Bid bid : collection) {
-				jsonGenerator.write(BidMessageBodyWriterImpl.write(bid));
+				jsonGenerator.write(writer1.write(bid));
 				jsonGenerator.writeEnd();
 				jsonGenerator.writeEnd();
 				jsonGenerator.flush();

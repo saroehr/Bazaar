@@ -19,6 +19,7 @@ import org.apache.bazaar.Identifier;
 import org.apache.bazaar.ejb.BazaarSessionBean;
 import org.apache.bazaar.ejb.BidSessionBean;
 import org.apache.bazaar.ejb.BidderSessionBean;
+import org.apache.bazaar.version.Version;
 
 /**
  * BidRestWebServiceImpl extends AbstractRestWebService and provides a web
@@ -56,8 +57,16 @@ public class BidRestWebServiceImpl extends AbstractRestWebService {
 		if (pathParameters.hasParameter(RequestParameters.IDENTIFIER)) {
 			final Bid bid = bidSessionBean
 					.findBid(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
-			response = AbstractRestWebService.newResponse(new GenericEntity<Bid>(bid) {
-			}).build();
+			if (queryParameters.hasParameter(RequestParameters.VERSIONS)
+					&& Boolean.valueOf(queryParameters.getParameter(RequestParameters.VERSIONS)).booleanValue()) {
+				final Set<Version> versions = bid.findAllVersions();
+				response = AbstractRestWebService.newResponse(new GenericEntity<Set<Version>>(versions) {
+				}).build();
+			}
+			else {
+				response = AbstractRestWebService.newResponse(new GenericEntity<Bid>(bid) {
+				}).build();
+			}
 		}
 		else if (queryParameters.hasParameter(RequestParameters.BAZAAR)) {
 			if (queryParameters.hasParameter(RequestParameters.BIDDER)) {

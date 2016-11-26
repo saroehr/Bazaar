@@ -198,7 +198,7 @@ public final class CategoryTests {
 			Assert.assertEquals(1, versions.size());
 			boolean foundCategory = false;
 			for (final Version version : versions) {
-				if (version.getPersistable().equals(category)) {
+				if (version.getVersionable().equals(category)) {
 					foundCategory = true;
 				}
 			}
@@ -213,7 +213,7 @@ public final class CategoryTests {
 			Assert.assertEquals(2, versions.size());
 			foundCategory = false;
 			for (final Version version : versions) {
-				if (version.getPersistable().equals(category)) {
+				if (version.getVersionable().equals(category)) {
 					foundCategory = true;
 				}
 			}

@@ -14,8 +14,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.json.Json;
@@ -32,13 +32,10 @@ import org.apache.bazaar.Bazaar;
 
 /**
  * BazaarCollectionMessageBodyReaderImpl
- * 
- * @param <E>
- *            The collection element type
  */
 @Provider
 @Consumes(value = MediaType.APPLICATION_JSON)
-public final class BazaarCollectionMessageBodyReaderImpl<E extends Bazaar> implements CollectionMessageBodyReader<E> {
+public final class BazaarCollectionMessageBodyReaderImpl implements VersionableCollectionMessageBodyReader<Bazaar> {
 
 	// declare members
 
@@ -65,7 +62,7 @@ public final class BazaarCollectionMessageBodyReaderImpl<E extends Bazaar> imple
 		boolean readable = false;
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (type instanceof ParameterizedType) {
-				if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Bazaar.class)) {
+				if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Bazaar.class)) {
 					readable = true;
 				}
 			}
@@ -80,22 +77,22 @@ public final class BazaarCollectionMessageBodyReaderImpl<E extends Bazaar> imple
 	 * javax.ws.rs.core.MediaType, javax.ws.rs.core.MultivaluedMap,
 	 * java.io.InputStream)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<E> readFrom(final Class<Collection<E>> clazz, final Type type, final Annotation[] annotations,
-			final MediaType mediaType, final MultivaluedMap<String, String> map, final InputStream inputStream)
-			throws IOException, WebApplicationException {
+	public Collection<Bazaar> readFrom(final Class<Collection<Bazaar>> clazz, final Type type,
+			final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String, String> map,
+			final InputStream inputStream) throws IOException, WebApplicationException {
 		final Set<Bazaar> bazaars;
 		try (final BufferedReader reader = new BufferedReader(
 				new InputStreamReader(inputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING))) {
 			final JsonArray jsonArray = Json.createReader(reader).readObject().getJsonArray(JsonKeys.BAZAARS);
 			bazaars = new HashSet<Bazaar>(jsonArray.size());
-			for (final Iterator<JsonValue> iterator = jsonArray.iterator(); iterator.hasNext();) {
-				final JsonObject jsonObject1 = (JsonObject) iterator.next();
-				bazaars.add(BazaarMessageBodyReaderImpl.read(jsonObject1));
+			final VersionableJsonReader<Bazaar> reader1 = new BazaarJsonReaderImpl();
+			for (final JsonValue jsonValue : jsonArray) {
+				final JsonObject jsonObject1 = (JsonObject)jsonValue;
+				bazaars.add(reader1.read(jsonObject1));
 			}
 		}
-		return (Collection<E>) bazaars;
+		return Collections.unmodifiableSet(bazaars);
 	}
 
 }

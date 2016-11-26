@@ -1,5 +1,7 @@
 package org.apache.bazaar.ejb;
 
+import java.util.Set;
+
 import javax.annotation.Resource;
 import javax.annotation.Resource.AuthenticationType;
 import javax.ejb.Local;
@@ -14,6 +16,9 @@ import org.apache.bazaar.Bidder;
 import org.apache.bazaar.BidderNotFoundException;
 import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Name;
+import org.apache.bazaar.version.Version;
+import org.apache.bazaar.version.VersionException;
+import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
  * Session Bean implementation class BidderSessionBeanImpl
@@ -39,7 +44,6 @@ public class BidderSessionBeanImpl implements BidderSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see BidderSessionBean#findBidder(Identifier)
 	 */
 	@Override
@@ -49,7 +53,27 @@ public class BidderSessionBeanImpl implements BidderSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 * @see
+	 * org.apache.bazaar.ejb.BidderSessionBean#findAllVersions(org.apache.bazaar
+	 * .Bidder)
+	 */
+	@Override
+	public Set<Version> findAllVersions(final Bidder bidder)
+			throws UnsupportedOperationException, VersionNotFoundException, VersionException {
+		return bidder.findAllVersions();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.bazaar.ejb.BidderSessionBean#findAllBidders()
+	 */
+	@Override
+	public Set<Bidder> findAllBidders() throws BazaarException {
+		return BazaarManager.newInstance().findAllBidders();
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see BidderSessionBean#newBidder(Name, Address, Address)
 	 */
 	@Override
@@ -60,7 +84,6 @@ public class BidderSessionBeanImpl implements BidderSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.ejb.BidderSessionBean#newName()
 	 */
 	@Override
@@ -70,7 +93,6 @@ public class BidderSessionBeanImpl implements BidderSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.ejb.BidderSessionBean#newAddress()
 	 */
 	@Override

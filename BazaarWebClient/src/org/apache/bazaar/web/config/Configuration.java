@@ -41,6 +41,8 @@ import org.apache.bazaar.web.ItemMessageBodyReaderImpl;
 import org.apache.bazaar.web.ItemMessageBodyWriterImpl;
 import org.apache.bazaar.web.ThrowableMessageBodyReaderImpl;
 import org.apache.bazaar.web.ThrowableMessageBodyWriterImpl;
+import org.apache.bazaar.web.VersionMessageBodyReaderImpl;
+import org.apache.bazaar.web.VersionMessageBodyWriterImpl;
 
 /**
  * Configuration extends Configuration and declares the methods an
@@ -88,7 +90,8 @@ public class Configuration extends org.apache.bazaar.config.Configuration {
 			BidderMessageBodyWriterImpl.class, BidderCollectionMessageBodyReaderImpl.class,
 			BidderCollectionMessageBodyWriterImpl.class, BidMessageBodyReaderImpl.class, BidMessageBodyWriterImpl.class,
 			BidCollectionMessageBodyReaderImpl.class, BidCollectionMessageBodyWriterImpl.class,
-			ThrowableMessageBodyReaderImpl.class, ThrowableMessageBodyWriterImpl.class };
+			ThrowableMessageBodyReaderImpl.class, ThrowableMessageBodyWriterImpl.class,
+			VersionMessageBodyWriterImpl.class, VersionMessageBodyReaderImpl.class };
 
 	protected static final Properties PROPERTIES;
 

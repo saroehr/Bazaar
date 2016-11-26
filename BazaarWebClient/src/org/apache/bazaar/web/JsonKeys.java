@@ -57,6 +57,9 @@ public final class JsonKeys {
 	 * Key for Json attribute "ok"
 	 */
 	public static final String OK = "ok";
+	static final String VERSION = "version";
+	static final String VERSIONS = "versions";
+	static final String VERSIONABLE = "versionable";
 
 	// declare constructors
 

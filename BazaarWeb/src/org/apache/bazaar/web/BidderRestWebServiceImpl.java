@@ -6,6 +6,7 @@
 package org.apache.bazaar.web;
 
 import java.net.URI;
+import java.util.Set;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.GenericEntity;
@@ -17,6 +18,7 @@ import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Name;
 import org.apache.bazaar.State;
 import org.apache.bazaar.ejb.BidderSessionBean;
+import org.apache.bazaar.version.Version;
 
 /**
  * BidderRestWebServiceImpl extends AbstractRestWebService and provides a web
@@ -45,14 +47,32 @@ public final class BidderRestWebServiceImpl extends AbstractRestWebService {
 	 */
 	@Override
 	protected Response doGet(final RestWebServiceRequest request) throws Throwable {
-		final Bidder bidder;
+		final Response response;
+		final RequestParameters queryParameters = RequestParameters
+				.newInstance(request.getUriInfo().getQueryParameters());
 		final RequestParameters pathParameters = RequestParameters
 				.newInstance(request.getUriInfo().getPathParameters());
 		final BidderSessionBean sessionBean = (BidderSessionBean)this.lookup(BidderSessionBean.BEAN_LOOKUP_NAME);
-		bidder = sessionBean
-				.findBidder(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
-		return AbstractRestWebService.newResponse(new GenericEntity<Bidder>(bidder) {
-		}).build();
+		if (pathParameters.hasParameter(RequestParameters.IDENTIFIER)) {
+			final Bidder bidder = sessionBean
+					.findBidder(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
+			if (queryParameters.hasParameter(RequestParameters.VERSIONS)
+					&& Boolean.valueOf(queryParameters.getParameter(RequestParameters.VERSIONS)).booleanValue()) {
+				final Set<Version> versions = sessionBean.findAllVersions(bidder);
+				response = AbstractRestWebService.newResponse(new GenericEntity<Set<Version>>(versions) {
+				}).build();
+			}
+			else {
+				response = AbstractRestWebService.newResponse(new GenericEntity<Bidder>(bidder) {
+				}).build();
+			}
+		}
+		else {
+			final Set<Bidder> bidders = sessionBean.findAllBidders();
+			response = AbstractRestWebService.newResponse(new GenericEntity<Set<Bidder>>(bidders) {
+			}).build();
+		}
+		return response;
 	}
 
 	/*

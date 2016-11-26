@@ -1,5 +1,5 @@
 /*
- * CollectionMessageBodyWriter.java
+ * VersionableCollectionMessageBodyWriter.java
  * Created by: Scott A. Roehrig
  * Created on: Sep 1, 2016 at 10:26:07 AM
  */
@@ -14,17 +14,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.bazaar.Persistable;
+import org.apache.bazaar.version.Versionable;
 
 /**
- * CollectionMessageBodyWriter extends MessageBodyWriter
- * to provide a type for processing of collections
- * 
+ * VersionableCollectionMessageBodyWriter extends VersionableMessageBodyWriter to provide a type for
+ * processing of collections
+ *
  * @param <E> The type of collection elements
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
-public interface CollectionMessageBodyWriter<E extends Persistable> extends MessageBodyWriter<Collection<E>> {
+public interface VersionableCollectionMessageBodyWriter<E extends Versionable> extends MessageBodyWriter<Collection<E>> {
 
 	// declare members
 
@@ -32,7 +32,6 @@ public interface CollectionMessageBodyWriter<E extends Persistable> extends Mess
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see javax.ws.rs.ext.MessageBodyWriter#getSize(java.lang.Object,
 	 * java.lang.Class, java.lang.reflect.Type,
 	 * java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType)

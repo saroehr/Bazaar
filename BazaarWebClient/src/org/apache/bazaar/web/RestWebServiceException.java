@@ -8,9 +8,8 @@ package org.apache.bazaar.web;
 import javax.ws.rs.WebApplicationException;
 
 /**
- * RestWebServiceException extends WebApplicationException to
- * provide a specific exception sub type for processing
- * Rest related operations
+ * RestWebServiceException extends WebApplicationException to provide a specific
+ * exception sub type for processing Rest related operations
  */
 public class RestWebServiceException extends WebApplicationException {
 
@@ -29,7 +28,7 @@ public class RestWebServiceException extends WebApplicationException {
 
 	/**
 	 * Constructor for RestWebServiceException
-	 * 
+	 *
 	 * @param message The exception message
 	 */
 	public RestWebServiceException(final String message) {
@@ -38,7 +37,7 @@ public class RestWebServiceException extends WebApplicationException {
 
 	/**
 	 * Constructor for RestWebServiceException
-	 * 
+	 *
 	 * @param cause The exception cause
 	 */
 	public RestWebServiceException(final Throwable cause) {
@@ -47,7 +46,7 @@ public class RestWebServiceException extends WebApplicationException {
 
 	/**
 	 * Constructor for RestWebServiceException
-	 * 
+	 *
 	 * @param message
 	 * @param cause
 	 */

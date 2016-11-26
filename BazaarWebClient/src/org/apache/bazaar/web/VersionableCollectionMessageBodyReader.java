@@ -1,5 +1,5 @@
 /*
- * CollectionMessageBodyReader.java
+ * VersionableCollectionMessageBodyReader.java
  * Created by: Scott A. Roehrig
  * Created on: Sep 1, 2016 at 10:21:18 AM
  */
@@ -12,17 +12,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.bazaar.Persistable;
+import org.apache.bazaar.version.Versionable;
 
 /**
- * CollectionMessageBodyReader extends MessageBodyReader
- * to provide a type for processing of collections
- * 
+ * VersionableCollectionMessageBodyReader extends MessageBodyReader to provide a type for
+ * processing of collections
+ *
  * @param <E> The type of collection element
  */
 @Provider
 @Consumes(value = MediaType.APPLICATION_JSON)
-public interface CollectionMessageBodyReader<E extends Persistable> extends MessageBodyReader<Collection<E>> {
+public interface VersionableCollectionMessageBodyReader<E extends Versionable> extends MessageBodyReader<Collection<E>> {
 
 	// declare members
 

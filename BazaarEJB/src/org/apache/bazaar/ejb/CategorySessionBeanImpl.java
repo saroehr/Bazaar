@@ -14,6 +14,9 @@ import org.apache.bazaar.BazaarManager;
 import org.apache.bazaar.Category;
 import org.apache.bazaar.CategoryNotFoundException;
 import org.apache.bazaar.Identifier;
+import org.apache.bazaar.version.Version;
+import org.apache.bazaar.version.VersionException;
+import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
  * Session Bean implementation class CategorySessionBeanImpl
@@ -39,7 +42,6 @@ public class CategorySessionBeanImpl implements CategorySessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.ejb.CategorySessionBean#findRootCategory()
 	 */
 	@Override
@@ -49,9 +51,7 @@ public class CategorySessionBeanImpl implements CategorySessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.ejb.CategorySessionBean#findCategory(org.
+	 * @see org.apache.bazaar.ejb.CategorySessionBean#findCategory(org.
 	 * apache.Bazaar.Identifier)
 	 */
 	@Override
@@ -61,7 +61,18 @@ public class CategorySessionBeanImpl implements CategorySessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 * @see
+	 * org.apache.bazaar.ejb.CategorySessionBean#findAllVersions(org.apache.
+	 * bazaar.Category)
+	 */
+	@Override
+	public Set<Version> findAllVersions(final Category category)
+			throws UnsupportedOperationException, VersionNotFoundException, VersionException {
+		return category.findAllVersions();
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see org.apache.bazaar.ejb.CategorySessionBean#findAllCategories()
 	 */
 	@Override
@@ -71,7 +82,6 @@ public class CategorySessionBeanImpl implements CategorySessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.apache.bazaar.ejb.CategorySessionBean#newCategory(java.lang.String,
 	 * java.lang.String, org.apache.bazaar.Category)

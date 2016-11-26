@@ -27,14 +27,10 @@ import org.apache.bazaar.Category;
 
 /**
  * CategoryCollectionMessageBodyWriterImpl
- * 
- * @param <E>
- *            The collection element type
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
-public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
-		implements CollectionMessageBodyWriter<E> {
+public final class CategoryCollectionMessageBodyWriterImpl implements VersionableCollectionMessageBodyWriter<Category> {
 
 	// declare members
 
@@ -61,7 +57,7 @@ public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
 		boolean writeable = false;
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (type instanceof ParameterizedType) {
-				if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Category.class)) {
+				if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Category.class)) {
 					writeable = true;
 				}
 			}
@@ -77,7 +73,7 @@ public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
 	 * javax.ws.rs.core.MultivaluedMap, java.io.OutputStream)
 	 */
 	@Override
-	public void writeTo(final Collection<E> collection, final Class<?> clazz, final Type type,
+	public void writeTo(final Collection<Category> collection, final Class<?> clazz, final Type type,
 			final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String, Object> map,
 			final OutputStream outputStream) throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
@@ -85,8 +81,9 @@ public final class CategoryCollectionMessageBodyWriterImpl<E extends Category>
 				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.writeStartArray(JsonKeys.CATEGORIES);
+			final VersionableJsonWriter<Category> writer1 = new CategoryJsonWriterImpl();
 			for (final Category category : collection) {
-				jsonGenerator.write(CategoryMessageBodyWriterImpl.write(category));
+				jsonGenerator.write(writer1.write(category));
 			}
 			jsonGenerator.writeEnd();
 			jsonGenerator.writeEnd();

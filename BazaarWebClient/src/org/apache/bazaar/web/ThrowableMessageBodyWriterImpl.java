@@ -22,13 +22,13 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 /**
- * ThrowableMessageBodyWriterImpl implements MessageBodyWriter to provide an
- * implementation for writing error json returns
+ * ThrowableMessageBodyWriterImpl implements VersionableMessageBodyWriter to
+ * provide an implementation for writing error json returns
  *
  * @param <T> The type parameters
  */
 @Provider
-@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.TEXT_HTML })
+@Produces(value = { MediaType.APPLICATION_JSON })
 public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implements MessageBodyWriter<T> {
 
 	// declare members
@@ -66,8 +66,7 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 	public boolean isWriteable(final Class<?> type, final Type genericType, final Annotation[] annotations,
 			final MediaType mediaType) {
 		boolean writeable = false;
-		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) || MediaType.TEXT_HTML_TYPE.equals(mediaType)
-				|| MediaType.TEXT_PLAIN_TYPE.equals(mediaType) && Throwable.class.isAssignableFrom(type)) {
+		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Throwable.class.isAssignableFrom(type)) {
 			writeable = true;
 		}
 		return writeable;
@@ -90,6 +89,9 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 				new OutputStreamWriter(outputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING));
 				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
+			// jsonGenerator.write(JsonKeys.THROWABLE, new
+			// ThrowableJsonWriterImpl().write(object));
+
 			jsonGenerator.writeStartObject(JsonKeys.THROWABLE);
 			jsonGenerator.write(JsonKeys.CLASS, object.getClass().getName());
 			jsonGenerator.write(JsonKeys.MESSAGE,
@@ -110,6 +112,7 @@ public final class ThrowableMessageBodyWriterImpl<T extends Throwable> implement
 			}
 			jsonGenerator.writeEnd();
 			jsonGenerator.writeEnd();
+
 			jsonGenerator.writeEnd();
 			jsonGenerator.flush();
 		}

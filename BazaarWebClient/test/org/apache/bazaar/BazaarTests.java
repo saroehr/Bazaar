@@ -7,17 +7,9 @@ package org.apache.bazaar;
 
 import java.time.DayOfWeek;
 import java.util.Calendar;
+import java.util.Set;
 
-import org.apache.bazaar.Address;
-import org.apache.bazaar.Bazaar;
-import org.apache.bazaar.BazaarException;
-import org.apache.bazaar.BazaarExpiredException;
-import org.apache.bazaar.BazaarManager;
-import org.apache.bazaar.BazaarNotFoundException;
-import org.apache.bazaar.Bidder;
-import org.apache.bazaar.Item;
-import org.apache.bazaar.Name;
-import org.apache.bazaar.State;
+import org.apache.bazaar.version.Version;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -206,6 +198,42 @@ public final class BazaarTests {
 			Assert.assertNotNull(exception);
 		}
 
+	}
+
+	/**
+	 * Test for findAllVersions
+	 */
+	@Test
+	public void testFindAllVersions() {
+		try {
+			final BazaarManager manager = BazaarManager.newInstance();
+			final Item item = manager.newItem();
+			item.setName("testFindAllVersions");
+			item.setDescription("testFindAllVersions");
+			final Category category = manager.findRootCategory();
+			item.setCategory(category);
+			final Calendar startDate = Calendar.getInstance();
+			startDate.setWeekDate(2016, 50, DayOfWeek.MONDAY.getValue());
+			final Calendar endDate = Calendar.getInstance();
+			endDate.setWeekDate(2016, 51, DayOfWeek.MONDAY.getValue());
+			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
+			bazaar.persist();
+			Assert.assertNotNull(manager.findBazaar(bazaar.getIdentifier()));
+			final Set<Version> versions = bazaar.findAllVersions();
+			Assert.assertNotNull(versions);
+			Assert.assertEquals(1, versions.size());
+			boolean foundVersion = false;
+			for (final Version version : versions) {
+				if (version.getVersionable().equals(bazaar)) {
+					foundVersion = true;
+				}
+			}
+			Assert.assertTrue(foundVersion);
+		}
+		catch (final BazaarException exception) {
+			exception.printStackTrace(System.err);
+			Assert.fail(exception.getLocalizedMessage());
+		}
 	}
 
 }

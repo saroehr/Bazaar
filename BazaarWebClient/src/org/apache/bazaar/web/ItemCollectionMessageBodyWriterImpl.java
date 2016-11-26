@@ -27,13 +27,10 @@ import org.apache.bazaar.Item;
 
 /**
  * ItemCollectionMessageBodyWriterImpl
- * 
- * @param <E>
- *            The collection element type
  */
 @Provider
 @Produces(value = MediaType.APPLICATION_JSON)
-public final class ItemCollectionMessageBodyWriterImpl<E extends Item> implements CollectionMessageBodyWriter<E> {
+public final class ItemCollectionMessageBodyWriterImpl implements VersionableCollectionMessageBodyWriter<Item> {
 
 	// declare members
 
@@ -60,7 +57,7 @@ public final class ItemCollectionMessageBodyWriterImpl<E extends Item> implement
 		boolean writeable = false;
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (type instanceof ParameterizedType) {
-				if (Arrays.asList(((ParameterizedType) type).getActualTypeArguments()).contains(Item.class)) {
+				if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Item.class)) {
 					writeable = true;
 				}
 			}
@@ -76,7 +73,7 @@ public final class ItemCollectionMessageBodyWriterImpl<E extends Item> implement
 	 * javax.ws.rs.core.MultivaluedMap, java.io.OutputStream)
 	 */
 	@Override
-	public void writeTo(final Collection<E> collection, final Class<?> clazz, final Type type,
+	public void writeTo(final Collection<Item> collection, final Class<?> clazz, final Type type,
 			final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String, Object> map,
 			final OutputStream outputStream) throws IOException, WebApplicationException {
 		try (final BufferedWriter writer = new BufferedWriter(
@@ -84,8 +81,9 @@ public final class ItemCollectionMessageBodyWriterImpl<E extends Item> implement
 				final JsonGenerator jsonGenerator = Json.createGenerator(writer)) {
 			jsonGenerator.writeStartObject();
 			jsonGenerator.writeStartArray(JsonKeys.ITEMS);
+			final VersionableJsonWriter<Item> writer1 = new ItemJsonWriterImpl();
 			for (final Item item : collection) {
-				jsonGenerator.write(ItemMessageBodyWriterImpl.write(item));
+				jsonGenerator.write(writer1.write(item));
 			}
 			jsonGenerator.writeEnd();
 			jsonGenerator.writeEnd();

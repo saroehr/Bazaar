@@ -8,7 +8,6 @@ package org.apache.bazaar.version;
 import javax.validation.constraints.NotNull;
 
 import org.apache.bazaar.Identifier;
-import org.apache.bazaar.Persistable;
 
 /**
  * Version declares the methods an implementation must provide
@@ -24,13 +23,13 @@ public interface Version {
 	 *
 	 * @return The version identifier
 	 */
-	public @NotNull Identifier getVersionIdentifier();
+	public @NotNull Identifier getIdentifier();
 
 	/**
-	 * Returns the persistable associated with version
+	 * Returns the versionable associated with version
 	 *
-	 * @return The Persistable associated with version
+	 * @return The versionable associated with version
 	 */
-	public @NotNull Persistable getPersistable();
+	public @NotNull Versionable getVersionable();
 
 }

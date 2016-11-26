@@ -5,6 +5,8 @@
  */
 package org.apache.bazaar.ejb;
 
+import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.bazaar.Address;
@@ -13,10 +15,13 @@ import org.apache.bazaar.Bidder;
 import org.apache.bazaar.BidderNotFoundException;
 import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Name;
+import org.apache.bazaar.version.Version;
+import org.apache.bazaar.version.VersionException;
+import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
- * BidderSessionBean provides the EJB Local interface
- * used by clients of the bean
+ * BidderSessionBean provides the EJB Local interface used by clients of the
+ * bean
  */
 public interface BidderSessionBean {
 
@@ -31,26 +36,39 @@ public interface BidderSessionBean {
 
 	/**
 	 * Finds Bidder by Identifier
-	 * 
+	 *
 	 * @param identifier The identifier for Bidder
 	 * @return The Bidder with identifier
-	 * @throws BidderNotFoundException if no Bidder
-	 *         with identifier can be found
-	 * @throws BazaarException if the operation could
-	 *         not be completed
+	 * @throws BidderNotFoundException if no Bidder with identifier can be found
+	 * @throws BazaarException if the operation could not be completed
 	 */
 	public @NotNull Bidder findBidder(@NotNull final Identifier identifier)
 			throws BidderNotFoundException, BazaarException;
 
 	/**
-	 * Returns set of all Bidders
-	 * 
-	 * @return The set of all Bidders
+	 * Returns Set of all Version of Bidder
+	 *
+	 * @param bidder The Bidder instance to retrieve versions from
+	 * @return The Set of all Versions of Bidder
+	 * @throws UnsupportedOperationException if the implementation does not
+	 *         support versions
+	 * @throws VersionNotFoundException if no versions exist for bidder
+	 * @throws VersionException if the operation could not be completed
 	 */
+	public @NotNull Set<Version> findAllVersions(@NotNull final Bidder bidder)
+			throws UnsupportedOperationException, VersionNotFoundException, VersionException;
+
+	/**
+	 * Returns set of all Bidders
+	 *
+	 * @return The set of all Bidders
+	 * @throws BazaarException if the operation could not be completed
+	 */
+	public @NotNull Set<Bidder> findAllBidders() throws BazaarException;
 
 	/**
 	 * Creates new Bidder. Bidder is persisted.
-	 * 
+	 *
 	 * @param name The name for bidder
 	 * @param billingAddress The billing Address for bidder
 	 * @param shippingAddress The shipping Address for bidder
@@ -62,19 +80,17 @@ public interface BidderSessionBean {
 
 	/**
 	 * Returns new Name instance.
-	 * 
+	 *
 	 * @return The Name instance
-	 * @throws BazaarException if the operation
-	 *         could not be completed
+	 * @throws BazaarException if the operation could not be completed
 	 */
 	public @NotNull Name newName() throws BazaarException;
 
 	/**
 	 * Returns new Address instance
-	 * 
+	 *
 	 * @return The Address instance
-	 * @throws BazaarException if the operation could
-	 *         not be completed
+	 * @throws BazaarException if the operation could not be completed
 	 */
 	public @NotNull Address newAddress() throws BazaarException;
 

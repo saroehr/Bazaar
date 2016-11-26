@@ -16,6 +16,9 @@ import org.apache.bazaar.Bid;
 import org.apache.bazaar.BidNotFoundException;
 import org.apache.bazaar.Bidder;
 import org.apache.bazaar.Identifier;
+import org.apache.bazaar.version.Version;
+import org.apache.bazaar.version.VersionException;
+import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
  * Session Bean implementation class BidSessionBeanImpl
@@ -41,7 +44,6 @@ public class BidSessionBeanImpl implements BidSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.ejb.BidSessionBean#findBid(org.apache.bazaar.
 	 * Identifier)
 	 */
@@ -52,9 +54,19 @@ public class BidSessionBeanImpl implements BidSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
-	 * org.apache.bazaar.ejb.BidSessionBean#findAllBids(org.apache.bazaar.
+	 * org.apache.bazaar.ejb.BidSessionBean#findAllVersions(org.apache.bazaar.
+	 * Bid)
+	 */
+	@Override
+	public Set<Version> findAllVersions(final Bid bid)
+			throws UnsupportedOperationException, VersionNotFoundException, VersionException {
+		return bid.findAllVersions();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.bazaar.ejb.BidSessionBean#findAllBids(org.apache.bazaar.
 	 * Bazaar)
 	 */
 	@Override
@@ -64,7 +76,6 @@ public class BidSessionBeanImpl implements BidSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.ejb.BidSessionBean#findAllBids()
 	 */
 	@Override
@@ -74,9 +85,7 @@ public class BidSessionBeanImpl implements BidSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.ejb.BidSessionBean#findAllBids(org.apache.bazaar.
+	 * @see org.apache.bazaar.ejb.BidSessionBean#findAllBids(org.apache.bazaar.
 	 * Bidder)
 	 */
 	@Override
@@ -86,9 +95,7 @@ public class BidSessionBeanImpl implements BidSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.bazaar.ejb.BidSessionBean#findAllBids(org.apache.bazaar.
+	 * @see org.apache.bazaar.ejb.BidSessionBean#findAllBids(org.apache.bazaar.
 	 * Bazaar, org.apache.bazaar.Bidder)
 	 */
 	@Override
@@ -98,7 +105,6 @@ public class BidSessionBeanImpl implements BidSessionBean {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.apache.bazaar.ejb.BidSessionBean#newBid(org.apache.bazaar.Bazaar,
 	 * org.apache.bazaar.Bidder, java.lang.Double)

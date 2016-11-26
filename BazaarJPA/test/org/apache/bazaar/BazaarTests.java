@@ -238,7 +238,7 @@ public final class BazaarTests {
 			Assert.assertEquals(1, versions.size());
 			boolean foundBazaar = false;
 			for (final Version version : versions) {
-				if (version.getPersistable().equals(bazaar)) {
+				if (version.getVersionable().equals(bazaar)) {
 					foundBazaar = true;
 				}
 			}

@@ -18,6 +18,7 @@ import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Item;
 import org.apache.bazaar.ejb.BazaarSessionBean;
 import org.apache.bazaar.ejb.ItemSessionBean;
+import org.apache.bazaar.version.Version;
 
 /**
  * BazaarRestWebServiceImpl extends AbstractRestWebService and provides a web
@@ -47,14 +48,24 @@ public class BazaarRestWebServiceImpl extends AbstractRestWebService {
 	@Override
 	protected Response doGet(final RestWebServiceRequest request) throws Throwable {
 		final Response response;
+		final RequestParameters queryParameters = RequestParameters
+				.newInstance(request.getUriInfo().getQueryParameters());
 		final RequestParameters pathParameters = RequestParameters
 				.newInstance(request.getUriInfo().getPathParameters());
 		final BazaarSessionBean sessionBean = (BazaarSessionBean)this.lookup(BazaarSessionBean.BEAN_LOOKUP_NAME);
 		if (pathParameters.hasParameter(RequestParameters.IDENTIFIER)) {
 			final Bazaar bazaar = sessionBean
 					.findBazaar(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
-			response = AbstractRestWebService.newResponse(new GenericEntity<Bazaar>(bazaar) {
-			}).build();
+			if (queryParameters.hasParameter(RequestParameters.VERSIONS)
+					&& Boolean.valueOf(queryParameters.getParameter(RequestParameters.VERSIONS)).booleanValue()) {
+				final Set<Version> versions = sessionBean.findAllVersions(bazaar);
+				response = AbstractRestWebService.newResponse(new GenericEntity<Set<Version>>(versions) {
+				}).build();
+			}
+			else {
+				response = AbstractRestWebService.newResponse(new GenericEntity<Bazaar>(bazaar) {
+				}).build();
+			}
 		}
 		else {
 			final Set<Bazaar> bazaars = sessionBean.findAllBazaars();

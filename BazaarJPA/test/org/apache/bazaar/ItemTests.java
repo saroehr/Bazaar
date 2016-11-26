@@ -150,7 +150,7 @@ public final class ItemTests {
 			Assert.assertEquals(1, versions.size());
 			boolean foundItem = false;
 			for (final Version version : versions) {
-				if (version.getPersistable().equals(item)) {
+				if (version.getVersionable().equals(item)) {
 					foundItem = true;
 				}
 			}
@@ -165,7 +165,7 @@ public final class ItemTests {
 			Assert.assertEquals(2, versions.size());
 			foundItem = false;
 			for (final Version version : versions) {
-				if (version.getPersistable().equals(item)) {
+				if (version.getVersionable().equals(item)) {
 					foundItem = true;
 				}
 			}

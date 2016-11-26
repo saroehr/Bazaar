@@ -5,14 +5,20 @@
  */
 package org.apache.bazaar;
 
+import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.version.AbstractVersionable;
+import org.apache.bazaar.version.Version;
+import org.apache.bazaar.version.VersionException;
+import org.apache.bazaar.version.VersionNotFoundException;
 import org.apache.bazaar.web.RequestParameters;
 import org.apache.bazaar.web.config.Configuration;
 
@@ -109,6 +115,36 @@ public final class BidderImpl extends AbstractVersionable implements Bidder {
 	@Override
 	public void setShippingAddress(final Address shippingAddress) {
 		this.shippingAddress = shippingAddress;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.bazaar.version.AbstractVersionable#findAllVersions()
+	 */
+	@Override
+	public Set<Version> findAllVersions()
+			throws UnsupportedOperationException, VersionNotFoundException, VersionException {
+		final Set<Version> versions;
+		try {
+			final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+					.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
+					.path(this.getIdentifier().getValue()).queryParam(RequestParameters.VERSIONS, true);
+			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
+			versions = BazaarManagerImpl.processResponse(new GenericType<Set<Version>>() {
+			}, response);
+		}
+		catch (final BazaarException exception) {
+			if (exception instanceof VersionNotFoundException) {
+				throw (VersionNotFoundException)exception;
+			}
+			else if (exception instanceof VersionException) {
+				throw (VersionException)exception;
+			}
+			else {
+				throw new VersionException(exception);
+			}
+		}
+		return versions;
 	}
 
 	/*

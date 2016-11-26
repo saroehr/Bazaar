@@ -10,7 +10,7 @@ import javax.ws.rs.WebApplicationException;
 /**
  * RestClientException extends WebApplicationException to provide an exception
  */
-public class RestWebClientException extends WebApplicationException {
+public final class RestWebClientException extends WebApplicationException {
 
 	// declare members
 
