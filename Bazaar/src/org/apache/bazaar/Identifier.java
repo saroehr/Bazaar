@@ -8,7 +8,6 @@ package org.apache.bazaar;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.UUID;
 
 import javax.cache.Cache;
 import javax.cache.configuration.MutableConfiguration;
@@ -17,8 +16,7 @@ import javax.cache.expiry.Duration;
 import javax.validation.constraints.NotNull;
 
 /**
- * Identifier encapsulates the attributes
- * of an Identifier instance.
+ * Identifier encapsulates the attributes of an Identifier instance.
  */
 public abstract class Identifier implements Serializable {
 
@@ -38,7 +36,7 @@ public abstract class Identifier implements Serializable {
 	static {
 		try {
 			final Class<?> clazz = Class.forName("org.apache.bazaar.IdentifierImpl");
-			CONSTRUCTOR = clazz.getDeclaredConstructor(new Class[] { UUID.class });
+			CONSTRUCTOR = clazz.getDeclaredConstructor(new Class[] { String.class });
 		}
 		catch (final ClassNotFoundException | NoSuchMethodException | SecurityException exception) {
 			throw new ExceptionInInitializerError(exception);
@@ -58,17 +56,16 @@ public abstract class Identifier implements Serializable {
 
 	/**
 	 * Factory method for obtaining instance
-	 * 
+	 *
 	 * @return New Identifier instance
 	 */
 
 	/**
 	 * Constructs instance from value
-	 * 
+	 *
 	 * @param value The identifier value
 	 * @return The Identifier instance
-	 * @throws IdentifierException if the instance
-	 *         could not be created
+	 * @throws IdentifierException if the instance could not be created
 	 */
 	public static Identifier fromValue(final String value) throws IdentifierException {
 		final Identifier identifier;
@@ -77,7 +74,7 @@ public abstract class Identifier implements Serializable {
 				identifier = Identifier.CACHE.get(value);
 			}
 			else {
-				identifier = (Identifier)Identifier.CONSTRUCTOR.newInstance(new Object[] { UUID.fromString(value) });
+				identifier = (Identifier)Identifier.CONSTRUCTOR.newInstance(new Object[] { value });
 				Identifier.CACHE.put(value, identifier);
 			}
 		}
@@ -90,7 +87,7 @@ public abstract class Identifier implements Serializable {
 
 	/**
 	 * Returns identifier value
-	 * 
+	 *
 	 * @return The identifier value
 	 */
 	public abstract @NotNull String getValue();

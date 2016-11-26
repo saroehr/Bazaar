@@ -1,18 +1,18 @@
 /*
  * AuditableNotFoundException.java
  * Created On: Sep 29, 2016
- * Created By: Scott A. Roehrig (saroehr@hotmail.com
+ * Created By: Scott A. Roehrig (saroehr@hotmail.com)
  */
-package org.apache.bazaar.audit;
+package org.apache.bazaar.version;
 
 import org.apache.bazaar.Persistable;
 
 /**
- * AuditableNotFoundException extends {@link AuditableException} to provide a
+ * AuditableNotFoundException extends {@link VersionException} to provide a
  * specific exception type for when an auditable can not be found for
  * {@link Persistable}
  */
-public class AuditableNotFoundException extends AuditableException {
+public class VersionNotFoundException extends VersionException {
 
 	// declare members
 	private static final long serialVersionUID = 2208801175123316461L;
@@ -22,7 +22,7 @@ public class AuditableNotFoundException extends AuditableException {
 	/**
 	 * Constructor for AuditableNotFoundException
 	 */
-	public AuditableNotFoundException() {
+	public VersionNotFoundException() {
 		super();
 	}
 
@@ -31,7 +31,7 @@ public class AuditableNotFoundException extends AuditableException {
 	 *
 	 * @param message The exception message
 	 */
-	public AuditableNotFoundException(final String message) {
+	public VersionNotFoundException(final String message) {
 		super(message);
 	}
 
@@ -40,7 +40,7 @@ public class AuditableNotFoundException extends AuditableException {
 	 *
 	 * @param cause The exception cause
 	 */
-	public AuditableNotFoundException(final Throwable cause) {
+	public VersionNotFoundException(final Throwable cause) {
 		super(cause);
 	}
 
@@ -50,7 +50,7 @@ public class AuditableNotFoundException extends AuditableException {
 	 * @param message The exception message
 	 * @param cause The exception cause
 	 */
-	public AuditableNotFoundException(final String message, final Throwable cause) {
+	public VersionNotFoundException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 import org.apache.bazaar.logging.Logger;
 
 /**
- * AbstractPersistable implements {@link Persistable} to provide
- * an abstract class suitable for sub classing.
+ * AbstractPersistable implements {@link Persistable} to provide an abstract
+ * class suitable for sub classing.
  */
 public abstract class AbstractPersistable implements Persistable {
 
@@ -24,14 +24,13 @@ public abstract class AbstractPersistable implements Persistable {
 	/**
 	 * Constructor for AbstractPersistable
 	 */
-	AbstractPersistable() {
+	protected AbstractPersistable() {
 		super();
 		this.identifier = new IdentifierImpl();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#persist()
 	 */
 	@Override
@@ -42,7 +41,6 @@ public abstract class AbstractPersistable implements Persistable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Persistable#delete()
 	 */
 	@Override
@@ -53,7 +51,6 @@ public abstract class AbstractPersistable implements Persistable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Identifiable#getIdentifier()
 	 */
 	@Override
@@ -63,9 +60,8 @@ public abstract class AbstractPersistable implements Persistable {
 
 	/**
 	 * Utility method sets identifier
-	 * 
-	 * @param identifier The {@link Identifier} instance
-	 *        to set
+	 *
+	 * @param identifier The {@link Identifier} instance to set
 	 */
 	public final void setIdentifier(@NotNull final Identifier identifier) {
 		this.identifier = identifier;
@@ -73,7 +69,6 @@ public abstract class AbstractPersistable implements Persistable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -85,7 +80,6 @@ public abstract class AbstractPersistable implements Persistable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -104,7 +98,6 @@ public abstract class AbstractPersistable implements Persistable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

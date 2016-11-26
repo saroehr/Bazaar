@@ -11,10 +11,12 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.bazaar.version.Versionable;
+
 /**
  * Bid declares the programming interface implementations must provide.
  */
-public interface Bid extends Persistable, Serializable {
+public interface Bid extends Versionable, Serializable {
 
 	// declare members
 
@@ -22,14 +24,14 @@ public interface Bid extends Persistable, Serializable {
 
 	/**
 	 * Returns the Bazaar associated with this bid
-	 * 
+	 *
 	 * @return The Bazaar associated with this bid
 	 */
 	public @NotNull Bazaar getBazaar();
 
 	/**
 	 * Returns the bid price
-	 * 
+	 *
 	 * @return The bid price
 	 */
 	public @NotNull Double getPrice();
@@ -40,6 +42,5 @@ public interface Bid extends Persistable, Serializable {
 	 * @return The bidder associated with this bid
 	 */
 	public @NotNull Bidder getBidder();
-
 
 }

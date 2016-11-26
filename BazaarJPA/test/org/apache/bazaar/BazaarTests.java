@@ -7,25 +7,14 @@ package org.apache.bazaar;
 
 import java.time.DayOfWeek;
 import java.util.Calendar;
+import java.util.Set;
 
-import org.apache.bazaar.Address;
-import org.apache.bazaar.Bazaar;
-import org.apache.bazaar.BazaarException;
-import org.apache.bazaar.BazaarExpiredException;
-import org.apache.bazaar.BazaarManager;
-import org.apache.bazaar.BazaarNotFoundException;
-import org.apache.bazaar.Bidder;
-import org.apache.bazaar.Category;
-import org.apache.bazaar.Item;
-import org.apache.bazaar.Name;
-import org.apache.bazaar.State;
+import org.apache.bazaar.version.Version;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import junit.framework.TestCase;
 
 /**
  * BazaarTests provides JUnit tests for {@link Bazaar}
@@ -79,7 +68,7 @@ public final class BazaarTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -109,7 +98,7 @@ public final class BazaarTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -135,7 +124,7 @@ public final class BazaarTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -164,7 +153,7 @@ public final class BazaarTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -182,12 +171,12 @@ public final class BazaarTests {
 			endDate.setWeekDate(2017, 25, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			final Bazaar Bazaar1 = bazaar;
-			TestCase.assertSame(bazaar, Bazaar1);
-			TestCase.assertEquals(bazaar, Bazaar1);
+			junit.framework.Assert.assertSame(bazaar, Bazaar1);
+			junit.framework.Assert.assertEquals(bazaar, Bazaar1);
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -213,6 +202,59 @@ public final class BazaarTests {
 			Assert.assertNotNull(exception);
 		}
 
+	}
+
+	/**
+	 * Test for findAllVersions
+	 */
+	@Test
+	public void testFindAllVersions() {
+		try {
+			final BazaarManager manager = BazaarManager.newInstance();
+			final Item item = manager.newItem();
+			item.setName("testFindAllVersions");
+			item.setDescription("testFindAllVersions");
+			item.setCategory(manager.findRootCategory());
+			final Bidder bidder = manager.newBidder();
+			final Name name = manager.newName();
+			name.setFirstName("testFindAllVersions");
+			name.setLastName("testFindAllVersions");
+			bidder.setName(name);
+			final Address address = manager.newAddress();
+			address.setStreet("testFindAllVersions");
+			address.setCity("testFindAllVersions");
+			address.setState(State.Illinois);
+			address.setZipcode(60102);
+			bidder.setBillingAddress(address);
+			bidder.setShippingAddress(address);
+			final Calendar startDate = Calendar.getInstance();
+			startDate.setWeekDate(2016, 50, DayOfWeek.MONDAY.getValue());
+			final Calendar endDate = Calendar.getInstance();
+			endDate.setWeekDate(2016, 52, DayOfWeek.MONDAY.getValue());
+			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
+			bazaar.persist();
+			Set<Version> versions = bazaar.findAllVersions();
+			Assert.assertNotNull(versions);
+			Assert.assertEquals(1, versions.size());
+			boolean foundBazaar = false;
+			for (final Version version : versions) {
+				if (version.getPersistable().equals(bazaar)) {
+					foundBazaar = true;
+				}
+			}
+			Assert.assertTrue(foundBazaar);
+			bazaar.newBid(bidder, new Double(100.00));
+			bazaar.persist();
+			Assert.assertNotNull(bazaar.findAllBids());
+			Assert.assertTrue(bazaar.findAllBids().size() == 1);
+			versions = bazaar.findAllVersions();
+			Assert.assertNotNull(versions);
+			Assert.assertEquals(2, versions.size());
+		}
+		catch (final BazaarException exception) {
+			exception.printStackTrace(System.err);
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
+		}
 	}
 
 }

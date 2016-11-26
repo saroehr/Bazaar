@@ -5,21 +5,15 @@
  */
 package org.apache.bazaar;
 
-import org.apache.bazaar.BazaarException;
-import org.apache.bazaar.BazaarManager;
-import org.apache.bazaar.Category;
-import org.apache.bazaar.Identifier;
-import org.apache.bazaar.Image;
+import java.util.Set;
+
 import org.apache.bazaar.Image.MimeType;
-import org.apache.bazaar.Item;
-import org.apache.bazaar.ItemNotFoundException;
+import org.apache.bazaar.version.Version;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import junit.framework.TestCase;
 
 /**
  * ItemTests provides JUnit tests for @{link Item}
@@ -70,7 +64,7 @@ public final class ItemTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -96,7 +90,7 @@ public final class ItemTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -125,7 +119,61 @@ public final class ItemTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 * Test for {@link Item#findAllVersions()}
+	 */
+	@Test
+	public void testFindAllVersions() {
+		try {
+			final BazaarManager manager = BazaarManager.newInstance();
+			final Category parent = manager.findRootCategory();
+			final Category category = manager.newCategory();
+			category.setName("testFindAllVersions");
+			category.setDescription("testFindAllVersions");
+			category.setParent(parent);
+			// manager.findItem(2L);
+			final Item item = manager.newItem();
+			item.setName("testFindAllVersions");
+			item.setDescription("testFindAllVersions");
+			item.setCategory(category);
+			final Image image = manager.newImage("testFindAllVersions" + System.currentTimeMillis(), MimeType.JPG,
+					this.getClass().getResourceAsStream("/META-INF/image.jpg"));
+			item.addImage(image);
+			// test initial persist
+			item.persist();
+			Set<Version> versions = item.findAllVersions();
+			Assert.assertNotNull(versions);
+			Assert.assertEquals(1, versions.size());
+			boolean foundItem = false;
+			for (final Version version : versions) {
+				if (version.getPersistable().equals(item)) {
+					foundItem = true;
+				}
+			}
+			Assert.assertTrue(foundItem);
+			// test update
+			item.setName("testFindAllVersionsUpdated");
+			item.persist();
+			Assert.assertEquals("testFindAllVersionsUpdated", item.getName());
+			Assert.assertNotNull(item.getImages());
+			versions = item.findAllVersions();
+			Assert.assertNotNull(versions);
+			Assert.assertEquals(2, versions.size());
+			foundItem = false;
+			for (final Version version : versions) {
+				if (version.getPersistable().equals(item)) {
+					foundItem = true;
+				}
+			}
+			Assert.assertTrue(foundItem);
+		}
+		catch (final BazaarException exception) {
+			exception.printStackTrace(System.err);
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +31,8 @@ import javax.validation.constraints.NotNull;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
 import org.apache.bazaar.persistence.EntityManagerFactory;
+import org.apache.bazaar.version.AbstractVersionable;
+import org.hibernate.envers.Audited;
 
 /**
  * BazaarImpl implements @{link Bazaar} to provide
@@ -39,7 +42,9 @@ import org.apache.bazaar.persistence.EntityManagerFactory;
 @Entity(name = org.apache.bazaar.persistence.config.Configuration.BAZAAR_ENTITY_NAME)
 @Table(name = org.apache.bazaar.persistence.config.Configuration.BAZAAR_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
-public class BazaarImpl extends AbstractPersistable implements Bazaar {
+@Cacheable
+@Audited
+public class BazaarImpl extends AbstractVersionable implements Bazaar {
 
 	// declare members
 
@@ -219,6 +224,7 @@ public class BazaarImpl extends AbstractPersistable implements Bazaar {
 		}
 		return Collections.unmodifiableSet(bids);
 	}
+
 
 	/*
 	 * (non-Javadoc)

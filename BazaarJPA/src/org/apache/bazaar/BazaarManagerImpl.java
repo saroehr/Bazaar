@@ -18,6 +18,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import org.apache.bazaar.Image.MimeType;
+import org.apache.bazaar.config.ConfigurationException;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
 import org.apache.bazaar.persistence.config.Configuration;
@@ -76,6 +77,26 @@ final class BazaarManagerImpl implements BazaarManager {
 	 */
 	static BazaarManager newInstance() throws BazaarException {
 		return new BazaarManagerImpl();
+	}
+
+	/**
+	 * Utility method to check if auditing is supported by the implementation
+	 * 
+	 * @return True if "auditing" is supported by the implementation; false
+	 *         otherwise
+	 * @throws ConfigurationException if the method could not determine the
+	 *         support
+	 */
+	static boolean isAuditEnabled() throws ConfigurationException {
+		final boolean isEnabled;
+		if (Configuration.PersistenceProvider.ECLIPSELINK.equals(Configuration.PersistenceProvider
+				.valueOf(Configuration.newInstance().getProperty(Configuration.PERSISTENCE_PROVIDER_NAME)))) {
+			isEnabled = false;
+		}
+		else {
+			isEnabled = true;
+		}
+		return isEnabled;
 	}
 
 	/*

@@ -13,10 +13,12 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.bazaar.version.Versionable;
+
 /**
  * Category declares the programming interface implementations must provide.
  */
-public interface Category extends Persistable, Serializable {
+public interface Category extends Versionable, Serializable {
 
 	// declare members
 
@@ -32,8 +34,7 @@ public interface Category extends Persistable, Serializable {
 	/**
 	 * Sets the category name
 	 *
-	 * @param name
-	 *        The category name to set
+	 * @param name The category name to set
 	 */
 	public void setName(@NotNull @Size(min = 1, max = 255) final String name);
 
@@ -47,8 +48,7 @@ public interface Category extends Persistable, Serializable {
 	/**
 	 * Sets the category description
 	 *
-	 * @param description
-	 *        The category description to set
+	 * @param description The category description to set
 	 */
 	public void setDescription(@NotNull @Size(min = 0, max = 255) final String description);
 
@@ -60,18 +60,17 @@ public interface Category extends Persistable, Serializable {
 	public @NotNull Category getParent();
 
 	/**
-	 * Sets the parent category. Parent may not
-	 * equal child. This will throw an IllegalArgumentException.
-	 * Only the Root category has parent equal to itself.
+	 * Sets the parent category. Parent may not equal child. This will throw an
+	 * IllegalArgumentException. Only the Root category has parent equal to
+	 * itself.
 	 *
-	 * @param parent
-	 *        the parent category to set
+	 * @param parent the parent category to set
 	 */
 	public void setParent(@NotNull final Category parent);
 
 	/**
 	 * Returns the set of children categories.
-	 * 
+	 *
 	 * @return Set of child categories
 	 * @throws BazaarException if the operation could not be completed
 	 */

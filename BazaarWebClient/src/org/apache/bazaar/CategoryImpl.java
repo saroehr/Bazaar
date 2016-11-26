@@ -16,14 +16,15 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.version.AbstractVersionable;
 import org.apache.bazaar.web.RequestParameters;
 import org.apache.bazaar.web.config.Configuration;
 
 /**
- * CategoryImpl extends AbstractPersistable and implements {@link Category} to
+ * CategoryImpl extends AbstractVersionable and implements {@link Category} to
  * provide a concrete implementation
  */
-public class CategoryImpl extends AbstractPersistable implements org.apache.bazaar.Category {
+public class CategoryImpl extends AbstractVersionable implements org.apache.bazaar.Category {
 
 	// declare members
 

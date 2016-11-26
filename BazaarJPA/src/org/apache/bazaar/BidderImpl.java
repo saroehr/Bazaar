@@ -7,6 +7,7 @@ package org.apache.bazaar;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.version.AbstractVersionable;
+import org.hibernate.envers.Audited;
 
 /**
  * BidderImpl implements {@link Bidder} to provide
@@ -22,7 +25,9 @@ import org.apache.bazaar.logging.Logger;
 @Entity(name = org.apache.bazaar.persistence.config.Configuration.BIDDER_ENTITY_NAME)
 @Table(name = org.apache.bazaar.persistence.config.Configuration.BIDDER_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
-public class BidderImpl extends AbstractPersistable implements Bidder {
+@Cacheable
+@Audited
+public class BidderImpl extends AbstractVersionable implements Bidder {
 
 	// declare members
 

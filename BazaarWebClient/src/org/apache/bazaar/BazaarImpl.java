@@ -17,14 +17,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.version.AbstractVersionable;
 import org.apache.bazaar.web.RequestParameters;
 import org.apache.bazaar.web.config.Configuration;
 
 /**
- * BazaarImpl extends AbstractPersistable and implements Bazaar to provide a
+ * BazaarImpl extends AbstractVersionable and implements Bazaar to provide a
  * concrete implementation
  */
-public class BazaarImpl extends AbstractPersistable implements Bazaar {
+public class BazaarImpl extends AbstractVersionable implements Bazaar {
 
 	// declare members
 	private Item item;

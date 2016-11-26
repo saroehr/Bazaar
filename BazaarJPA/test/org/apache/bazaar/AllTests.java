@@ -18,7 +18,7 @@ import com.mycila.junit.concurrent.ConcurrentSuiteRunner;
  */
 @RunWith(ConcurrentSuiteRunner.class)
 @SuiteClasses({ BazaarManagerTests.class, BazaarTests.class, CategoryTests.class, ItemTests.class, BidderTests.class,
-		BidTests.class })
+	BidTests.class })
 public class AllTests {
 
 	// declare members

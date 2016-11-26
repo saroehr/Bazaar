@@ -12,14 +12,15 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.version.AbstractVersionable;
 import org.apache.bazaar.web.RequestParameters;
 import org.apache.bazaar.web.config.Configuration;
 
 /**
- * BidImpl extends AbstractPersistable and implements Bid to provide a concrete
+ * BidImpl extends AbstractVersionable and implements Bid to provide a concrete
  * implementation
  */
-public final class BidImpl extends AbstractPersistable implements Bid {
+public final class BidImpl extends AbstractVersionable implements Bid {
 
 	// declare members
 	private static final long serialVersionUID = -510722290366725532L;

@@ -9,10 +9,12 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.bazaar.version.Versionable;
+
 /**
  * Bidder declares the programming interface implementations must provide.
  */
-public interface Bidder extends Persistable, Serializable {
+public interface Bidder extends Versionable, Serializable {
 
 	// declare members
 

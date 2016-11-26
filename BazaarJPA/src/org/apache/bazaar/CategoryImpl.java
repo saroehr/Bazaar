@@ -28,6 +28,8 @@ import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
 import org.apache.bazaar.persistence.EntityManagerFactory;
 import org.apache.bazaar.persistence.config.Configuration;
+import org.apache.bazaar.version.AbstractVersionable;
+import org.hibernate.envers.Audited;
 
 /**
  * CategoryImpl implements {@link Category} to provide a concrete
@@ -36,7 +38,8 @@ import org.apache.bazaar.persistence.config.Configuration;
 @Entity(name = org.apache.bazaar.persistence.config.Configuration.CATEGORY_ENTITY_NAME)
 @Table(name = org.apache.bazaar.persistence.config.Configuration.CATEGORY_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
-public class CategoryImpl extends AbstractPersistable implements Category {
+@Audited
+public class CategoryImpl extends AbstractVersionable implements Category {
 
 	// declare members
 

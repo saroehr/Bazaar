@@ -8,6 +8,7 @@ package org.apache.bazaar;
 import java.util.Set;
 
 import org.apache.bazaar.persistence.config.Configuration;
+import org.apache.bazaar.version.Version;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -170,6 +171,53 @@ public final class CategoryTests {
 			catch (final CategoryNotFoundException exception) {
 				Assert.assertNotNull(exception);
 			}
+		}
+		catch (final BazaarException exception) {
+			exception.printStackTrace(System.err);
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 * Test for {@link Category#findAllVersions}
+	 */
+	@Test
+	public void testFindAllVersions() {
+		try {
+			final Category parent = BazaarManager.newInstance().findRootCategory();
+			Category category = BazaarManager.newInstance().newCategory();
+			category.setName("testFindAllVersions");
+			category.setDescription("testFindAllVersions");
+			category.setParent(parent);
+			category.persist();
+			category = BazaarManager.newInstance().findCategory(category.getIdentifier());
+			Assert.assertNotNull(category);
+			Assert.assertEquals(category.getName(), "testFindAllVersions");
+			Set<Version> versions = category.findAllVersions();
+			Assert.assertNotNull(versions);
+			Assert.assertEquals(1, versions.size());
+			boolean foundCategory = false;
+			for (final Version version : versions) {
+				if (version.getPersistable().equals(category)) {
+					foundCategory = true;
+				}
+			}
+			Assert.assertTrue(foundCategory);
+			category.setName("testFindAllVersionsModified");
+			category.setDescription("testFindAllVersionsModified");
+			category.persist();
+			Assert.assertNotNull(category);
+			Assert.assertEquals("testFindAllVersionsModified", category.getName());
+			versions = category.findAllVersions();
+			Assert.assertNotNull(versions);
+			Assert.assertEquals(2, versions.size());
+			foundCategory = false;
+			for (final Version version : versions) {
+				if (version.getPersistable().equals(category)) {
+					foundCategory = true;
+				}
+			}
+			Assert.assertTrue(foundCategory);
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);

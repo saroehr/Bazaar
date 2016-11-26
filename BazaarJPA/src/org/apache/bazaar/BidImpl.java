@@ -5,6 +5,7 @@
  */
 package org.apache.bazaar;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 
 // declare imports
@@ -17,6 +18,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.version.AbstractVersionable;
+import org.hibernate.envers.Audited;
 
 /**
  * BidImpl implements {@link Bid} to provide a concrete implementation
@@ -24,7 +27,9 @@ import org.apache.bazaar.logging.Logger;
 @Entity(name = org.apache.bazaar.persistence.config.Configuration.BID_ENTITY_NAME)
 @Table(name = org.apache.bazaar.persistence.config.Configuration.BID_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
-public class BidImpl extends AbstractPersistable implements Bid {
+@Cacheable
+@Audited
+public class BidImpl extends AbstractVersionable implements Bid {
 
 	// declare members
 

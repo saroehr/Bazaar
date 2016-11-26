@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -23,6 +22,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.version.AbstractVersionable;
+import org.hibernate.envers.Audited;
 
 /**
  * ItemImpl implements @Item to provide a concrete implementation
@@ -30,8 +31,8 @@ import org.apache.bazaar.logging.Logger;
 @Entity(name = org.apache.bazaar.persistence.config.Configuration.ITEM_ENTITY_NAME)
 @Table(name = org.apache.bazaar.persistence.config.Configuration.ITEM_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
-@Cacheable
-public class ItemImpl extends AbstractPersistable implements Item {
+@Audited
+public class ItemImpl extends AbstractVersionable implements Item {
 
 	// declare members
 

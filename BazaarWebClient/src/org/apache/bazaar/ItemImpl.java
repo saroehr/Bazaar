@@ -16,14 +16,15 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.version.AbstractVersionable;
 import org.apache.bazaar.web.RequestParameters;
 import org.apache.bazaar.web.config.Configuration;
 
 /**
- * ItemImpl extends AbstractPersistable and implements {@link Item} to provide a
+ * ItemImpl extends AbstractVersionable and implements {@link Item} to provide a
  * concrete implementation
  */
-public class ItemImpl extends AbstractPersistable implements Item {
+public class ItemImpl extends AbstractVersionable implements Item {
 
 	private String name;
 	private String description;

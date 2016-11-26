@@ -46,6 +46,16 @@ public class IdentifierImpl extends Identifier implements AttributeConverter<Ide
 	/**
 	 * Constructor for IdentifierImpl
 	 * 
+	 * @param value The identifier value
+	 */
+	public IdentifierImpl(@NotNull final String value) {
+		super();
+		this.identifier = value;
+	}
+
+	/**
+	 * Constructor for IdentifierImpl
+	 * 
 	 * @param uuid The {@link UUID} associated
 	 *        with instance.
 	 */
