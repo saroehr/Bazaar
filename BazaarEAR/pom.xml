@@ -6,14 +6,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>ear</packaging>
 	<build>
-		<sourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\</sourceDirectory>
-		<scriptSourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\scripts</scriptSourceDirectory>
+		<sourceDirectory>${project.basedir}</sourceDirectory>
+		<scriptSourceDirectory>${project.basedir}\scripts</scriptSourceDirectory>
 		<resources>
 			<resource>
-				<directory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\lib</directory>
+				<directory>${project.basedir}\lib</directory>
 			</resource>
 		</resources>
-		<directory>C:\Users\saroehr\.git\Bazaar\BazaarEAR\bin</directory>
+		<directory>${project.basedir}\bin</directory>
 		<finalName>BazaarEAR-0.0.1-SNAPSHOT</finalName>
 		<plugins>
 			<plugin>

@@ -12,9 +12,9 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<sourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEJBClient\src</sourceDirectory>
-		<outputDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEJBClient\bin</outputDirectory>
-		<directory>C:\Users\saroehr\.git\Bazaar\BazaarEJBClient\bin</directory>
+		<sourceDirectory>${project.basedir}\src</sourceDirectory>
+		<outputDirectory>${project.basedir}\bin</outputDirectory>
+		<directory>${project.basedir}\bin</directory>
 		<finalName>BazaarEJBClient-0.0.1-SNAPSHOT</finalName>
 		<plugins>
 			<plugin>

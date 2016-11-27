@@ -64,18 +64,18 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<sourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarWeb\src</sourceDirectory>
-		<scriptSourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarWeb\scripts</scriptSourceDirectory>
-		<outputDirectory>C:\Users\saroehr\.git\Bazaar\BazaarWeb\WebContent\WEB-INF\classes</outputDirectory>
+		<sourceDirectory>${project.basedir}\src</sourceDirectory>
+		<scriptSourceDirectory>${project.basedir}\scripts</scriptSourceDirectory>
+		<outputDirectory>${project.basedir}\WebContent\WEB-INF\classes</outputDirectory>
 		<resources>
 			<resource>
-				<directory>C:\Users\saroehr\.git\Bazaar\BazaarWeb\src</directory>
+				<directory>${project.basedir}\src</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
 		</resources>
-		<directory>C:\Users\saroehr\.git\Bazaar\BazaarWeb\bin</directory>
+		<directory>${project.basedir}\bin</directory>
 		<finalName>BazaarWeb-0.0.1-SNAPSHOT</finalName>
 		<plugins>
 			<plugin>

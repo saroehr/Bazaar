@@ -28,14 +28,14 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<sourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEJB\src</sourceDirectory>
-		<scriptSourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEJB\scripts</scriptSourceDirectory>
-		<testSourceDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEJB\test</testSourceDirectory>
-		<outputDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEJB\bin</outputDirectory>
-		<testOutputDirectory>C:\Users\saroehr\.git\Bazaar\BazaarEJB\bin</testOutputDirectory>
+		<sourceDirectory>${project.basedir}\src</sourceDirectory>
+		<scriptSourceDirectory>${project.basedir}\scripts</scriptSourceDirectory>
+		<testSourceDirectory>${project.basedir}\test</testSourceDirectory>
+		<outputDirectory>${project.basedir}\bin</outputDirectory>
+		<testOutputDirectory>${project.basedir}\bin</testOutputDirectory>
 		<resources>
 			<resource>
-				<directory>C:\Users\saroehr\.git\Bazaar\BazaarEJB\src</directory>
+				<directory>${project.basedir}\src</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
@@ -43,13 +43,13 @@
 		</resources>
 		<testResources>
 			<testResource>
-				<directory>C:\Users\saroehr\.git\Bazaar\BazaarEJB\test</directory>
+				<directory>${project.basedir}\test</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</testResource>
 		</testResources>
-		<directory>C:\Users\saroehr\.git\Bazaar\BazaarEJB\bin</directory>
+		<directory>${project.basedir}\bin</directory>
 		<finalName>BazaarEJB-0.0.1-SNAPSHOT</finalName>
 		<plugins>
 			<plugin>
