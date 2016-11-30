@@ -68,7 +68,7 @@ final class BidderJsonReaderImpl implements VersionableJsonReader<Bidder> {
 			bidder.setShippingAddress(shippingAddress);
 		}
 		catch (final BazaarException exception) {
-			throw new RestWebServiceException(exception);
+			throw new JsonException(exception);
 		}
 		return bidder;
 	}

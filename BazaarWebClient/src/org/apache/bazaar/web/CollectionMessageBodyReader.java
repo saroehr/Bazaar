@@ -5,11 +5,12 @@
  */
 package org.apache.bazaar.web;
 
+import java.util.Collection;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
-
-import org.apache.bazaar.version.Versionable;
 
 /**
  * VersionableCollectionMessageBodyReader extends MessageBodyReader to provide a
@@ -19,7 +20,7 @@ import org.apache.bazaar.version.Versionable;
  */
 @Provider
 @Consumes(value = MediaType.APPLICATION_JSON)
-public interface VersionableCollectionMessageBodyReader<E extends Versionable> extends CollectionMessageBodyReader<E> {
+public interface CollectionMessageBodyReader<E> extends MessageBodyReader<Collection<E>> {
 
 	// declare members
 

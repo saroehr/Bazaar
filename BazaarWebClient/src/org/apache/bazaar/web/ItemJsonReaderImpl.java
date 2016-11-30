@@ -48,7 +48,7 @@ final class ItemJsonReaderImpl implements VersionableJsonReader<Item> {
 			item.setCategory(bazaarManager.findCategory(Identifier.fromValue(jsonObject.getString(JsonKeys.CATEGORY))));
 		}
 		catch (final BazaarException exception) {
-			throw new RestWebServiceException(exception);
+			throw new JsonException(exception);
 		}
 		return item;
 	}

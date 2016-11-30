@@ -145,9 +145,8 @@ public final class RequestParameters {
 	}
 
 	/**
-	 * Returns value for named parameter or null if parameters not found in
-	 * request. This method will extract the first value from the embedded
-	 * Map<String, List<String> and return it
+	 * Returns value for named parameter. This method will extract the first
+	 * value from the embedded Map<String, List<String> and return it
 	 *
 	 * @param name The parameter name
 	 * @return value The value for named parameter

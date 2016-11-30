@@ -5,11 +5,15 @@
  */
 package org.apache.bazaar.web;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -62,7 +66,13 @@ public final class VersionMessageBodyReaderImpl implements MessageBodyReader<Ver
 	public Version readFrom(final Class<Version> clazz, final Type type, final Annotation[] annotations,
 			final MediaType mediaType, final MultivaluedMap<String, String> map, final InputStream inputStream)
 			throws IOException, WebApplicationException {
-		return null;
+		final Version version;
+		try (final BufferedReader reader = new BufferedReader(
+				new InputStreamReader(inputStream, org.apache.bazaar.config.Configuration.DEFAULT_ENCODING))) {
+			final JsonObject jsonObject = Json.createReader(reader).readObject().getJsonObject(JsonKeys.ITEM);
+			version = new VersionJsonReaderImpl().read(jsonObject);
+		}
+		return version;
 	}
 
 }

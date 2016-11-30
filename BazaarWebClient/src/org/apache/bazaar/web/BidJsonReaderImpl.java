@@ -49,7 +49,7 @@ final class BidJsonReaderImpl implements VersionableJsonReader<Bid> {
 			((BidImpl)bid).setIdentifier(Identifier.fromValue(jsonObject.getString(JsonKeys.IDENTIFIER)));
 		}
 		catch (final BazaarException exception) {
-			throw new RestWebServiceException(exception);
+			throw new JsonException(exception);
 		}
 		return bid;
 	}

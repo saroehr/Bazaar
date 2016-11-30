@@ -54,7 +54,7 @@ final class BazaarJsonReaderImpl implements VersionableJsonReader<Bazaar> {
 					.setIdentifier(Identifier.fromValue(jsonObject.getString(JsonKeys.IDENTIFIER)));
 		}
 		catch (final BazaarException exception) {
-			throw new RestWebServiceException(exception);
+			throw new JsonException(exception);
 		}
 		return bazaar;
 	}
