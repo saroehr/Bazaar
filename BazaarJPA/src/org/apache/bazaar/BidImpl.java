@@ -5,7 +5,6 @@
  */
 package org.apache.bazaar;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 
 // declare imports
@@ -27,7 +26,6 @@ import org.hibernate.envers.Audited;
 @Entity(name = org.apache.bazaar.persistence.config.Configuration.BID_ENTITY_NAME)
 @Table(name = org.apache.bazaar.persistence.config.Configuration.BID_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
-@Cacheable
 @Audited
 public class BidImpl extends AbstractVersionable implements Bid {
 

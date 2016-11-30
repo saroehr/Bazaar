@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +29,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
-import org.apache.bazaar.persistence.EntityManagerFactory;
 import org.apache.bazaar.version.AbstractVersionable;
 import org.hibernate.envers.Audited;
 
@@ -42,7 +40,6 @@ import org.hibernate.envers.Audited;
 @Entity(name = org.apache.bazaar.persistence.config.Configuration.BAZAAR_ENTITY_NAME)
 @Table(name = org.apache.bazaar.persistence.config.Configuration.BAZAAR_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
-@Cacheable
 @Audited
 public class BazaarImpl extends AbstractVersionable implements Bazaar {
 
@@ -176,7 +173,7 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 	@Override
 	public Set<Bid> findBids(final Bidder bidder)
 			throws BazaarException {
-		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
+		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Query query = manager.createQuery(BazaarImpl.SELECT_BIDS_BY_BIDDER_QUERY);
 		query.setParameter(BazaarImpl.SELECT_BIDS_BY_BIDDER_QUERY_BIDDER_PARAMETER_NAME, bidder);
@@ -208,7 +205,7 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Bid> findAllBids() {
-		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
+		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Query query = manager.createQuery(BazaarImpl.SELECT_ALL_BIDS_QUERY);
 		query.setParameter(BazaarImpl.SELECT_ALL_BIDS_QUERY_PARAMETER_NAME, this);

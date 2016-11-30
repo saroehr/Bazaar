@@ -26,7 +26,6 @@ import javax.validation.constraints.Size;
 
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
-import org.apache.bazaar.persistence.EntityManagerFactory;
 import org.apache.bazaar.persistence.config.Configuration;
 import org.apache.bazaar.version.AbstractVersionable;
 import org.hibernate.envers.Audited;
@@ -180,7 +179,7 @@ public class CategoryImpl extends AbstractVersionable implements Category {
 	public void delete() throws BazaarException {
 		// override to handle removal of this from parents children
 		AbstractPersistable.LOGGER.entering("delete");
-		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
+		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		try {
 			transaction.begin();

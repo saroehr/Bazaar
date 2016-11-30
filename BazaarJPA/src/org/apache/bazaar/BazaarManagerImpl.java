@@ -33,7 +33,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	// declare members
 
 	private static final Logger LOGGER = Logger.newInstance(BazaarManager.class);
-	private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = org.apache.bazaar.persistence.EntityManagerFactory
+	static final EntityManagerFactory ENTITY_MANAGER_FACTORY = org.apache.bazaar.persistence.EntityManagerFactory
 			.newInstance();
 	private static final Messages MESSAGES = Messages.newInstance(Locale.getDefault());
 	private static final String SELECT_CATEGORY_BY_NAME_QUERY_PARAMETER_NAME = "name";
