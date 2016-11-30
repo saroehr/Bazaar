@@ -9,6 +9,7 @@ import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.Set;
 
+import org.apache.bazaar.config.PropertyNotFoundException;
 import org.apache.bazaar.version.Version;
 import org.junit.Assert;
 import org.junit.Test;
@@ -250,6 +251,25 @@ public final class BazaarTests {
 			versions = bazaar.findAllVersions();
 			Assert.assertNotNull(versions);
 			Assert.assertEquals(2, versions.size());
+		}
+		catch (final UnsupportedOperationException exception) {
+			try {
+				if (org.apache.bazaar.persistence.config.Configuration.PersistenceProvider.ECLIPSELINK
+						.equals(org.apache.bazaar.persistence.config.Configuration.PersistenceProvider
+								.valueOf(org.apache.bazaar.persistence.config.Configuration.newInstance().getProperty(
+										org.apache.bazaar.persistence.config.Configuration.PERSISTENCE_PROVIDER_NAME)))) {
+
+				}
+				else {
+					exception.printStackTrace(System.err);
+					junit.framework.Assert.fail(exception.getLocalizedMessage());
+				}
+			}
+			catch (final PropertyNotFoundException exception1) {
+				exception.printStackTrace(System.err);
+				junit.framework.Assert.fail(exception.getLocalizedMessage());
+			}
+
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);

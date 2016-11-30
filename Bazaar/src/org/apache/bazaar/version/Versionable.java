@@ -23,14 +23,14 @@ public interface Versionable extends Persistable {
 
 	/**
 	 * Returns all versions for Versionable instance
-	 * 
+	 *
 	 * @return Set of all versions instances of Versionable
-	 * @throws UnsupportedOperationException if the underlying implementation
-	 *         does not support version functions
+	 * @throws org.apache.bazaar.UnsupportedOperationException if the underlying
+	 *         implementation does not support version functions
 	 * @throws VersionNotFoundException if no versions exist for instance
 	 * @throws VersionException if the operation could not be completed
 	 */
 	public @NotNull Set<Version> findAllVersions()
-			throws UnsupportedOperationException, VersionNotFoundException, VersionException;
+			throws org.apache.bazaar.UnsupportedOperationException, VersionNotFoundException, VersionException;
 
 }

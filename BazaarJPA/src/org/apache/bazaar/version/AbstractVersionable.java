@@ -45,13 +45,13 @@ public abstract class AbstractVersionable extends AbstractPersistable implements
 	 */
 	@Override
 	public final Set<Version> findAllVersions()
-			throws UnsupportedOperationException, VersionNotFoundException, VersionException {
+			throws org.apache.bazaar.UnsupportedOperationException, VersionNotFoundException, VersionException {
 		final Set<Version> versions;
 		try {
 			// check version function support
 			if (!Configuration.PersistenceProvider.HIBERNATE.equals(Configuration.PersistenceProvider
 					.valueOf(Configuration.newInstance().getProperty(Configuration.PERSISTENCE_PROVIDER_NAME)))) {
-				throw new UnsupportedOperationException();
+				throw new org.apache.bazaar.UnsupportedOperationException();
 			}
 			final AuditReader auditReader = AuditReaderFactory
 					.get(EntityManagerFactory.newInstance().createEntityManager());
