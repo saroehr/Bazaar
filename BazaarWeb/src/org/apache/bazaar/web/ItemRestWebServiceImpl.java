@@ -13,7 +13,6 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
 import org.apache.bazaar.Category;
-import org.apache.bazaar.CategoryNotFoundException;
 import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Item;
 import org.apache.bazaar.ejb.CategorySessionBean;
@@ -51,12 +50,14 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 				.newInstance(request.getUriInfo().getPathParameters());
 		final ItemSessionBean itemSessionBean = (ItemSessionBean)this.lookup(ItemSessionBean.BEAN_LOOKUP_NAME);
 		if (pathParameters.hasParameter(RequestParameters.IDENTIFIER)) {
-			response = AbstractRestWebService.newResponse(new GenericEntity<Item>(itemSessionBean
-					.findItem(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)))) {
+			final Item item = itemSessionBean
+					.findItem(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
+			response = AbstractRestWebService.newResponse(new GenericEntity<Item>(item) {
 			}).build();
 		}
 		else {
-			response = AbstractRestWebService.newResponse(new GenericEntity<Set<Item>>(itemSessionBean.findAllItems()) {
+			final Set<Item> items = itemSessionBean.findAllItems();
+			response = AbstractRestWebService.newResponse(new GenericEntity<Set<Item>>(items) {
 			}).build();
 		}
 		return response;
@@ -89,10 +90,6 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 			item.setCategory(categorySessionBean
 					.findCategory(Identifier.fromValue(queryParameters.getParameter(RequestParameters.CATEGORY))));
 		}
-		else {
-			item.setCategory(
-					categorySessionBean.newCategory("doPost", "doPost", categorySessionBean.findRootCategory()));
-		}
 		item.persist();
 		return AbstractRestWebService.newResponse(new GenericEntity<Item>(item) {
 		}).build();
@@ -113,20 +110,8 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 		final ItemSessionBean itemSessionBean = (ItemSessionBean)this.lookup(ItemSessionBean.BEAN_LOOKUP_NAME);
 		final CategorySessionBean categorySessionBean = (CategorySessionBean)this
 				.lookup(CategorySessionBean.BEAN_LOOKUP_NAME);
-		Category category;
-		// final Category category = categorySessionBean.findCategory(
-		// Identifier.fromValue(requestParameters.getParameter(RequestParameters.CATEGORY)));
-		try {
-			category = categorySessionBean
-					.findCategory(Identifier.fromValue(queryParameters.getParameter(RequestParameters.CATEGORY)));
-			// we need to update the category and persist
-		}
-		catch (final CategoryNotFoundException exception) {
-			// we need to persist the category recursively
-			// but again we need the json representation to do
-			// this
-			category = categorySessionBean.newCategory("doPut", "doPut", categorySessionBean.findRootCategory());
-		}
+		final Category category = categorySessionBean
+				.findCategory(Identifier.fromValue(queryParameters.getParameter(RequestParameters.CATEGORY)));
 		item = itemSessionBean.newItem(queryParameters.getParameter(RequestParameters.NAME),
 				queryParameters.getParameter(RequestParameters.DESCRIPTION), category);
 		AbstractRestWebService
@@ -149,9 +134,9 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 		final ItemSessionBean sessionBean = (ItemSessionBean)this.lookup(ItemSessionBean.BEAN_LOOKUP_NAME);
 		final Item item = sessionBean
 				.findItem(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
-		item.delete();
 		response = AbstractRestWebService.newResponse(new GenericEntity<Item>(item) {
 		}).build();
+		item.delete();
 		return response;
 	}
 
