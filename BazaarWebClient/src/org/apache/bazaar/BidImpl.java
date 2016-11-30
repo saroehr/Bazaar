@@ -20,6 +20,7 @@ import org.apache.bazaar.version.Version;
 import org.apache.bazaar.version.VersionException;
 import org.apache.bazaar.version.VersionNotFoundException;
 import org.apache.bazaar.web.RequestParameters;
+import org.apache.bazaar.web.RestWebClient;
 import org.apache.bazaar.web.config.Configuration;
 
 /**
@@ -96,11 +97,11 @@ public final class BidImpl extends AbstractVersionable implements Bid {
 			throws UnsupportedOperationException, VersionNotFoundException, VersionException {
 		final Set<Version> versions;
 		try {
-			final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+			final WebTarget webTarget = RestWebClient.newInstance()
 					.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 					.path(this.getIdentifier().getValue()).queryParam(RequestParameters.VERSIONS, true);
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-			versions = BazaarManagerImpl.processResponse(new GenericType<Set<Version>>() {
+			versions = RestWebClient.processResponse(new GenericType<Set<Version>>() {
 			}, response);
 		}
 		catch (final BazaarException exception) {
@@ -123,13 +124,13 @@ public final class BidImpl extends AbstractVersionable implements Bid {
 	 */
 	@Override
 	public void persist() throws BazaarException {
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 				.path(this.getIdentifier().getValue())
 				.queryParam(RequestParameters.BAZAAR, this.bazaar.getIdentifier().getValue())
 				.queryParam(RequestParameters.BIDDER, this.bidder.getIdentifier().getValue())
 				.queryParam(RequestParameters.PRICE, this.price);
-		BazaarManagerImpl.processResponse(new GenericType<Bid>() {
+		RestWebClient.processResponse(new GenericType<Bid>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE)
 				.buildPut(Entity.entity(this, MediaType.APPLICATION_JSON_TYPE)).invoke());
 		super.persist();
@@ -142,10 +143,10 @@ public final class BidImpl extends AbstractVersionable implements Bid {
 	@Override
 	public void delete() throws BazaarException {
 		super.delete();
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 				.path(this.getIdentifier().getValue());
-		BazaarManagerImpl.processResponse(new GenericType<Bid>() {
+		RestWebClient.processResponse(new GenericType<Bid>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
 	}
 

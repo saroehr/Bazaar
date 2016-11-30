@@ -18,9 +18,13 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Configuration;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Link;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import org.apache.bazaar.BazaarException;
 import org.glassfish.jersey.CommonProperties;
 
 /**
@@ -65,19 +69,6 @@ public final class RestWebClient implements Client, AutoCloseable {
 	 */
 	public static @NotNull RestWebClient newInstance() throws RestWebClientException {
 		return new RestWebClient(RestWebClient.CLIENT_BUILDER.build());
-	}
-
-	/**
-	 * Factory method for obtaining instance
-	 *
-	 * @param configuration the {@link Configuration} to use when creating
-	 *        client
-	 * @return Instance of RestWebClient
-	 * @throws RestWebClientException if the instance could not be returned
-	 */
-	public static @NotNull RestWebClient newInstance(@NotNull final Configuration configuration)
-			throws RestWebClientException {
-		return new RestWebClient(ClientBuilder.newClient(configuration));
 	}
 
 	/*
@@ -254,6 +245,47 @@ public final class RestWebClient implements Client, AutoCloseable {
 	@Override
 	public WebTarget target(final Link link) {
 		return this.client.target(link);
+	}
+
+	/**
+	 * Utility method processes response instance
+	 *
+	 * @param type The type of persistable to be generated
+	 * @param response The response instance
+	 * @return The Persistable returned
+	 * @throws BazaarException if the response was could not be processed
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T processResponse(@NotNull final GenericType<T> type, @NotNull final Response response)
+			throws BazaarException {
+		final Object object;
+		if (MediaType.APPLICATION_JSON_TYPE.equals(response.getMediaType()) && response.hasEntity()) {
+			try {
+				if (Response.Status.Family.CLIENT_ERROR.equals(Response.Status.Family.familyOf(response.getStatus()))
+						|| Response.Status.Family.SERVER_ERROR
+								.equals(Response.Status.Family.familyOf(response.getStatus()))) {
+					throw response.readEntity(Throwable.class);
+				}
+				object = response.readEntity(type);
+			}
+			catch (final Throwable throwable) {
+				if (throwable instanceof BazaarException) {
+					throw (BazaarException)throwable;
+				}
+				else if (throwable.getCause() != null && throwable.getCause() instanceof BazaarException) {
+					throw (BazaarException)throwable.getCause();
+				}
+				else {
+					throw new BazaarException(throwable);
+				}
+			}
+		}
+		else {
+			throw new BazaarException(new RestWebServiceException(response.getStatusInfo().toString()));
+		}
+		// close the response instance
+		response.close();
+		return (T)object;
 	}
 
 }

@@ -68,9 +68,9 @@ public final class BazaarManagerTests {
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 			bazaar.newBid(bidder, new Double(100.00)).persist();
-			final Bazaar Bazaar1 = manager.findBazaar(bazaar.getIdentifier());
-			Assert.assertNotNull(Bazaar1);
-			Assert.assertEquals(bazaar.getIdentifier(), Bazaar1.getIdentifier());
+			final Bazaar bazaar1 = manager.findBazaar(bazaar.getIdentifier());
+			Assert.assertNotNull(bazaar1);
+			Assert.assertEquals(bazaar.getIdentifier(), bazaar1.getIdentifier());
 			Assert.assertNull(bazaar.getReservePrice());
 			Assert.assertTrue(!bazaar.findAllBids().isEmpty());
 

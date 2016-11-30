@@ -8,29 +8,22 @@ package org.apache.bazaar;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 //
 // import javax.cache.configuration.MutableConfiguration;
 // import javax.cache.expiry.AccessedExpiryPolicy;
 // import javax.cache.expiry.Duration;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.bazaar.Image.MimeType;
-import org.apache.bazaar.cache.Cache;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.web.RequestParameters;
 import org.apache.bazaar.web.RestWebClient;
-import org.apache.bazaar.web.RestWebServiceException;
 import org.apache.bazaar.web.config.Configuration;
 
 /**
@@ -41,8 +34,10 @@ public final class BazaarManagerImpl implements BazaarManager {
 	// declare members
 
 	private static final Logger LOGGER = Logger.newInstance(BazaarManager.class);
-	private final Map<Class<? extends Persistable>, Cache<Identifier, ? extends Persistable>> persistableCache;
-	private final ThreadLocal<RestWebClient> threadLocal;
+	// private final Map<Class<? extends Persistable>, Cache<Identifier, ?
+	// extends Persistable>> persistableCache;
+	// private final ThreadLocal<RestWebClient> threadLocal;
+	private final RestWebClient webClient;
 	private Category rootCategory;
 
 	// declare constructors
@@ -52,14 +47,21 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	private BazaarManagerImpl() {
 		super();
-		final Map<Class<? extends Persistable>, Cache<Identifier, ? extends Persistable>> map = new ConcurrentHashMap<Class<? extends Persistable>, Cache<Identifier, ? extends Persistable>>(
-				4);
-		map.put(Bazaar.class, Cache.newInstance(Bazaar.class.getName(), Identifier.class, Bazaar.class));
-		map.put(Category.class, Cache.newInstance(Category.class.getName(), Identifier.class, Category.class));
-		map.put(Item.class, Cache.newInstance(Item.class.getName(), Identifier.class, Item.class));
-		map.put(Bidder.class, Cache.newInstance(Bidder.class.getName(), Identifier.class, Bidder.class));
-		this.persistableCache = Collections.unmodifiableMap(map);
-		this.threadLocal = new ThreadLocal<RestWebClient>();
+		// final Map<Class<? extends Persistable>, Cache<Identifier, ? extends
+		// Persistable>> map = new ConcurrentHashMap<Class<? extends
+		// Persistable>, Cache<Identifier, ? extends Persistable>>(
+		// 4);
+		// map.put(Bazaar.class, Cache.newInstance(Bazaar.class.getName(),
+		// Identifier.class, Bazaar.class));
+		// map.put(Category.class, Cache.newInstance(Category.class.getName(),
+		// Identifier.class, Category.class));
+		// map.put(Item.class, Cache.newInstance(Item.class.getName(),
+		// Identifier.class, Item.class));
+		// map.put(Bidder.class, Cache.newInstance(Bidder.class.getName(),
+		// Identifier.class, Bidder.class));
+		// this.persistableCache = Collections.unmodifiableMap(map);
+		// this.threadLocal = new ThreadLocal<RestWebClient>();
+		this.webClient = RestWebClient.newInstance();
 	}
 
 	// declare methods
@@ -81,24 +83,28 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@SuppressWarnings("unchecked")
 	void addToCache(@NotNull final Persistable persistable) {
-		if (persistable instanceof Bazaar) {
-			final Cache<Identifier, Bazaar> cache = (Cache<Identifier, Bazaar>)this.persistableCache.get(Bazaar.class);
-			cache.put(persistable.getIdentifier(), (Bazaar)persistable);
-
-		}
-		if (persistable instanceof Category) {
-			final Cache<Identifier, Category> cache = (Cache<Identifier, Category>)this.persistableCache
-					.get(Category.class);
-			cache.put(persistable.getIdentifier(), (Category)persistable);
-		}
-		if (persistable instanceof Item) {
-			final Cache<Identifier, Item> cache = (Cache<Identifier, Item>)this.persistableCache.get(Item.class);
-			cache.put(persistable.getIdentifier(), (Item)persistable);
-		}
-		if (persistable instanceof Bidder) {
-			final Cache<Identifier, Bidder> cache = (Cache<Identifier, Bidder>)this.persistableCache.get(Bidder.class);
-			cache.put(persistable.getIdentifier(), (Bidder)persistable);
-		}
+		// if (persistable instanceof Bazaar) {
+		// final Cache<Identifier, Bazaar> cache = (Cache<Identifier,
+		// Bazaar>)this.persistableCache.get(Bazaar.class);
+		// cache.put(persistable.getIdentifier(), (Bazaar)persistable);
+		//
+		// }
+		// if (persistable instanceof Category) {
+		// final Cache<Identifier, Category> cache = (Cache<Identifier,
+		// Category>)this.persistableCache
+		// .get(Category.class);
+		// cache.put(persistable.getIdentifier(), (Category)persistable);
+		// }
+		// if (persistable instanceof Item) {
+		// final Cache<Identifier, Item> cache = (Cache<Identifier,
+		// Item>)this.persistableCache.get(Item.class);
+		// cache.put(persistable.getIdentifier(), (Item)persistable);
+		// }
+		// if (persistable instanceof Bidder) {
+		// final Cache<Identifier, Bidder> cache = (Cache<Identifier,
+		// Bidder>)this.persistableCache.get(Bidder.class);
+		// cache.put(persistable.getIdentifier(), (Bidder)persistable);
+		// }
 
 	}
 
@@ -108,9 +114,9 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 * @param persistables The Set of persistable to be updated
 	 */
 	<T extends Persistable> void addToCache(@NotNull final Set<T> persistables) {
-		for (final Persistable persistable : persistables) {
-			this.addToCache(persistable);
-		}
+		// for (final Persistable persistable : persistables) {
+		// this.addToCache(persistable);
+		// }
 	}
 
 	/**
@@ -120,24 +126,28 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@SuppressWarnings("unchecked")
 	void removeFromCache(@NotNull final Persistable persistable) {
-		if (persistable instanceof Bazaar) {
-			final Cache<Identifier, Bazaar> cache = (Cache<Identifier, Bazaar>)this.persistableCache.get(Bazaar.class);
-			cache.remove(persistable.getIdentifier(), (Bazaar)persistable);
-
-		}
-		if (persistable instanceof Category) {
-			final Cache<Identifier, Category> cache = (Cache<Identifier, Category>)this.persistableCache
-					.get(Category.class);
-			cache.remove(persistable.getIdentifier(), (Category)persistable);
-		}
-		if (persistable instanceof Item) {
-			final Cache<Identifier, Item> cache = (Cache<Identifier, Item>)this.persistableCache.get(Item.class);
-			cache.remove(persistable.getIdentifier(), (Item)persistable);
-		}
-		if (persistable instanceof Bidder) {
-			final Cache<Identifier, Bidder> cache = (Cache<Identifier, Bidder>)this.persistableCache.get(Bidder.class);
-			cache.remove(persistable.getIdentifier(), (Bidder)persistable);
-		}
+		// if (persistable instanceof Bazaar) {
+		// final Cache<Identifier, Bazaar> cache = (Cache<Identifier,
+		// Bazaar>)this.persistableCache.get(Bazaar.class);
+		// cache.remove(persistable.getIdentifier(), (Bazaar)persistable);
+		//
+		// }
+		// if (persistable instanceof Category) {
+		// final Cache<Identifier, Category> cache = (Cache<Identifier,
+		// Category>)this.persistableCache
+		// .get(Category.class);
+		// cache.remove(persistable.getIdentifier(), (Category)persistable);
+		// }
+		// if (persistable instanceof Item) {
+		// final Cache<Identifier, Item> cache = (Cache<Identifier,
+		// Item>)this.persistableCache.get(Item.class);
+		// cache.remove(persistable.getIdentifier(), (Item)persistable);
+		// }
+		// if (persistable instanceof Bidder) {
+		// final Cache<Identifier, Bidder> cache = (Cache<Identifier,
+		// Bidder>)this.persistableCache.get(Bidder.class);
+		// cache.remove(persistable.getIdentifier(), (Bidder)persistable);
+		// }
 	}
 
 	/**
@@ -149,82 +159,14 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@SuppressWarnings("unchecked")
 	<T extends Persistable> T getFromCache(@NotNull final Identifier identifier) {
-		T persistable = null;
-		for (final Entry<Class<? extends Persistable>, Cache<Identifier, ? extends Persistable>> entry : this.persistableCache
-				.entrySet()) {
-			if (entry.getValue().containsKey(identifier)) {
-				persistable = (T)entry.getValue().get(identifier);
-				break;
-			}
-		}
-		return persistable;
+		return null;
 	}
 
 	/**
 	 * Method clears cache
 	 */
 	void clearAllCaches() {
-		this.persistableCache.clear();
-	}
-
-	/**
-	 * Utility method retrieves {@link Client} instance. The instance is stored
-	 * on an {@link ThreadLocal} as the BazaarManager instance is stored as a
-	 * singleton on the BazaarManagerFactory and client instances should not be
-	 * shared across threads.
-	 *
-	 * @return The client instance
-	 */
-	@NotNull
-	RestWebClient newRestWebClient() {
-		if (this.threadLocal.get() == null) {
-			final RestWebClient client = RestWebClient.newInstance();
-			this.threadLocal.set(client);
-		}
-		return this.threadLocal.get();
-
-	}
-
-	/**
-	 * Utility method processes response instance
-	 *
-	 * @param type The type of persistable to be generated
-	 * @param response The response instance
-	 * @return The Persistable returned
-	 * @throws BazaarException if the response was could not be processed
-	 */
-	@SuppressWarnings("unchecked")
-	static <T> T processResponse(@NotNull final GenericType<T> type, @NotNull final Response response)
-			throws BazaarException {
-		final Object object;
-		if (MediaType.APPLICATION_JSON_TYPE.equals(response.getMediaType()) && response.hasEntity()) {
-			try {
-				if (Response.Status.Family.CLIENT_ERROR.equals(Response.Status.Family.familyOf(response.getStatus()))
-						|| Response.Status.Family.SERVER_ERROR
-								.equals(Response.Status.Family.familyOf(response.getStatus()))) {
-					final Throwable throwable = response.readEntity(Throwable.class);
-					if (throwable.getCause() != null && throwable.getCause() instanceof BazaarException) {
-						throw (BazaarException)throwable.getCause();
-					}
-					else if (throwable instanceof BazaarException) {
-						throw (BazaarException)throwable;
-					}
-					else {
-						throw new BazaarException(throwable);
-					}
-				}
-				object = response.readEntity(type);
-			}
-			catch (final ProcessingException exception) {
-				throw new RestWebServiceException(exception);
-			}
-		}
-		else {
-			throw new BazaarException(new RestWebServiceException(response.getStatusInfo().toString()));
-		}
-		// close the response instance
-		response.close();
-		return (T)object;
+		// this.persistableCache.clear();
 	}
 
 	/*
@@ -270,11 +212,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 				category = category1;
 			}
 			else {
-				final WebTarget webTarget = this.newRestWebClient()
+				final WebTarget webTarget = RestWebClient.newInstance()
 						.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL))
 						.path(identifier.getValue());
 				final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-				category = BazaarManagerImpl.processResponse(new GenericType<Category>() {
+				category = RestWebClient.processResponse(new GenericType<Category>() {
 				}, response);
 				// add to cache
 				this.addToCache(category);
@@ -297,11 +239,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 			item = item1;
 		}
 		else {
-			final WebTarget webTarget = this.newRestWebClient()
+			final WebTarget webTarget = RestWebClient.newInstance()
 					.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 					.path(identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-			item = BazaarManagerImpl.processResponse(new GenericType<Item>() {
+			item = RestWebClient.processResponse(new GenericType<Item>() {
 			}, response);
 			// add to cache
 			this.addToCache(item);
@@ -452,11 +394,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 			bazaar = bazaar1;
 		}
 		else {
-			final WebTarget webTarget = this.newRestWebClient()
+			final WebTarget webTarget = RestWebClient.newInstance()
 					.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL))
 					.path(identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-			bazaar = BazaarManagerImpl.processResponse(new GenericType<Bazaar>() {
+			bazaar = RestWebClient.processResponse(new GenericType<Bazaar>() {
 			}, response);
 			// add to cache
 			this.addToCache(bazaar);
@@ -470,11 +412,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Bazaar> findAllBazaars() throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Bazaar> bazaars = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bazaar>>() {
+				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bazaar>>() {
 				}, response));
 		// add to cache
 		this.addToCache(bazaars);
@@ -487,12 +429,12 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Category> findCategories(final String name) throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.NAME, name);
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Category> categories = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Category>>() {
+				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Category>>() {
 				}, response));
 		// add to cache
 		this.addToCache(categories);
@@ -505,11 +447,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Category> findAllCategories() throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.CATEGORY_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Category> categories = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Category>>() {
+				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Category>>() {
 				}, response));
 		// add to cache
 		this.addToCache(categories);
@@ -522,13 +464,12 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Item> findItems(final String name) throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.NAME, name);
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-		final Set<Item> items = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Item>>() {
-				}, response));
+		final Set<Item> items = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Item>>() {
+		}, response));
 		// add to cache
 		this.addToCache(items);
 		return items;
@@ -541,13 +482,12 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Item> findItems(final Category category) throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.CATEGORY, category.getIdentifier().getValue());
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-		final Set<Item> items = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Item>>() {
-				}, response));
+		final Set<Item> items = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Item>>() {
+		}, response));
 		// add to cache
 		this.addToCache(items);
 		return items;
@@ -559,12 +499,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Item> findAllItems() throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-		final Set<Item> items = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Item>>() {
-				}, response));
+		final Set<Item> items = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Item>>() {
+		}, response));
 		// add to cache
 		this.addToCache(items);
 		return items;
@@ -584,11 +523,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 			bidder = bidder1;
 		}
 		else {
-			final WebTarget webTarget = this.newRestWebClient()
+			final WebTarget webTarget = RestWebClient.newInstance()
 					.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
 					.path(identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-			bidder = BazaarManagerImpl.processResponse(new GenericType<Bidder>() {
+			bidder = RestWebClient.processResponse(new GenericType<Bidder>() {
 			}, response);
 			// add to cache
 			this.addToCache(bidder);
@@ -602,12 +541,12 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Bidder> findBidders(final Name name) throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.NAME, name);
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Bidder> bidders = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bidder>>() {
+				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bidder>>() {
 				}, response));
 		// add to cache
 		this.addToCache(bidders);
@@ -620,11 +559,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Bidder> findAllBidders() throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.BIDDER_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		final Set<Bidder> bidders = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bidder>>() {
+				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bidder>>() {
 				}, response));
 		// add to cache
 		this.addToCache(bidders);
@@ -645,11 +584,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 			bid = bid1;
 		}
 		else {
-			final WebTarget webTarget = this.newRestWebClient()
+			final WebTarget webTarget = RestWebClient.newInstance()
 					.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 					.path(identifier.getValue());
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-			bid = BazaarManagerImpl.processResponse(new GenericType<Bid>() {
+			bid = RestWebClient.processResponse(new GenericType<Bid>() {
 			}, response);
 			// add to cache
 			this.addToCache(bid);
@@ -663,12 +602,11 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Bid> findAllBids() throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL));
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-		final Set<Bid> bids = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bid>>() {
-				}, response));
+		final Set<Bid> bids = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bid>>() {
+		}, response));
 		// add to cache
 		this.addToCache(bids);
 		return bids;
@@ -681,13 +619,12 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	@Override
 	public Set<Bid> findAllBids(final Bidder bidder) throws BazaarException {
-		final WebTarget webTarget = this.newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
 				.queryParam(RequestParameters.BIDDER, bidder.getIdentifier().getValue());
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-		final Set<Bid> bids = Collections
-				.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bid>>() {
-				}, response));
+		final Set<Bid> bids = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bid>>() {
+		}, response));
 		// add to cache
 		this.addToCache(bids);
 		return bids;

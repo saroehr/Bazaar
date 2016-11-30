@@ -22,6 +22,7 @@ import org.apache.bazaar.version.Version;
 import org.apache.bazaar.version.VersionException;
 import org.apache.bazaar.version.VersionNotFoundException;
 import org.apache.bazaar.web.RequestParameters;
+import org.apache.bazaar.web.RestWebClient;
 import org.apache.bazaar.web.config.Configuration;
 
 /**
@@ -140,11 +141,11 @@ public class ItemImpl extends AbstractVersionable implements Item {
 			throws UnsupportedOperationException, VersionNotFoundException, VersionException {
 		final Set<Version> versions;
 		try {
-			final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+			final WebTarget webTarget = RestWebClient.newInstance()
 					.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 					.path(this.getIdentifier().getValue()).queryParam(RequestParameters.VERSIONS, true);
 			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
-			versions = BazaarManagerImpl.processResponse(new GenericType<Set<Version>>() {
+			versions = RestWebClient.processResponse(new GenericType<Set<Version>>() {
 			}, response);
 		}
 		catch (final BazaarException exception) {
@@ -175,18 +176,18 @@ public class ItemImpl extends AbstractVersionable implements Item {
 		catch (final ItemNotFoundException exception) {
 			persisted = false;
 		}
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 				.path(this.getIdentifier().getValue()).queryParam(RequestParameters.NAME, this.name)
 				.queryParam(RequestParameters.DESCRIPTION, this.description)
 				.queryParam(RequestParameters.CATEGORY, this.category.getIdentifier().getValue());
 		if (persisted) {
-			BazaarManagerImpl.processResponse(new GenericType<Item>() {
+			RestWebClient.processResponse(new GenericType<Item>() {
 			}, webTarget.request(MediaType.APPLICATION_JSON_TYPE)
 					.buildPost(Entity.entity(this, MediaType.APPLICATION_JSON_TYPE)).invoke());
 		}
 		else {
-			BazaarManagerImpl.processResponse(new GenericType<Item>() {
+			RestWebClient.processResponse(new GenericType<Item>() {
 			}, webTarget.request(MediaType.APPLICATION_JSON_TYPE)
 					.buildPut(Entity.entity(this, MediaType.APPLICATION_JSON_TYPE)).invoke());
 		}
@@ -200,10 +201,10 @@ public class ItemImpl extends AbstractVersionable implements Item {
 	@Override
 	public void delete() throws BazaarException {
 		super.delete();
-		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
+		final WebTarget webTarget = RestWebClient.newInstance()
 				.target(Configuration.newInstance().getProperty(Configuration.ITEM_REST_WEB_SERVICE_URL))
 				.path(this.getIdentifier().getValue());
-		BazaarManagerImpl.processResponse(new GenericType<Item>() {
+		RestWebClient.processResponse(new GenericType<Item>() {
 		}, webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildDelete().invoke());
 	}
 
