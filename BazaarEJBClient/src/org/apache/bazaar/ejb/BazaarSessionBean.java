@@ -15,9 +15,6 @@ import org.apache.bazaar.BazaarException;
 import org.apache.bazaar.BazaarNotFoundException;
 import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Item;
-import org.apache.bazaar.version.Version;
-import org.apache.bazaar.version.VersionException;
-import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
  * BazaarSessionBean provides the EJB Local interface used by clients of the
@@ -68,18 +65,6 @@ public interface BazaarSessionBean {
 	 */
 	public @NotNull Bazaar findBazaar(@NotNull final Identifier identifier)
 			throws BazaarNotFoundException, BazaarException;
-
-	/**
-	 * Returns Set of all versions for bazaar
-	 *
-	 * @param bazaar The bazaar instance
-	 * @return Set of {@link Version} for instance
-	 * @throws VersionNotFoundException if no versions for instance exist
-	 * @throws VersionException if the operation could not be completed
-	 * @throws UnsupportedOperationException
-	 */
-	public @NotNull Set<Version> findAllVersions(@NotNull final Bazaar bazaar)
-			throws UnsupportedOperationException, VersionNotFoundException, VersionException;
 
 	/**
 	 * Returns set of all bazaars

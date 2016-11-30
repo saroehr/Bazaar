@@ -10,9 +10,6 @@ import org.apache.bazaar.Category;
 import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Item;
 import org.apache.bazaar.ItemNotFoundException;
-import org.apache.bazaar.version.Version;
-import org.apache.bazaar.version.VersionException;
-import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
  * ItemSessionBean provides the EJB Local interface used by clients of the bean.
@@ -58,19 +55,6 @@ public interface ItemSessionBean {
 	 * @throws BazaarException if the operation could not be completed
 	 */
 	public @NotNull Item findItem(@NotNull final Identifier identifier) throws ItemNotFoundException, BazaarException;
-
-	/**
-	 * Returns all versions of Item
-	 *
-	 * @param item The Item to return versions for
-	 * @return Set of all Versions of Item
-	 * @throws UnsupportedOperationException if the implementation does not
-	 *         support versions
-	 * @throws VersionNotFoundException if no versions exist for Item
-	 * @throws VersionException if the operation could not be completed
-	 */
-	public @NotNull Set<Version> findAllVersions(@NotNull final Item item)
-			throws UnsupportedOperationException, VersionNotFoundException, VersionException;
 
 	/**
 	 * Returns All items

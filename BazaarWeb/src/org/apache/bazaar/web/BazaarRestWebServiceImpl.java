@@ -58,7 +58,7 @@ public class BazaarRestWebServiceImpl extends AbstractRestWebService {
 					.findBazaar(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 			if (queryParameters.hasParameter(RequestParameters.VERSIONS)
 					&& Boolean.valueOf(queryParameters.getParameter(RequestParameters.VERSIONS)).booleanValue()) {
-				final Set<Version> versions = sessionBean.findAllVersions(bazaar);
+				final Set<Version> versions = bazaar.findAllVersions();
 				response = AbstractRestWebService.newResponse(new GenericEntity<Set<Version>>(versions) {
 				}).build();
 			}

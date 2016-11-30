@@ -58,7 +58,7 @@ public final class BidderRestWebServiceImpl extends AbstractRestWebService {
 					.findBidder(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
 			if (queryParameters.hasParameter(RequestParameters.VERSIONS)
 					&& Boolean.valueOf(queryParameters.getParameter(RequestParameters.VERSIONS)).booleanValue()) {
-				final Set<Version> versions = sessionBean.findAllVersions(bidder);
+				final Set<Version> versions = bidder.findAllVersions();
 				response = AbstractRestWebService.newResponse(new GenericEntity<Set<Version>>(versions) {
 				}).build();
 			}

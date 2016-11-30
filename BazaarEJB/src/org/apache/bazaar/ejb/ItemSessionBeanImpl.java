@@ -15,9 +15,6 @@ import org.apache.bazaar.Category;
 import org.apache.bazaar.Identifier;
 import org.apache.bazaar.Item;
 import org.apache.bazaar.ItemNotFoundException;
-import org.apache.bazaar.version.Version;
-import org.apache.bazaar.version.VersionException;
-import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
  * Session Bean implementation class ItemSessionBeanImpl
@@ -68,18 +65,6 @@ public class ItemSessionBeanImpl implements ItemSessionBean {
 	@Override
 	public Item findItem(final Identifier identifier) throws ItemNotFoundException, BazaarException {
 		return BazaarManager.newInstance().findItem(identifier);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.apache.bazaar.ejb.ItemSessionBean#findAllVersions(org.apache.bazaar.
-	 * Item)
-	 */
-	@Override
-	public Set<Version> findAllVersions(final Item item)
-			throws UnsupportedOperationException, VersionNotFoundException, VersionException {
-		return item.findAllVersions();
 	}
 
 	/*

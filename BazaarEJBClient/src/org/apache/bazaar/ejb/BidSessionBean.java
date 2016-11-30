@@ -15,9 +15,6 @@ import org.apache.bazaar.Bid;
 import org.apache.bazaar.BidNotFoundException;
 import org.apache.bazaar.Bidder;
 import org.apache.bazaar.Identifier;
-import org.apache.bazaar.version.Version;
-import org.apache.bazaar.version.VersionException;
-import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
  * BidSessionBean provides the EJB Local interface used by clients of the bean
@@ -42,19 +39,6 @@ public interface BidSessionBean {
 	 * @throws BazaarException if the operation could not be completed
 	 */
 	public @NotNull Bid findBid(@NotNull final Identifier identifier) throws BidNotFoundException, BazaarException;
-
-	/**
-	 * Returns Set of versions for Bid instance
-	 *
-	 * @param bid The Bid instance to retrieve versions for
-	 * @return Set of all Versions of Bid
-	 * @throws UnsupportedOperationException if the implementation does not
-	 *         support versions
-	 * @throws VersionNotFoundException if no versions exist for bid
-	 * @throws VersionException if the operation could not be completed
-	 */
-	public @NotNull Set<Version> findAllVersions(@NotNull final Bid bid)
-			throws UnsupportedOperationException, VersionNotFoundException, VersionException;
 
 	/**
 	 * Returns set of all bids

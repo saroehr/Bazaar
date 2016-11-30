@@ -203,7 +203,6 @@ public abstract class AbstractRestWebService implements RestWebService {
 	 */
 	@Override
 	@GET
-	@Path("{identifier}")
 	public final Response doGet() {
 		AbstractRestWebService.LOGGER.entering("doGet");
 		Response response;
@@ -214,6 +213,26 @@ public abstract class AbstractRestWebService implements RestWebService {
 			response = AbstractRestWebService.processThrowable(throwable);
 		}
 		AbstractRestWebService.LOGGER.exiting("doGet", response);
+		return response;
+	}
+
+	/**
+	 * Method is called to invoke a GET request with an identifier.
+	 *
+	 * @return The Response result
+	 */
+	@GET
+	@Path("{identifier}")
+	public final Response doGetWithIdentifier() {
+		AbstractRestWebService.LOGGER.entering("doGetWithIdentifier");
+		Response response;
+		try {
+			response = this.doGet(new RestWebServiceRequest(this.securityContext, this.httpHeaders, this.uriInfo));
+		}
+		catch (final Throwable throwable) {
+			response = AbstractRestWebService.processThrowable(throwable);
+		}
+		AbstractRestWebService.LOGGER.exiting("doGetWithIdentifier", response);
 		return response;
 	}
 

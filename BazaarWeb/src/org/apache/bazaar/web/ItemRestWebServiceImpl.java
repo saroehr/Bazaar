@@ -149,9 +149,9 @@ public class ItemRestWebServiceImpl extends AbstractRestWebService {
 		final ItemSessionBean sessionBean = (ItemSessionBean)this.lookup(ItemSessionBean.BEAN_LOOKUP_NAME);
 		final Item item = sessionBean
 				.findItem(Identifier.fromValue(pathParameters.getParameter(RequestParameters.IDENTIFIER)));
+		item.delete();
 		response = AbstractRestWebService.newResponse(new GenericEntity<Item>(item) {
 		}).build();
-		item.delete();
 		return response;
 	}
 

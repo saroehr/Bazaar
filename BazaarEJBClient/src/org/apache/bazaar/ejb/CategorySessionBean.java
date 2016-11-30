@@ -9,9 +9,6 @@ import org.apache.bazaar.BazaarException;
 import org.apache.bazaar.Category;
 import org.apache.bazaar.CategoryNotFoundException;
 import org.apache.bazaar.Identifier;
-import org.apache.bazaar.version.Version;
-import org.apache.bazaar.version.VersionException;
-import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
  * CategorySessionBean provides the EJB Local interface used by clients of the
@@ -46,19 +43,6 @@ public interface CategorySessionBean {
 	 */
 	public @NotNull Category findCategory(@NotNull final Identifier identifier)
 			throws CategoryNotFoundException, BazaarException;
-
-	/**
-	 * Returns Set of all Version for instance
-	 *
-	 * @param category The Category to retrieve Versions for
-	 * @return Set of all Versions for instance
-	 * @throws UnsupportedOperationException if the implementation does not
-	 *         support versions
-	 * @throws VersionNotFoundException if no versions exist for category
-	 * @throws VersionException if the operation could not be completed
-	 */
-	public @NotNull Set<Version> findAllVersions(@NotNull final Category category)
-			throws UnsupportedOperationException, VersionNotFoundException, VersionException;
 
 	/**
 	 * Finds all categories

@@ -16,9 +16,6 @@ import org.apache.bazaar.Bid;
 import org.apache.bazaar.BidNotFoundException;
 import org.apache.bazaar.Bidder;
 import org.apache.bazaar.Identifier;
-import org.apache.bazaar.version.Version;
-import org.apache.bazaar.version.VersionException;
-import org.apache.bazaar.version.VersionNotFoundException;
 
 /**
  * Session Bean implementation class BidSessionBeanImpl
@@ -50,18 +47,6 @@ public class BidSessionBeanImpl implements BidSessionBean {
 	@Override
 	public Bid findBid(final Identifier identifier) throws BidNotFoundException, BazaarException {
 		return BazaarManager.newInstance().findBid(identifier);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.apache.bazaar.ejb.BidSessionBean#findAllVersions(org.apache.bazaar.
-	 * Bid)
-	 */
-	@Override
-	public Set<Version> findAllVersions(final Bid bid)
-			throws UnsupportedOperationException, VersionNotFoundException, VersionException {
-		return bid.findAllVersions();
 	}
 
 	/*
