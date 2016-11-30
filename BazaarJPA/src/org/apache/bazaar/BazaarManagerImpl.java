@@ -13,7 +13,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
@@ -21,20 +20,19 @@ import org.apache.bazaar.Image.MimeType;
 import org.apache.bazaar.config.ConfigurationException;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
+import org.apache.bazaar.persistence.EntityManagerFactory;
 import org.apache.bazaar.persistence.config.Configuration;
 
 /**
  * BazaarManagerImpl implements @Bazaar to provide a concrete implementation.
- * This implementation is returned via the {@link Bazaar#newInstance()} method
- * using Java reflection.
+ * This implementation is returned via the {@link BazaarManager#newInstance()}
+ * method using Java reflection.
  */
-final class BazaarManagerImpl implements BazaarManager {
+public final class BazaarManagerImpl implements BazaarManager {
 
 	// declare members
 
 	private static final Logger LOGGER = Logger.newInstance(BazaarManager.class);
-	static final EntityManagerFactory ENTITY_MANAGER_FACTORY = org.apache.bazaar.persistence.EntityManagerFactory
-			.newInstance();
 	private static final Messages MESSAGES = Messages.newInstance(Locale.getDefault());
 	private static final String SELECT_CATEGORY_BY_NAME_QUERY_PARAMETER_NAME = "name";
 	private static final String SELECT_CATEGORY_BY_NAME_QUERY = "SELECT category FROM Category category WHERE category.name = :"
@@ -77,26 +75,6 @@ final class BazaarManagerImpl implements BazaarManager {
 	 */
 	static BazaarManager newInstance() throws BazaarException {
 		return new BazaarManagerImpl();
-	}
-
-	/**
-	 * Utility method to check if auditing is supported by the implementation
-	 * 
-	 * @return True if "auditing" is supported by the implementation; false
-	 *         otherwise
-	 * @throws ConfigurationException if the method could not determine the
-	 *         support
-	 */
-	static boolean isAuditEnabled() throws ConfigurationException {
-		final boolean isEnabled;
-		if (Configuration.PersistenceProvider.ECLIPSELINK.equals(Configuration.PersistenceProvider
-				.valueOf(Configuration.newInstance().getProperty(Configuration.PERSISTENCE_PROVIDER_NAME)))) {
-			isEnabled = false;
-		}
-		else {
-			isEnabled = true;
-		}
-		return isEnabled;
 	}
 
 	/*
@@ -262,7 +240,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	public Bazaar findBazaar(final Identifier identifier) throws BazaarNotFoundException, BazaarException {
 		BazaarManagerImpl.LOGGER.entering("findBazaar", identifier);
 		final Bazaar bazaar;
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		try {
 			transaction.begin();
@@ -303,7 +281,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@Override
 	public Bid findBid(final Identifier identifier) throws BidNotFoundException, BazaarException {
 		final Bid bid;
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		try {
 			transaction.begin();
@@ -329,7 +307,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Bid> findAllBids() throws BazaarException {
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Query query = manager.createQuery(BazaarManagerImpl.SELECT_ALL_BIDS_QUERY);
 		final Set<Bid> bids;
@@ -354,7 +332,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Bid> findAllBids(final Bidder bidder) throws BazaarException {
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Query query = manager.createQuery(BazaarManagerImpl.SELECT_ALL_BIDS_BY_BIDDER_QUERY);
 		query.setParameter(BazaarManagerImpl.SELECT_ALL_BIDS_BY_BIDDER_QUERY_PARAMETER_NAME,
@@ -380,7 +358,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@Override
 	public Category findRootCategory() throws BazaarException {
 		if (this.rootCategory == null) {
-			final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+			final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 			final EntityTransaction transaction = manager.getTransaction();
 			final Category rootCategory;
 			try {
@@ -420,7 +398,7 @@ final class BazaarManagerImpl implements BazaarManager {
 			category = this.rootCategory;
 		}
 		else {
-			final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+			final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 			final EntityTransaction transaction = manager.getTransaction();
 			try {
 				transaction.begin();
@@ -452,7 +430,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@SuppressWarnings("unchecked")
 	public Set<Category> findCategories(final String name) throws BazaarException {
 		BazaarManagerImpl.LOGGER.entering("findCategories", name);
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Query query = manager.createQuery(BazaarManagerImpl.SELECT_CATEGORY_BY_NAME_QUERY);
 		query.setParameter(BazaarManagerImpl.SELECT_CATEGORY_BY_NAME_QUERY_PARAMETER_NAME, name);
@@ -474,7 +452,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@SuppressWarnings("unchecked")
 	public Set<Category> findAllCategories() throws BazaarException {
 		BazaarManagerImpl.LOGGER.entering("findAllCategories");
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
 		final Query query = manager.createQuery(BazaarManagerImpl.SELECT_ALL_CATEGORIES_QUERY);
@@ -495,7 +473,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	public Item findItem(final Identifier identifier) throws ItemNotFoundException, BazaarException {
 		BazaarManagerImpl.LOGGER.entering("findItem", identifier);
 		final Item item;
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		try {
 			transaction.begin();
@@ -524,7 +502,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@SuppressWarnings("unchecked")
 	public Set<Item> findItems(final String name) throws BazaarException {
 		BazaarManagerImpl.LOGGER.entering("findItems", name);
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Set<Item> items;
 		final Query query = manager.createQuery(BazaarManagerImpl.SELECT_ITEMS_BY_NAME_QUERY);
@@ -552,7 +530,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@SuppressWarnings("unchecked")
 	public Set<Item> findItems(final Category category) throws BazaarException {
 		BazaarManagerImpl.LOGGER.entering("findItems", category);
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Set<Item> items;
 		final Query query = manager.createQuery(BazaarManagerImpl.SELECT_ALL_ITEMS_BY_CATEGORY_QUERY);
@@ -579,7 +557,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@SuppressWarnings("unchecked")
 	public Set<Item> findAllItems() throws BazaarException {
 		BazaarManagerImpl.LOGGER.entering("findAllItems");
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Set<Item> items;
 		final Query query = manager.createQuery(BazaarManagerImpl.SELECT_ALL_ITEMS_QUERY);
@@ -605,7 +583,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	public Bidder findBidder(final Identifier identifier) throws BidderNotFoundException, BazaarException {
 		BazaarManagerImpl.LOGGER.entering("findBidder", identifier);
 		final Bidder bidder;
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		try {
 			transaction.begin();
@@ -633,7 +611,7 @@ final class BazaarManagerImpl implements BazaarManager {
 	@Override
 	public Set<Bidder> findBidders(final Name name) throws BazaarException {
 		BazaarManagerImpl.LOGGER.entering("findBidders", name);
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Query query = manager.createQuery(BazaarManagerImpl.SELECT_BIDDER_BY_NAME_QUERY);
 		query.setParameter(BazaarManagerImpl.SELECT_BIDDER_BY_NAME_QUERY_PARAMETER_NAME, name);

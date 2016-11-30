@@ -25,6 +25,7 @@ import javax.validation.constraints.Size;
 
 import org.apache.bazaar.config.ConfigurationException;
 import org.apache.bazaar.logging.Logger;
+import org.apache.bazaar.persistence.EntityManagerFactory;
 import org.apache.bazaar.persistence.config.Configuration;
 
 /**
@@ -139,7 +140,7 @@ public class ImageImpl implements Image {
 	 *         is encountered reading data from the stream
 	 */
 	void setImage(final InputStream inputStream) throws BazaarException {
-		final javax.persistence.EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final javax.persistence.EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final javax.persistence.EntityTransaction transaction = manager.getTransaction();
 		try {
 			transaction.begin();

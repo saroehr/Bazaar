@@ -6,25 +6,31 @@
 package org.apache.bazaar;
 
 /**
- * UnsupportedOperationException
+ * UnsupportedOperationException extends BazaarException to provide an exception
+ * type that may be used to support optional features.
  */
 public class UnsupportedOperationException extends BazaarException {
+
+	// declare members
 
 	/*
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = -6664898597432860385L;
 
+	// declare constructors
+
 	/**
 	 * Constructor for UnsupportedOperationException
 	 */
 	public UnsupportedOperationException() {
+		super();
 	}
 
 	/**
 	 * Constructor for UnsupportedOperationException
-	 * 
-	 * @param message
+	 *
+	 * @param message The exception message
 	 */
 	public UnsupportedOperationException(final String message) {
 		super(message);
@@ -32,8 +38,8 @@ public class UnsupportedOperationException extends BazaarException {
 
 	/**
 	 * Constructor for UnsupportedOperationException
-	 * 
-	 * @param cause
+	 *
+	 * @param cause The exception cause
 	 */
 	public UnsupportedOperationException(final Throwable cause) {
 		super(cause);
@@ -41,12 +47,14 @@ public class UnsupportedOperationException extends BazaarException {
 
 	/**
 	 * Constructor for UnsupportedOperationException
-	 * 
-	 * @param message
-	 * @param cause
+	 *
+	 * @param message The exception message
+	 * @param cause The exception cause
 	 */
 	public UnsupportedOperationException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
+
+	// declare methods
 
 }

@@ -29,6 +29,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
+import org.apache.bazaar.persistence.EntityManagerFactory;
 import org.apache.bazaar.version.AbstractVersionable;
 import org.hibernate.envers.Audited;
 
@@ -173,7 +174,7 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 	@Override
 	public Set<Bid> findBids(final Bidder bidder)
 			throws BazaarException {
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Query query = manager.createQuery(BazaarImpl.SELECT_BIDS_BY_BIDDER_QUERY);
 		query.setParameter(BazaarImpl.SELECT_BIDS_BY_BIDDER_QUERY_BIDDER_PARAMETER_NAME, bidder);
@@ -205,7 +206,7 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Bid> findAllBids() {
-		final EntityManager manager = BazaarManagerImpl.ENTITY_MANAGER_FACTORY.createEntityManager();
+		final EntityManager manager = EntityManagerFactory.newInstance().createEntityManager();
 		final EntityTransaction transaction = manager.getTransaction();
 		final Query query = manager.createQuery(BazaarImpl.SELECT_ALL_BIDS_QUERY);
 		query.setParameter(BazaarImpl.SELECT_ALL_BIDS_QUERY_PARAMETER_NAME, this);
