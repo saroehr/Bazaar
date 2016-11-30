@@ -26,7 +26,7 @@ public abstract class Identifier implements Serializable {
 	private static final Cache<String, Identifier> CACHE;
 	static {
 		final MutableConfiguration<String, Identifier> configuration = new MutableConfiguration<String, Identifier>();
-		configuration.setStoreByValue(false);
+		configuration.setStoreByValue(true);
 		configuration.setTypes(String.class, Identifier.class);
 		configuration.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(Duration.ONE_DAY));
 		CACHE = org.apache.bazaar.cache.Cache.newInstance(configuration, Identifier.class.getName(), String.class,
