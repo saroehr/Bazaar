@@ -6,11 +6,12 @@
 package org.apache.bazaar;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * ImageImpl implements Image to
- * provide a concrete implementation
+ * ImageImpl implements Image to provide a concrete implementation
  */
 public final class ImageImpl implements Image {
 	// declare members
@@ -23,7 +24,7 @@ public final class ImageImpl implements Image {
 	// declare constructors
 	/**
 	 * Constructor for ImageImpl
-	 * 
+	 *
 	 * @param name The image name
 	 * @param mimeType The MimeType of the image
 	 */
@@ -35,7 +36,6 @@ public final class ImageImpl implements Image {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Image#getName()
 	 */
 	@Override
@@ -45,7 +45,6 @@ public final class ImageImpl implements Image {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Image#getMimeType()
 	 */
 	@Override
@@ -55,7 +54,6 @@ public final class ImageImpl implements Image {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Image#getImage()
 	 */
 	@Override
@@ -72,14 +70,22 @@ public final class ImageImpl implements Image {
 
 	/**
 	 * Sets image
-	 * 
+	 *
 	 * @param inputStream The inputStream to read from
 	 * @throws BazaarException if the operation could not be completed
 	 */
 	void setImage(final InputStream inputStream) throws BazaarException {
-		final ByteArrayInputStream inputStream1 = new ByteArrayInputStream(this.image);
-		while (inputStream1.available() != 0) {
-			inputStream1.read();
+		final ByteArrayOutputStream outputStream;
+		try {
+			outputStream = new ByteArrayOutputStream(Integer.valueOf(org.apache.bazaar.config.Configuration
+					.newInstance().getProperty(org.apache.bazaar.config.Configuration.DEFAULT_BYTE_ARRAY_BUFFER_SIZE)));
+			while (inputStream.available() != 0) {
+				outputStream.write(inputStream.read());
+			}
+			this.image = outputStream.toByteArray();
+		}
+		catch (final IOException exception) {
+			throw new BazaarException(exception);
 		}
 	}
 
