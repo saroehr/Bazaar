@@ -34,6 +34,6 @@ public abstract class AbstractVersionable extends AbstractPersistable implements
 	 */
 	@Override
 	public abstract Set<Version> findAllVersions()
-			throws UnsupportedOperationException, VersionNotFoundException, VersionException;
+			throws org.apache.bazaar.UnsupportedOperationException, VersionNotFoundException, VersionException;
 
 }
