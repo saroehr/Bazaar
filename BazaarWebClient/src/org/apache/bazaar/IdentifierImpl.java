@@ -7,6 +7,8 @@ package org.apache.bazaar;
 
 import java.util.UUID;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.bazaar.logging.Logger;
 
 /**
@@ -30,6 +32,16 @@ public final class IdentifierImpl extends Identifier {
 	public IdentifierImpl() {
 		super();
 		this.identifier = UUID.randomUUID().toString();
+	}
+
+	/**
+	 * Constructor for IdentifierImpl
+	 *
+	 * @param identifier The identifier string
+	 */
+	public IdentifierImpl(@NotNull final String identifier) {
+		super();
+		this.identifier = identifier;
 	}
 
 	// declare methods
