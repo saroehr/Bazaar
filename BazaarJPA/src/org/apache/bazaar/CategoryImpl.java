@@ -220,7 +220,7 @@ public class CategoryImpl extends AbstractVersionable implements Category {
 	@Override
 	public String toString() {
 		return Logger.toString(this,
-				new Object[] { this.getIdentifier(), this.name, this.description, this.parent });
+				new Object[] { this.getIdentifier(), this.name, this.description, this.parent.getIdentifier() });
 	}
 
 }

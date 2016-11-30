@@ -216,7 +216,8 @@ public class CategoryImpl extends AbstractVersionable implements org.apache.baza
 	 */
 	@Override
 	public String toString() {
-		return Logger.toString(this, new Object[] { this.getIdentifier(), this.name, this.description, this.parent });
+		return Logger.toString(this,
+				new Object[] { this.getIdentifier(), this.name, this.description, this.parent.getIdentifier() });
 	}
 
 }

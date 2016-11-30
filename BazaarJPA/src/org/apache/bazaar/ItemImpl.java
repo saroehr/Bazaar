@@ -40,7 +40,7 @@ public class ItemImpl extends AbstractVersionable implements Item {
 	private String name;
 	@Column(name = "DESCRIPTION", nullable = false, updatable = true)
 	private String description;
-	@ManyToOne(targetEntity = CategoryImpl.class, optional = false, fetch = FetchType.LAZY, cascade = {
+	@ManyToOne(targetEntity = CategoryImpl.class, optional = false, fetch = FetchType.EAGER, cascade = {
 			CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "CATEGORY", referencedColumnName = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME, unique = false, nullable = false, updatable = true)
 	private Category category;
