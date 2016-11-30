@@ -7,6 +7,7 @@ package org.apache.bazaar;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -24,6 +25,7 @@ import org.hibernate.envers.Audited;
 @Entity(name = org.apache.bazaar.persistence.config.Configuration.BIDDER_ENTITY_NAME)
 @Table(name = org.apache.bazaar.persistence.config.Configuration.BIDDER_TABLE_NAME, schema = org.apache.bazaar.persistence.config.Configuration.DATABASE_SCHEMA_NAME)
 // @PrimaryKeyJoinColumn(name = Configuration.IDENTIFIABLE_COLUMN_NAME)
+@Cacheable
 @Audited
 public class BidderImpl extends AbstractVersionable implements Bidder {
 
