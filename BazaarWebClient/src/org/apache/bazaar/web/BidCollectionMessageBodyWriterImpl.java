@@ -84,10 +84,10 @@ public final class BidCollectionMessageBodyWriterImpl implements VersionableColl
 			final VersionableJsonWriter<Bid> writer1 = new BidJsonWriterImpl();
 			for (final Bid bid : collection) {
 				jsonGenerator.write(writer1.write(bid));
-				jsonGenerator.writeEnd();
-				jsonGenerator.writeEnd();
-				jsonGenerator.flush();
 			}
+			jsonGenerator.writeEnd();
+			jsonGenerator.writeEnd();
+			jsonGenerator.flush();
 		}
 
 	}
