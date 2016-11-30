@@ -13,7 +13,7 @@ import org.apache.bazaar.logging.Logger;
 /**
  * VersionImpl implements {@link Version} to provide a concrete implementation
  */
-final class VersionImpl implements Version {
+public final class VersionImpl implements Version {
 
 	// declare members
 	private final Identifier identifier;
@@ -27,7 +27,7 @@ final class VersionImpl implements Version {
 	 * @param identifier The version number
 	 * @param versionable The versionable associated with version;
 	 */
-	VersionImpl(@NotNull final Identifier identifier, @NotNull final Versionable versionable) {
+	public VersionImpl(@NotNull final Identifier identifier, @NotNull final Versionable versionable) {
 		super();
 		this.identifier = identifier;
 		this.versionable = versionable;
