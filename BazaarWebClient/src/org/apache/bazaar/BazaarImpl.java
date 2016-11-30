@@ -133,10 +133,11 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 		final Set<Bid> bids;
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
-				.path(this.getIdentifier().getValue())
+				.queryParam(RequestParameters.BAZAAR, this.getIdentifier().getValue())
 				.queryParam(RequestParameters.BIDDER, bidder.getIdentifier().getValue());
+		final Response response = webTarget.request().accept(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		bids = Collections.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bid>>() {
-		}, webTarget.request().accept(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke()));
+		}, response));
 		// add to cache
 		((BazaarManagerImpl)BazaarManager.newInstance()).addToCache(bids);
 		return bids;
@@ -151,7 +152,7 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 		final Set<Bid> bids;
 		final WebTarget webTarget = ((BazaarManagerImpl)BazaarManager.newInstance()).newRestWebClient()
 				.target(Configuration.newInstance().getProperty(Configuration.BID_REST_WEB_SERVICE_URL))
-				.path(this.getIdentifier().getValue());
+				.queryParam(RequestParameters.BAZAAR, this.getIdentifier().getValue());
 		final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
 		bids = Collections.unmodifiableSet(BazaarManagerImpl.processResponse(new GenericType<Set<Bid>>() {
 		}, response));
