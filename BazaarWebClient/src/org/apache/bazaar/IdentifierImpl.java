@@ -7,15 +7,12 @@ package org.apache.bazaar;
 
 import java.util.UUID;
 
-import javax.validation.constraints.NotNull;
-
-import org.apache.bazaar.Identifier;
 import org.apache.bazaar.logging.Logger;
 
 /**
- * IdentifierImpl extends {@link Identifier} to provide
- * a concrete implementation. This instance generates
- * identifier values based upon usage of the {@link UUID} class.
+ * IdentifierImpl extends {@link Identifier} to provide a concrete
+ * implementation. This instance generates identifier values based upon usage of
+ * the {@link UUID} class.
  */
 public final class IdentifierImpl extends Identifier {
 
@@ -31,44 +28,23 @@ public final class IdentifierImpl extends Identifier {
 	 * Constructor for IdentifierImpl
 	 */
 	public IdentifierImpl() {
-		this(UUID.randomUUID());
-	}
-	
-	/**
-	 * Constructor for IdentifierImpl
-	 * @param identifier The identifier string
-	 */
-	public IdentifierImpl(@NotNull final String identifier) {
 		super();
-		this.identifier = identifier;
-	}
-
-	/**
-	 * Constructor for IdentifierImpl
-	 * 
-	 * @param uuid The {@link UUID} associated
-	 *        with instance.
-	 */
-	public IdentifierImpl(@NotNull final UUID uuid) {
-		super();
-		this.identifier = uuid.toString();
+		this.identifier = UUID.randomUUID().toString();
 	}
 
 	// declare methods
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.bazaar.Identifier#getValue()
 	 */
 	@Override
 	public String getValue() {
-		return this.identifier.toString();
+		return this.identifier;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -80,7 +56,6 @@ public final class IdentifierImpl extends Identifier {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -99,7 +74,6 @@ public final class IdentifierImpl extends Identifier {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

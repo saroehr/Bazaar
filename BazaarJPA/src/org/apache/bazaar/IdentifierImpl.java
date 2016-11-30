@@ -8,7 +8,6 @@ package org.apache.bazaar;
 import java.util.UUID;
 
 import javax.persistence.AttributeConverter;
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Converter;
 import javax.persistence.Embeddable;
@@ -23,7 +22,6 @@ import org.apache.bazaar.logging.Logger;
  */
 @Embeddable
 @Converter(autoApply = true)
-@Cacheable(value = false)
 public class IdentifierImpl extends Identifier implements AttributeConverter<IdentifierImpl, String> {
 
 	// declare members
@@ -46,20 +44,10 @@ public class IdentifierImpl extends Identifier implements AttributeConverter<Ide
 	/**
 	 * Constructor for IdentifierImpl
 	 * 
-	 * @param value The identifier value
-	 */
-	public IdentifierImpl(@NotNull final String value) {
-		super();
-		this.identifier = value;
-	}
-
-	/**
-	 * Constructor for IdentifierImpl
-	 * 
 	 * @param uuid The {@link UUID} associated
 	 *        with instance.
 	 */
-	IdentifierImpl(@NotNull final UUID uuid) {
+	private IdentifierImpl(@NotNull final UUID uuid) {
 		super();
 		this.identifier = uuid.toString();
 	}
@@ -73,7 +61,7 @@ public class IdentifierImpl extends Identifier implements AttributeConverter<Ide
 	 */
 	@Override
 	public String getValue() {
-		return this.identifier.toString();
+		return this.identifier;
 	}
 
 	/*
