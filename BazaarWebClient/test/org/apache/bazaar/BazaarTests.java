@@ -40,6 +40,7 @@ public final class BazaarTests {
 			item.setName("testNewBid");
 			item.setDescription("testNewBid");
 			item.setCategory(manager.findRootCategory());
+			item.persist();
 			final Bidder bidder = manager.newBidder();
 			final Name name = manager.newName();
 			name.setFirstName("testNewBid");
@@ -52,13 +53,14 @@ public final class BazaarTests {
 			address.setZipcode(60102);
 			bidder.setBillingAddress(address);
 			bidder.setShippingAddress(address);
+			bidder.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2016, 50, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
 			endDate.setWeekDate(2016, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
-			bazaar.newBid(bidder, new Double(100.00));
 			bazaar.persist();
+			bazaar.newBid(bidder, new Double(100.00)).persist();
 			Assert.assertNotNull(bazaar.findAllBids());
 			Assert.assertTrue(bazaar.findAllBids().size() == 1);
 		}
@@ -76,6 +78,7 @@ public final class BazaarTests {
 		try {
 			final BazaarManager manager = BazaarManager.newInstance();
 			final Item item = manager.newItem("testGetBids", "testGetBids", manager.findRootCategory());
+			item.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
@@ -85,8 +88,9 @@ public final class BazaarTests {
 			final Bidder bidder = manager.newBidder(manager.newName("testGetBids", "testGetBids"),
 					manager.newAddress("testGetBids", "testGetBids", State.Illinois, 60102),
 					manager.newAddress("testGetBids", "testGetBids", State.Illinois, 60102));
-			bazaar.newBid(bidder, 10.00D);
-			bazaar.newBid(bidder, 100.00D);
+			bidder.persist();
+			bazaar.newBid(bidder, 10.00D).persist();
+			bazaar.newBid(bidder, 100.00D).persist();
 			bazaar.persist();
 			Assert.assertNotNull(bazaar.findAllBids());
 			Assert.assertTrue(bazaar.findAllBids().size() == 2);
@@ -110,6 +114,7 @@ public final class BazaarTests {
 			item.setDescription("testPersist");
 			final Category category = manager.findRootCategory();
 			item.setCategory(category);
+			item.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2016, 50, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
@@ -132,6 +137,7 @@ public final class BazaarTests {
 		try {
 			final BazaarManager manager = BazaarManager.newInstance();
 			final Item item = manager.newItem("testDelete", "testDelete", manager.findRootCategory());
+			item.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
@@ -212,6 +218,7 @@ public final class BazaarTests {
 			item.setDescription("testFindAllVersions");
 			final Category category = manager.findRootCategory();
 			item.setCategory(category);
+			item.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2016, 50, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();

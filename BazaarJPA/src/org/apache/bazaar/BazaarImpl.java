@@ -85,7 +85,7 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 	/**
 	 * Constructor for BazaarImpl
 	 * 
-	 * @param item The item to be Bazaared
+	 * @param item The item to be sold
 	 * @param startDate The Bazaar start date
 	 * @param endDate The Bazaar end date
 	 */
