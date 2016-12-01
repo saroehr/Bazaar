@@ -8,22 +8,11 @@ package org.apache.bazaar;
 import java.time.DayOfWeek;
 import java.util.Calendar;
 
-import org.apache.bazaar.Address;
-import org.apache.bazaar.Bazaar;
-import org.apache.bazaar.BazaarException;
-import org.apache.bazaar.BazaarManager;
-import org.apache.bazaar.Bidder;
-import org.apache.bazaar.Category;
-import org.apache.bazaar.Item;
-import org.apache.bazaar.Name;
-import org.apache.bazaar.State;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import junit.framework.TestCase;
 
 /**
  * BazaarManagerTests provides JUnit tests for {@link BazaarManager}
@@ -57,10 +46,12 @@ public final class BazaarManagerTests {
 			category.setName("testNewBazaarItemCalendarCalendar");
 			category.setDescription("testNewItemCalendarCalendar");
 			category.setParent(parent);
+			category.persist();
 			final Item item = manager.newItem();
 			item.setName("testNewBazaarItemCalendarCalendar");
 			item.setDescription("testNewBazaarItemCalendarCalendar");
 			item.setCategory(category);
+			item.persist();
 			final Bidder bidder = manager.newBidder();
 			final Name name = manager.newName();
 			name.setFirstName("testNewBazaarItemCalendarCalendar");
@@ -73,13 +64,14 @@ public final class BazaarManagerTests {
 			address.setZipcode(60102);
 			bidder.setBillingAddress(address);
 			bidder.setShippingAddress(address);
+			bidder.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
 			endDate.setWeekDate(2017, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
-			bazaar.newBid(bidder, new Double(100.00));
 			bazaar.persist();
+			bazaar.newBid(bidder, new Double(100.00)).persist();
 			final Bazaar Bazaar1 = manager.findBazaar(bazaar.getIdentifier());
 			Assert.assertNotNull(Bazaar1);
 			Assert.assertEquals(bazaar.getIdentifier(), Bazaar1.getIdentifier());
@@ -89,7 +81,7 @@ public final class BazaarManagerTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 
 	}
@@ -112,17 +104,17 @@ public final class BazaarManagerTests {
 			endDate.setWeekDate(2017, 52, DayOfWeek.MONDAY.getValue());
 			final Double reservePrice = new Double(100.99);
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate, reservePrice);
-			TestCase.assertNotNull(bazaar);
-			TestCase.assertEquals(item, bazaar.getItem());
-			TestCase.assertEquals(startDate, bazaar.getStartDate());
-			TestCase.assertEquals(endDate, bazaar.getEndDate());
-			TestCase.assertEquals(reservePrice, bazaar.getReservePrice());
+			junit.framework.Assert.assertNotNull(bazaar);
+			junit.framework.Assert.assertEquals(item, bazaar.getItem());
+			junit.framework.Assert.assertEquals(startDate, bazaar.getStartDate());
+			junit.framework.Assert.assertEquals(endDate, bazaar.getEndDate());
+			junit.framework.Assert.assertEquals(reservePrice, bazaar.getReservePrice());
 			bazaar.persist();
-			TestCase.assertNotNull(manager.findBazaar(bazaar.getIdentifier()));
+			junit.framework.Assert.assertNotNull(manager.findBazaar(bazaar.getIdentifier()));
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -143,7 +135,7 @@ public final class BazaarManagerTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -161,7 +153,7 @@ public final class BazaarManagerTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

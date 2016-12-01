@@ -216,6 +216,7 @@ public final class BazaarTests {
 			item.setName("testFindAllVersions");
 			item.setDescription("testFindAllVersions");
 			item.setCategory(manager.findRootCategory());
+			item.persist();
 			final Bidder bidder = manager.newBidder();
 			final Name name = manager.newName();
 			name.setFirstName("testFindAllVersions");
@@ -228,6 +229,7 @@ public final class BazaarTests {
 			address.setZipcode(60102);
 			bidder.setBillingAddress(address);
 			bidder.setShippingAddress(address);
+			bidder.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2016, 50, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();

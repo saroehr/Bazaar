@@ -125,13 +125,11 @@ public final class BidTests {
 			endDate.setWeekDate(2017, 2, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
-			Assert.assertNotNull(manager.findItem(item.getIdentifier()));
-			Assert.assertNotNull(manager.findBidder(bidder.getIdentifier()));
 			final Bid bid = bazaar.newBid(bidder, new Double(1000.99));
 			bid.persist();
-			Assert.assertNotNull(bazaar.findBids(bidder));
-			Assert.assertTrue(bazaar.findBids(bidder).contains(bid));
-			Assert.assertEquals(new Double(1000.99), bid.getPrice());
+			final Set<Bid> bids = bazaar.findBids(bidder);
+			Assert.assertNotNull(bids);
+			Assert.assertTrue(bids.contains(bid));
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);

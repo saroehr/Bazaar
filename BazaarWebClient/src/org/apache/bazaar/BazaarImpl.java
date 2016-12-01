@@ -175,7 +175,8 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 			final WebTarget webTarget = RestWebClient.newInstance()
 					.target(Configuration.newInstance().getProperty(Configuration.BAZAAR_REST_WEB_SERVICE_URL))
 					.path(this.getIdentifier().getValue()).queryParam(RequestParameters.VERSIONS, true);
-			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).buildGet().invoke();
+			final Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE)
+					.accept(org.apache.bazaar.config.Configuration.DEFAULT_ENCODING).buildGet().invoke();
 			versions = RestWebClient.processResponse(new GenericType<Set<Version>>() {
 			}, response);
 		}
