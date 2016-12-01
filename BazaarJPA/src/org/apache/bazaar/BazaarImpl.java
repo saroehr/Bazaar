@@ -62,7 +62,8 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 	@Future
 	@Column(name = "ENDDATE", nullable = false)
 	private Calendar endDate;
-	@OneToOne(targetEntity = ItemImpl.class, fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@OneToOne(targetEntity = ItemImpl.class, fetch = FetchType.EAGER, optional = false, cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE })
 	@JoinColumn(name = org.apache.bazaar.persistence.config.Configuration.ITEM_TABLE_NAME, nullable = false, updatable = false, referencedColumnName = org.apache.bazaar.persistence.config.Configuration.IDENTIFIABLE_COLUMN_NAME)
 	private Item item;
 	@Column(name = "RESERVEPRICE", nullable = true, updatable = false)
