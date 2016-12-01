@@ -8,14 +8,6 @@ package org.apache.bazaar;
 import java.time.DayOfWeek;
 import java.util.Calendar;
 
-import org.apache.bazaar.Address;
-import org.apache.bazaar.Bazaar;
-import org.apache.bazaar.BazaarException;
-import org.apache.bazaar.BazaarManager;
-import org.apache.bazaar.Bidder;
-import org.apache.bazaar.BidderNotFoundException;
-import org.apache.bazaar.Item;
-import org.apache.bazaar.State;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -50,14 +42,15 @@ public final class BidderTests {
 			bidder.persist();
 			Assert.assertNotNull(manager.findBidder(bidder.getIdentifier()));
 			final Item item = manager.newItem("testPersist", "testPersist", manager.findRootCategory());
+			item.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
 			endDate.setWeekDate(2017, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
-			bazaar.newBid(bidder, new Double(100.00));
-			bazaar.newBid(bidder, new Double(200.00));
 			bazaar.persist();
+			bazaar.newBid(bidder, new Double(100.00)).persist();
+			bazaar.newBid(bidder, new Double(200.00)).persist();
 			Assert.assertNotNull(bazaar.findAllBids());
 			Assert.assertTrue(bazaar.findAllBids().size() == 2);
 			bazaar.delete();
@@ -83,13 +76,14 @@ public final class BidderTests {
 			bidder.setShippingAddress(address);
 			bidder.persist();
 			final Item item = manager.newItem("testDelete", "testDelete", manager.findRootCategory());
+			item.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(3000, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
 			endDate.setWeekDate(3000, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate, new Double(1000.00));
-			bazaar.newBid(bidder, new Double(100.00));
 			bazaar.persist();
+			bazaar.newBid(bidder, new Double(100.00)).persist();
 			try {
 				// should fail since Bazaar exists with bids
 				bidder.delete();

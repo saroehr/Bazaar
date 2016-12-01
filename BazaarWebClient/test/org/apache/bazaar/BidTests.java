@@ -9,14 +9,6 @@ import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.Set;
 
-import org.apache.bazaar.Address;
-import org.apache.bazaar.Bazaar;
-import org.apache.bazaar.BazaarException;
-import org.apache.bazaar.BazaarManager;
-import org.apache.bazaar.Bid;
-import org.apache.bazaar.Bidder;
-import org.apache.bazaar.Item;
-import org.apache.bazaar.State;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -48,16 +40,19 @@ public final class BidTests {
 			final Address address = manager.newAddress("testGetBazaar", "testGetBazaar", State.Illinois, 60102);
 			bidder.setBillingAddress(address);
 			bidder.setShippingAddress(address);
-			final Category category = manager.newCategory("testGetBazaar", "testGetBazaar",
-					manager.findRootCategory());
+			bidder.persist();
+			final Category category = manager.newCategory("testGetBazaar", "testGetBazaar", manager.findRootCategory());
+			category.persist();
 			final Item item = manager.newItem("testGetBazaar", "testGetBazaar", category);
+			item.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
 			endDate.setWeekDate(2017, 2, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
-			final Bid bid = bazaar.newBid(bidder, new Double(10000.10));
 			bazaar.persist();
+			final Bid bid = bazaar.newBid(bidder, new Double(10000.10));
+			bid.persist();
 			Assert.assertEquals(bazaar, bid.getBazaar());
 		}
 		catch (final BazaarException exception) {
@@ -79,8 +74,10 @@ public final class BidTests {
 			bidder.setShippingAddress(manager.newAddress("testGetBidder", "testGetBidder", State.Illinois, 60102));
 			bidder.persist();
 			Assert.assertNotNull(manager.findBidder(bidder.getIdentifier()));
-			final Item item = manager.newItem("testGetBidder", "testGetBidder",
-					manager.newCategory("testGetBidder", "testGetBidder", manager.findRootCategory()));
+			final Category category = manager.newCategory("testGetBidder", "testGetBidder", manager.findRootCategory());
+			category.persist();
+			final Item item = manager.newItem("testGetBidder", "testGetBidder", category);
+			item.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
@@ -119,7 +116,9 @@ public final class BidTests {
 			bidder.setShippingAddress(address);
 			bidder.persist();
 			final Category category = manager.newCategory("testGetPrice", "testGetPrice", manager.findRootCategory());
+			category.persist();
 			final Item item = manager.newItem("testGetPrice", "testGetPrice", category);
+			item.persist();
 			final Calendar startDate = Calendar.getInstance();
 			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
@@ -129,6 +128,7 @@ public final class BidTests {
 			Assert.assertNotNull(manager.findItem(item.getIdentifier()));
 			Assert.assertNotNull(manager.findBidder(bidder.getIdentifier()));
 			final Bid bid = bazaar.newBid(bidder, new Double(1000.99));
+			bid.persist();
 			Assert.assertNotNull(bazaar.findBids(bidder));
 			Assert.assertTrue(bazaar.findBids(bidder).contains(bid));
 			Assert.assertEquals(new Double(1000.99), bid.getPrice());
