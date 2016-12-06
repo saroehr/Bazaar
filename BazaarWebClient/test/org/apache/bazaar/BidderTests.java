@@ -44,9 +44,9 @@ public final class BidderTests {
 			final Item item = manager.newItem("testPersist", "testPersist", manager.findRootCategory());
 			item.persist();
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 52, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 			bazaar.newBid(bidder, new Double(100.00)).persist();

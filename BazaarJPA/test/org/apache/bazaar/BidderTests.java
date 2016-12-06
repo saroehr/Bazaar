@@ -8,21 +8,11 @@ package org.apache.bazaar;
 import java.time.DayOfWeek;
 import java.util.Calendar;
 
-import org.apache.bazaar.Address;
-import org.apache.bazaar.Bazaar;
-import org.apache.bazaar.BazaarException;
-import org.apache.bazaar.BazaarManager;
-import org.apache.bazaar.Bidder;
-import org.apache.bazaar.BidderNotFoundException;
-import org.apache.bazaar.Item;
-import org.apache.bazaar.State;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import junit.framework.TestCase;
 
 /**
  * BidderTests provides JUnit tests for {@link Bidder}
@@ -57,9 +47,9 @@ public final class BidderTests {
 			Assert.assertNotNull(manager.findBidder(bidder.getIdentifier()));
 			final Item item = manager.newItem("testPersist", "testPersist", manager.findRootCategory());
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 52, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.newBid(bidder, new Double(100.00));
 			bazaar.newBid(bidder, new Double(200.00));
@@ -71,7 +61,7 @@ public final class BidderTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -115,7 +105,7 @@ public final class BidderTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

@@ -58,9 +58,9 @@ public final class BazaarTests {
 			bidder.setBillingAddress(address);
 			bidder.setShippingAddress(address);
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2016, 50, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 50, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2016, 52, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.newBid(bidder, new Double(100.00));
 			bazaar.persist();
@@ -82,9 +82,9 @@ public final class BazaarTests {
 			final BazaarManager manager = BazaarManager.newInstance();
 			final Item item = manager.newItem("testGetBids", "testGetBids", manager.findRootCategory());
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 52, DayOfWeek.FRIDAY.getValue());
+			endDate.setWeekDate(2020, 52, DayOfWeek.FRIDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 			final Bidder bidder = manager.newBidder(manager.newName("testGetBids", "testGetBids"),
@@ -116,9 +116,9 @@ public final class BazaarTests {
 			final Category category = manager.findRootCategory();
 			item.setCategory(category);
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2016, 50, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 50, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2016, 51, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 51, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 			Assert.assertNotNull(manager.findBazaar(bazaar.getIdentifier()));
@@ -138,9 +138,9 @@ public final class BazaarTests {
 			final BazaarManager manager = BazaarManager.newInstance();
 			final Item item = manager.newItem("testDelete", "testDelete", manager.findRootCategory());
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 2, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 2, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 			Assert.assertNotNull(manager.findBazaar(bazaar.getIdentifier()));
@@ -167,9 +167,9 @@ public final class BazaarTests {
 			final BazaarManager manager = BazaarManager.newInstance();
 			final Item item = manager.newItem("testEquals", "testEquals", manager.findRootCategory());
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 25, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 25, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			final Bazaar Bazaar1 = bazaar;
 			junit.framework.Assert.assertSame(bazaar, Bazaar1);
@@ -190,9 +190,9 @@ public final class BazaarTests {
 			final BazaarManager manager = BazaarManager.newInstance();
 			final Item item = manager.newItem("testInvalidEndDate", "testInvalidEndDate", manager.findRootCategory());
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 2, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 2, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2016, 1, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 		}
@@ -231,9 +231,9 @@ public final class BazaarTests {
 			bidder.setShippingAddress(address);
 			bidder.persist();
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2016, 50, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 50, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2016, 52, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 			Set<Version> versions = bazaar.findAllVersions();

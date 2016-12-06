@@ -9,22 +9,11 @@ import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.Set;
 
-import org.apache.bazaar.Address;
-import org.apache.bazaar.Bazaar;
-import org.apache.bazaar.BazaarException;
-import org.apache.bazaar.BazaarManager;
-import org.apache.bazaar.Bid;
-import org.apache.bazaar.Bidder;
-import org.apache.bazaar.Category;
-import org.apache.bazaar.Item;
-import org.apache.bazaar.State;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import junit.framework.TestCase;
 
 /**
  * BidTests provides JUnit tests for {@link Bid}
@@ -61,9 +50,9 @@ public final class BidTests {
 			final Item item = manager.newItem("testGetBazaar", "testGetBazaar", category);
 			item.persist();
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 2, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 2, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			final Bid bid = bazaar.newBid(bidder, new Double(10000.10));
 			bazaar.persist();
@@ -71,7 +60,7 @@ public final class BidTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -92,9 +81,9 @@ public final class BidTests {
 					manager.newCategory("testGetBidder", "testGetBidder", manager.findRootCategory()));
 			item.persist();
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 52, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate, new Double(1000.00));
 			bazaar.persist();
 			final Bid bid = bazaar.newBid(bidder, new Double(1500.99));
@@ -111,7 +100,7 @@ public final class BidTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 
@@ -132,9 +121,9 @@ public final class BidTests {
 			final Item item = manager.newItem("testGetPrice", "testGetPrice", category);
 			item.persist();
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 2, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 2, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 			Assert.assertNotNull(manager.findItem(item.getIdentifier()));
@@ -147,7 +136,7 @@ public final class BidTests {
 		}
 		catch (final BazaarException exception) {
 			exception.printStackTrace(System.err);
-			TestCase.fail(exception.getLocalizedMessage());
+			junit.framework.Assert.fail(exception.getLocalizedMessage());
 		}
 	}
 

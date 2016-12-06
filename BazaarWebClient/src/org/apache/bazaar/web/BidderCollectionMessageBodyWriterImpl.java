@@ -23,7 +23,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.bazaar.Bid;
 import org.apache.bazaar.Bidder;
 
 /**
@@ -59,7 +58,7 @@ public final class BidderCollectionMessageBodyWriterImpl implements VersionableC
 		if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 			if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) && Collection.class.isAssignableFrom(clazz)) {
 				if (type instanceof ParameterizedType) {
-					if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Bid.class)) {
+					if (Arrays.asList(((ParameterizedType)type).getActualTypeArguments()).contains(Bidder.class)) {
 						writeable = true;
 					}
 				}

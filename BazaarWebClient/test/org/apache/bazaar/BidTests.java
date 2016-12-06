@@ -46,9 +46,9 @@ public final class BidTests {
 			final Item item = manager.newItem("testGetBazaar", "testGetBazaar", category);
 			item.persist();
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 2, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 2, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 			final Bid bid = bazaar.newBid(bidder, new Double(10000.10));
@@ -79,9 +79,9 @@ public final class BidTests {
 			final Item item = manager.newItem("testGetBidder", "testGetBidder", category);
 			item.persist();
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 52, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 52, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate, new Double(1000.00));
 			bazaar.persist();
 			final Bid bid = bazaar.newBid(bidder, new Double(1500.99));
@@ -120,9 +120,9 @@ public final class BidTests {
 			final Item item = manager.newItem("testGetPrice", "testGetPrice", category);
 			item.persist();
 			final Calendar startDate = Calendar.getInstance();
-			startDate.setWeekDate(2017, 1, DayOfWeek.MONDAY.getValue());
+			startDate.setWeekDate(2020, 1, DayOfWeek.MONDAY.getValue());
 			final Calendar endDate = Calendar.getInstance();
-			endDate.setWeekDate(2017, 2, DayOfWeek.MONDAY.getValue());
+			endDate.setWeekDate(2020, 2, DayOfWeek.MONDAY.getValue());
 			final Bazaar bazaar = manager.newBazaar(item, startDate, endDate);
 			bazaar.persist();
 			final Bid bid = bazaar.newBid(bidder, new Double(1000.99));
