@@ -36,7 +36,7 @@ public abstract class AbstractPersistable implements Persistable {
 	@Override
 	public void persist() throws BazaarException {
 		// add to cache
-		((BazaarManagerImpl)BazaarManager.newInstance()).addToCache(this);
+		BazaarManagerImpl.addToCache(this);
 	}
 
 	/*
@@ -46,7 +46,7 @@ public abstract class AbstractPersistable implements Persistable {
 	@Override
 	public void delete() throws BazaarException {
 		// remove from cache
-		((BazaarManagerImpl)BazaarManager.newInstance()).removeFromCache(this);
+		BazaarManagerImpl.removeFromCache(this);
 	}
 
 	/*

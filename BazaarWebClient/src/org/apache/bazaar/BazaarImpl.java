@@ -140,7 +140,7 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 		bids = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bid>>() {
 		}, response));
 		// add to cache
-		((BazaarManagerImpl)BazaarManager.newInstance()).addToCache(bids);
+		BazaarManagerImpl.addToCache(bids);
 		return bids;
 	}
 
@@ -158,7 +158,7 @@ public class BazaarImpl extends AbstractVersionable implements Bazaar {
 		bids = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bid>>() {
 		}, response));
 		// add to cache
-		((BazaarManagerImpl)BazaarManager.newInstance()).addToCache(bids);
+		BazaarManagerImpl.addToCache(bids);
 		return bids;
 
 	}

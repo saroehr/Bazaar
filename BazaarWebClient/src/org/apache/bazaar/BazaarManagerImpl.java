@@ -8,8 +8,12 @@ package org.apache.bazaar;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
+import javax.cache.Cache;
 //
 // import javax.cache.configuration.MutableConfiguration;
 // import javax.cache.expiry.AccessedExpiryPolicy;
@@ -34,8 +38,22 @@ public final class BazaarManagerImpl implements BazaarManager {
 	// declare members
 
 	private static final Logger LOGGER = Logger.newInstance(BazaarManager.class);
-	// private final Map<Class<? extends Persistable>, Cache<Identifier, ?
-	// extends Persistable>> persistableCache;
+	private static final Map<Class<? extends Persistable>, Cache<Identifier, ? extends Persistable>> PERSISTABLE_CACHE;
+
+	static {
+		final Map<Class<? extends Persistable>, Cache<Identifier, ? extends Persistable>> map = new ConcurrentHashMap<Class<? extends Persistable>, Cache<Identifier, ? extends Persistable>>(
+				4);
+		map.put(Bazaar.class,
+				org.apache.bazaar.cache.Cache.newInstance(Bazaar.class.getName(), Identifier.class, Bazaar.class));
+		map.put(Category.class,
+				org.apache.bazaar.cache.Cache.newInstance(Category.class.getName(), Identifier.class, Category.class));
+		map.put(Item.class,
+				org.apache.bazaar.cache.Cache.newInstance(Item.class.getName(), Identifier.class, Item.class));
+		map.put(Bidder.class,
+				org.apache.bazaar.cache.Cache.newInstance(Bidder.class.getName(), Identifier.class, Bidder.class));
+		PERSISTABLE_CACHE = Collections.unmodifiableMap(map);
+	}
+
 	private Category rootCategory;
 
 	// declare constructors
@@ -45,19 +63,6 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 */
 	private BazaarManagerImpl() {
 		super();
-		// final Map<Class<? extends Persistable>, Cache<Identifier, ? extends
-		// Persistable>> map = new ConcurrentHashMap<Class<? extends
-		// Persistable>, Cache<Identifier, ? extends Persistable>>(
-		// 4);
-		// map.put(Bazaar.class, Cache.newInstance(Bazaar.class.getName(),
-		// Identifier.class, Bazaar.class));
-		// map.put(Category.class, Cache.newInstance(Category.class.getName(),
-		// Identifier.class, Category.class));
-		// map.put(Item.class, Cache.newInstance(Item.class.getName(),
-		// Identifier.class, Item.class));
-		// map.put(Bidder.class, Cache.newInstance(Bidder.class.getName(),
-		// Identifier.class, Bidder.class));
-		// this.persistableCache = Collections.unmodifiableMap(map);1
 	}
 
 	// declare methods
@@ -78,29 +83,28 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 * @param persistable The persistable to be updated
 	 */
 	@SuppressWarnings("unchecked")
-	void addToCache(@NotNull final Persistable persistable) {
-		// if (persistable instanceof Bazaar) {
-		// final Cache<Identifier, Bazaar> cache = (Cache<Identifier,
-		// Bazaar>)this.persistableCache.get(Bazaar.class);
-		// cache.put(persistable.getIdentifier(), (Bazaar)persistable);
-		//
-		// }
-		// if (persistable instanceof Category) {
-		// final Cache<Identifier, Category> cache = (Cache<Identifier,
-		// Category>)this.persistableCache
-		// .get(Category.class);
-		// cache.put(persistable.getIdentifier(), (Category)persistable);
-		// }
-		// if (persistable instanceof Item) {
-		// final Cache<Identifier, Item> cache = (Cache<Identifier,
-		// Item>)this.persistableCache.get(Item.class);
-		// cache.put(persistable.getIdentifier(), (Item)persistable);
-		// }
-		// if (persistable instanceof Bidder) {
-		// final Cache<Identifier, Bidder> cache = (Cache<Identifier,
-		// Bidder>)this.persistableCache.get(Bidder.class);
-		// cache.put(persistable.getIdentifier(), (Bidder)persistable);
-		// }
+	static void addToCache(@NotNull final Persistable persistable) {
+		if (persistable instanceof Bazaar) {
+			final Cache<Identifier, Bazaar> cache = (Cache<Identifier, Bazaar>)BazaarManagerImpl.PERSISTABLE_CACHE
+					.get(Bazaar.class);
+			cache.put(persistable.getIdentifier(), (Bazaar)persistable);
+
+		}
+		if (persistable instanceof Category) {
+			final Cache<Identifier, Category> cache = (Cache<Identifier, Category>)BazaarManagerImpl.PERSISTABLE_CACHE
+					.get(Category.class);
+			cache.put(persistable.getIdentifier(), (Category)persistable);
+		}
+		if (persistable instanceof Item) {
+			final Cache<Identifier, Item> cache = (Cache<Identifier, Item>)BazaarManagerImpl.PERSISTABLE_CACHE
+					.get(Item.class);
+			cache.put(persistable.getIdentifier(), (Item)persistable);
+		}
+		if (persistable instanceof Bidder) {
+			final Cache<Identifier, Bidder> cache = (Cache<Identifier, Bidder>)BazaarManagerImpl.PERSISTABLE_CACHE
+					.get(Bidder.class);
+			cache.put(persistable.getIdentifier(), (Bidder)persistable);
+		}
 
 	}
 
@@ -109,10 +113,10 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 *
 	 * @param persistables The Set of persistable to be updated
 	 */
-	<T extends Persistable> void addToCache(@NotNull final Set<T> persistables) {
-		// for (final Persistable persistable : persistables) {
-		// this.addToCache(persistable);
-		// }
+	static <T extends Persistable> void addToCache(@NotNull final Set<T> persistables) {
+		for (final Persistable persistable : persistables) {
+			BazaarManagerImpl.addToCache(persistable);
+		}
 	}
 
 	/**
@@ -121,29 +125,28 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 * @param persistable The persistable to be removed
 	 */
 	@SuppressWarnings("unchecked")
-	void removeFromCache(@NotNull final Persistable persistable) {
-		// if (persistable instanceof Bazaar) {
-		// final Cache<Identifier, Bazaar> cache = (Cache<Identifier,
-		// Bazaar>)this.persistableCache.get(Bazaar.class);
-		// cache.remove(persistable.getIdentifier(), (Bazaar)persistable);
-		//
-		// }
-		// if (persistable instanceof Category) {
-		// final Cache<Identifier, Category> cache = (Cache<Identifier,
-		// Category>)this.persistableCache
-		// .get(Category.class);
-		// cache.remove(persistable.getIdentifier(), (Category)persistable);
-		// }
-		// if (persistable instanceof Item) {
-		// final Cache<Identifier, Item> cache = (Cache<Identifier,
-		// Item>)this.persistableCache.get(Item.class);
-		// cache.remove(persistable.getIdentifier(), (Item)persistable);
-		// }
-		// if (persistable instanceof Bidder) {
-		// final Cache<Identifier, Bidder> cache = (Cache<Identifier,
-		// Bidder>)this.persistableCache.get(Bidder.class);
-		// cache.remove(persistable.getIdentifier(), (Bidder)persistable);
-		// }
+	static void removeFromCache(@NotNull final Persistable persistable) {
+		if (persistable instanceof Bazaar) {
+			final Cache<Identifier, Bazaar> cache = (Cache<Identifier, Bazaar>)BazaarManagerImpl.PERSISTABLE_CACHE
+					.get(Bazaar.class);
+			cache.remove(persistable.getIdentifier(), (Bazaar)persistable);
+
+		}
+		if (persistable instanceof Category) {
+			final Cache<Identifier, Category> cache = (Cache<Identifier, Category>)BazaarManagerImpl.PERSISTABLE_CACHE
+					.get(Category.class);
+			cache.remove(persistable.getIdentifier(), (Category)persistable);
+		}
+		if (persistable instanceof Item) {
+			final Cache<Identifier, Item> cache = (Cache<Identifier, Item>)BazaarManagerImpl.PERSISTABLE_CACHE
+					.get(Item.class);
+			cache.remove(persistable.getIdentifier(), (Item)persistable);
+		}
+		if (persistable instanceof Bidder) {
+			final Cache<Identifier, Bidder> cache = (Cache<Identifier, Bidder>)BazaarManagerImpl.PERSISTABLE_CACHE
+					.get(Bidder.class);
+			cache.remove(persistable.getIdentifier(), (Bidder)persistable);
+		}
 	}
 
 	/**
@@ -154,15 +157,23 @@ public final class BazaarManagerImpl implements BazaarManager {
 	 * @return Persistable if found within cache; null otherwise
 	 */
 	@SuppressWarnings("unchecked")
-	<T extends Persistable> T getFromCache(@NotNull final Identifier identifier) {
-		return null;
+	static <T extends Persistable> T getFromCache(@NotNull final Identifier identifier) {
+		T persistable = null;
+		for (final Entry<Class<? extends Persistable>, Cache<Identifier, ? extends Persistable>> entry : BazaarManagerImpl.PERSISTABLE_CACHE
+				.entrySet()) {
+			if (entry.getValue().containsKey(identifier)) {
+				persistable = (T)entry.getValue().get(identifier);
+				break;
+			}
+		}
+		return persistable;
 	}
 
 	/**
 	 * Method clears cache
 	 */
-	void clearAllCaches() {
-		// this.persistableCache.clear();
+	static void clearAllCaches() {
+		BazaarManagerImpl.PERSISTABLE_CACHE.clear();
 	}
 
 	/*
@@ -203,7 +214,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		}
 		else {
 			// check cache
-			final Category category1 = this.getFromCache(identifier);
+			final Category category1 = BazaarManagerImpl.getFromCache(identifier);
 			if (category1 != null) {
 				category = category1;
 			}
@@ -215,7 +226,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 				category = RestWebClient.processResponse(new GenericType<Category>() {
 				}, response);
 				// add to cache
-				this.addToCache(category);
+				BazaarManagerImpl.addToCache(category);
 			}
 		}
 		return category;
@@ -230,7 +241,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 	public Item findItem(final Identifier identifier) throws ItemNotFoundException, BazaarException {
 		final Item item;
 		// check cache
-		final Item item1 = this.getFromCache(identifier);
+		final Item item1 = BazaarManagerImpl.getFromCache(identifier);
 		if (item1 != null) {
 			item = item1;
 		}
@@ -242,7 +253,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 			item = RestWebClient.processResponse(new GenericType<Item>() {
 			}, response);
 			// add to cache
-			this.addToCache(item);
+			BazaarManagerImpl.addToCache(item);
 		}
 		return item;
 	}
@@ -385,7 +396,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 	public Bazaar findBazaar(final Identifier identifier) throws BazaarNotFoundException, BazaarException {
 		final Bazaar bazaar;
 		// check cache
-		final Bazaar bazaar1 = this.getFromCache(identifier);
+		final Bazaar bazaar1 = BazaarManagerImpl.getFromCache(identifier);
 		if (bazaar1 != null) {
 			bazaar = bazaar1;
 		}
@@ -397,7 +408,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 			bazaar = RestWebClient.processResponse(new GenericType<Bazaar>() {
 			}, response);
 			// add to cache
-			this.addToCache(bazaar);
+			BazaarManagerImpl.addToCache(bazaar);
 		}
 		return bazaar;
 	}
@@ -415,7 +426,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bazaar>>() {
 				}, response));
 		// add to cache
-		this.addToCache(bazaars);
+		BazaarManagerImpl.addToCache(bazaars);
 		return bazaars;
 	}
 
@@ -433,7 +444,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Category>>() {
 				}, response));
 		// add to cache
-		this.addToCache(categories);
+		BazaarManagerImpl.addToCache(categories);
 		return categories;
 	}
 
@@ -450,7 +461,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Category>>() {
 				}, response));
 		// add to cache
-		this.addToCache(categories);
+		BazaarManagerImpl.addToCache(categories);
 		return categories;
 	}
 
@@ -467,7 +478,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		final Set<Item> items = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Item>>() {
 		}, response));
 		// add to cache
-		this.addToCache(items);
+		BazaarManagerImpl.addToCache(items);
 		return items;
 	}
 
@@ -485,7 +496,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		final Set<Item> items = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Item>>() {
 		}, response));
 		// add to cache
-		this.addToCache(items);
+		BazaarManagerImpl.addToCache(items);
 		return items;
 	}
 
@@ -501,7 +512,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		final Set<Item> items = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Item>>() {
 		}, response));
 		// add to cache
-		this.addToCache(items);
+		BazaarManagerImpl.addToCache(items);
 		return items;
 	}
 
@@ -514,7 +525,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 	public Bidder findBidder(final Identifier identifier) throws BidderNotFoundException, BazaarException {
 		final Bidder bidder;
 		// check cache
-		final Bidder bidder1 = this.getFromCache(identifier);
+		final Bidder bidder1 = BazaarManagerImpl.getFromCache(identifier);
 		if (bidder1 != null) {
 			bidder = bidder1;
 		}
@@ -526,7 +537,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 			bidder = RestWebClient.processResponse(new GenericType<Bidder>() {
 			}, response);
 			// add to cache
-			this.addToCache(bidder);
+			BazaarManagerImpl.addToCache(bidder);
 		}
 		return bidder;
 	}
@@ -545,7 +556,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bidder>>() {
 				}, response));
 		// add to cache
-		this.addToCache(bidders);
+		BazaarManagerImpl.addToCache(bidders);
 		return bidders;
 	}
 
@@ -562,7 +573,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 				.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bidder>>() {
 				}, response));
 		// add to cache
-		this.addToCache(bidders);
+		BazaarManagerImpl.addToCache(bidders);
 		return bidders;
 	}
 
@@ -575,7 +586,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 	public Bid findBid(final Identifier identifier) throws BidNotFoundException, BazaarException {
 		final Bid bid;
 		// check cache
-		final Bid bid1 = this.getFromCache(identifier);
+		final Bid bid1 = BazaarManagerImpl.getFromCache(identifier);
 		if (bid1 != null) {
 			bid = bid1;
 		}
@@ -587,7 +598,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 			bid = RestWebClient.processResponse(new GenericType<Bid>() {
 			}, response);
 			// add to cache
-			this.addToCache(bid);
+			BazaarManagerImpl.addToCache(bid);
 		}
 		return bid;
 	}
@@ -604,7 +615,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		final Set<Bid> bids = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bid>>() {
 		}, response));
 		// add to cache
-		this.addToCache(bids);
+		BazaarManagerImpl.addToCache(bids);
 		return bids;
 	}
 
@@ -622,7 +633,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		final Set<Bid> bids = Collections.unmodifiableSet(RestWebClient.processResponse(new GenericType<Set<Bid>>() {
 		}, response));
 		// add to cache
-		this.addToCache(bids);
+		BazaarManagerImpl.addToCache(bids);
 		return bids;
 	}
 
