@@ -17,7 +17,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import org.apache.bazaar.Image.MimeType;
-import org.apache.bazaar.config.ConfigurationException;
 import org.apache.bazaar.logging.Logger;
 import org.apache.bazaar.nls.Messages;
 import org.apache.bazaar.persistence.EntityManagerFactory;

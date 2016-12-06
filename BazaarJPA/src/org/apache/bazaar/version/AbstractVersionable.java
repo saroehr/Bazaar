@@ -65,6 +65,9 @@ public abstract class AbstractVersionable extends AbstractPersistable implements
 				if (version != null) {
 					versions.add(new VersionImpl(Identifier.fromValue(identifier.toString()), version));
 				}
+				else {
+					throw new VersionNotFoundException(this.getIdentifier().getValue());
+				}
 			}
 		}
 		catch (final PropertyNotFoundException exception) {

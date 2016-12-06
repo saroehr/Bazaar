@@ -36,8 +36,6 @@ public final class BazaarManagerImpl implements BazaarManager {
 	private static final Logger LOGGER = Logger.newInstance(BazaarManager.class);
 	// private final Map<Class<? extends Persistable>, Cache<Identifier, ?
 	// extends Persistable>> persistableCache;
-	// private final ThreadLocal<RestWebClient> threadLocal;
-	private final RestWebClient webClient;
 	private Category rootCategory;
 
 	// declare constructors
@@ -59,9 +57,7 @@ public final class BazaarManagerImpl implements BazaarManager {
 		// Identifier.class, Item.class));
 		// map.put(Bidder.class, Cache.newInstance(Bidder.class.getName(),
 		// Identifier.class, Bidder.class));
-		// this.persistableCache = Collections.unmodifiableMap(map);
-		// this.threadLocal = new ThreadLocal<RestWebClient>();
-		this.webClient = RestWebClient.newInstance();
+		// this.persistableCache = Collections.unmodifiableMap(map);1
 	}
 
 	// declare methods
